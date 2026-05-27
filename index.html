@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0081)file:///C:/Users/%E6%96%B0%E5%B1%85%E8%B2%B4%E5%BC%98/Downloads/index%20(20).html -->
+<!-- saved from url=(0081)file:///C:/Users/%E6%96%B0%E5%B1%85%E8%B2%B4%E5%BC%98/Downloads/index%20(21).html -->
 <html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -154,7 +154,7 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
     <span style="font-weight:800;font-size:1.1rem;color:#93c5fd;letter-spacing:.05em">NIPPO</span>
     <div>
       <h1>作業日報ダッシュボード <span style="font-size:.9rem;font-weight:400;color:var(--text2)">本社全体</span></h1>
-      <div class="subtitle" id="data-range">2026年5月1日 〜 5月26日　埋め込みデータ</div>
+      <div class="subtitle" id="data-range">2026年5月1日 〜 5月27日　埋め込みデータ</div>
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
@@ -173,207 +173,85 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
 <div class="content">
   <!-- Overview Tab -->
   <div class="tab-pane active" id="tab-overview">
-    <div class="person-tabs" id="person-tabs"><button class="person-tab active" onclick="switchPerson(&#39;全体&#39;)">本社全体</button><button class="person-tab" onclick="switchPerson(&#39;井部 辰悟&#39;)">井部 辰悟</button><button class="person-tab" onclick="switchPerson(&#39;新居 貴弘&#39;)">新居 貴弘</button><button class="person-tab" onclick="switchPerson(&#39;園田 奎治&#39;)">園田 奎治</button><button class="person-tab" onclick="switchPerson(&#39;山田 勝生&#39;)">山田 勝生</button><button class="person-tab" onclick="switchPerson(&#39;久保木 奎伍&#39;)">久保木 奎伍</button><button class="person-tab" onclick="switchPerson(&#39;古谷 将紀&#39;)">古谷 将紀</button><button class="person-tab" onclick="switchPerson(&#39;小野寺 陽丈&#39;)">小野寺 陽丈</button><button class="person-tab" onclick="switchPerson(&#39;槇戸 康博&#39;)">槇戸 康博</button><button class="person-tab" onclick="switchPerson(&#39;今本 椋介&#39;)">今本 椋介</button></div>
+    <div class="person-tabs" id="person-tabs"><button class="person-tab" onclick="switchPerson(&#39;全体&#39;)">本社全体</button><button class="person-tab" onclick="switchPerson(&#39;井部 辰悟&#39;)">井部 辰悟</button><button class="person-tab" onclick="switchPerson(&#39;新居 貴弘&#39;)">新居 貴弘</button><button class="person-tab active" onclick="switchPerson(&#39;園田 奎治&#39;)">園田 奎治</button><button class="person-tab" onclick="switchPerson(&#39;山田 勝生&#39;)">山田 勝生</button><button class="person-tab" onclick="switchPerson(&#39;久保木 奎伍&#39;)">久保木 奎伍</button><button class="person-tab" onclick="switchPerson(&#39;古谷 将紀&#39;)">古谷 将紀</button><button class="person-tab" onclick="switchPerson(&#39;小野寺 陽丈&#39;)">小野寺 陽丈</button><button class="person-tab" onclick="switchPerson(&#39;槇戸 康博&#39;)">槇戸 康博</button><button class="person-tab" onclick="switchPerson(&#39;今本 椋介&#39;)">今本 椋介</button></div>
     <div id="overview-content">
   <div class="kpi-grid">
-    <div class="kpi-card total" style="text-align:left"><div class="label">人工合計</div><div class="value">12,898</div><div class="sub">本社全体</div></div>
-    <div class="kpi-card shin" style="text-align:left"><div class="label"><span style="color:var(--shin)">●</span> 新規</div><div class="value">4,162.5</div><div class="sub">32%</div></div>
-    <div class="kpi-card kison" style="text-align:left"><div class="label"><span style="color:var(--kison)">●</span> 既存</div><div class="value">8,631.5</div><div class="sub">67%</div></div>
-    <div class="kpi-card kuran" style="text-align:left"><div class="label"><span style="color:var(--kuran)">●</span> 契約日空欄</div><div class="value">104</div><div class="sub">1%</div></div>
+    <div class="kpi-card total" style="text-align:left"><div class="label">人工合計</div><div class="value">1,277</div><div class="sub">本社全体</div></div>
+    <div class="kpi-card shin" style="text-align:left"><div class="label"><span style="color:var(--shin)">●</span> 新規</div><div class="value">443</div><div class="sub">35%</div></div>
+    <div class="kpi-card kison" style="text-align:left"><div class="label"><span style="color:var(--kison)">●</span> 既存</div><div class="value">762</div><div class="sub">60%</div></div>
+    <div class="kpi-card kuran" style="text-align:left"><div class="label"><span style="color:var(--kuran)">●</span> 契約日空欄</div><div class="value">72</div><div class="sub">6%</div></div>
   </div>
-  <div class="section-title">📊 担当者別 目標進捗一覧 — 2026-05
-    <button class="print-btn" onclick="window.print()">🖨️ PDF・印刷</button>
-  </div>
-  <div class="notice">※ペース目標 = 月目標 × (今日までの稼働日 / 月の総稼働日)　土日・祝日・GWを除いた実稼働ベースの目安（稼働 15/18日）</div>
-  <div class="table-wrap"><table>
-    <thead><tr>
-      <th>担当者</th>
-      <th>実績<br>総合</th><th>月目標<br>総合</th><th>ペース<br>目標※</th><th>GAP</th><th>達成率</th><th>進捗</th>
-      <th>実績<br>新規</th><th>月目標<br>新規</th><th>ペース<br>目標※</th><th>GAP</th><th>達成率</th>
-    </tr></thead>
-    <tbody><tr>
-      <td style="font-weight:700;font-size:.95rem">井部 辰悟</td>
-      <td style="font-weight:600">4,067</td>
-      <td style="color:var(--text2)">3,910</td>
-      <td style="color:#4ade80;font-weight:600">3,258</td>
-      <td style="color:#4ade80;font-weight:600">+809</td>
-      <td><span class="badge-rate badge-over">104%</span></td>
-      <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:100%;background:#4ade80"></div></div></td>
-      <td style="color:#fb923c;font-weight:600">825</td>
-      <td style="color:var(--text2)">850</td>
-      <td style="color:#4ade80;font-weight:600">708</td>
-      <td style="color:#4ade80;font-weight:600">+117</td>
-      <td><span class="badge-rate badge-near">97%</span></td>
-    </tr><tr>
-      <td style="font-weight:700;font-size:.95rem">新居 貴弘</td>
-      <td style="font-weight:600">2,141</td>
-      <td style="color:var(--text2)">2,890</td>
-      <td style="color:#4ade80;font-weight:600">2,408</td>
-      <td style="color:#fb923c;font-weight:600">-267</td>
-      <td><span class="badge-rate badge-low">74%</span></td>
-      <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:74%;background:#f87171"></div></div></td>
-      <td style="color:#fb923c;font-weight:600">695</td>
-      <td style="color:var(--text2)">850</td>
-      <td style="color:#4ade80;font-weight:600">708</td>
-      <td style="color:#fb923c;font-weight:600">-13</td>
-      <td><span class="badge-rate badge-low">82%</span></td>
-    </tr><tr>
-      <td style="font-weight:700;font-size:.95rem">園田 奎治</td>
-      <td style="font-weight:600">1,209</td>
-      <td style="color:var(--text2)">1,330</td>
-      <td style="color:#4ade80;font-weight:600">1,108</td>
-      <td style="color:#4ade80;font-weight:600">+101</td>
-      <td><span class="badge-rate badge-near">91%</span></td>
-      <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:91%;background:#facc15"></div></div></td>
-      <td style="color:#fb923c;font-weight:600">422</td>
-      <td style="color:var(--text2)">850</td>
-      <td style="color:#4ade80;font-weight:600">708</td>
-      <td style="color:#fb923c;font-weight:600">-286</td>
-      <td><span class="badge-rate badge-low">50%</span></td>
-    </tr><tr>
-      <td style="font-weight:700;font-size:.95rem">山田 勝生</td>
-      <td style="font-weight:600">2,173</td>
-      <td style="color:var(--text2)">2,040</td>
-      <td style="color:#4ade80;font-weight:600">1,700</td>
-      <td style="color:#4ade80;font-weight:600">+473</td>
-      <td><span class="badge-rate badge-over">107%</span></td>
-      <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:100%;background:#4ade80"></div></div></td>
-      <td style="color:#fb923c;font-weight:600">1,002</td>
-      <td style="color:var(--text2)">850</td>
-      <td style="color:#4ade80;font-weight:600">708</td>
-      <td style="color:#4ade80;font-weight:600">+294</td>
-      <td><span class="badge-rate badge-over">118%</span></td>
-    </tr><tr>
-      <td style="font-weight:700;font-size:.95rem">久保木 奎伍</td>
-      <td style="font-weight:600">1,573</td>
-      <td style="color:var(--text2)">2,040</td>
-      <td style="color:#4ade80;font-weight:600">1,700</td>
-      <td style="color:#fb923c;font-weight:600">-127</td>
-      <td><span class="badge-rate badge-low">77%</span></td>
-      <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:77%;background:#f87171"></div></div></td>
-      <td style="color:#fb923c;font-weight:600">459</td>
-      <td style="color:var(--text2)">850</td>
-      <td style="color:#4ade80;font-weight:600">708</td>
-      <td style="color:#fb923c;font-weight:600">-249</td>
-      <td><span class="badge-rate badge-low">54%</span></td>
-    </tr><tr>
-      <td style="font-weight:700;font-size:.95rem">古谷 将紀</td>
-      <td style="font-weight:600">1,227.5</td>
-      <td style="color:var(--text2)">1,530</td>
-      <td style="color:#4ade80;font-weight:600">1,275</td>
-      <td style="color:#fb923c;font-weight:600">-47.5</td>
-      <td><span class="badge-rate badge-low">80%</span></td>
-      <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:80%;background:#f87171"></div></div></td>
-      <td style="color:#fb923c;font-weight:600">252</td>
-      <td style="color:var(--text2)">850</td>
-      <td style="color:#4ade80;font-weight:600">708</td>
-      <td style="color:#fb923c;font-weight:600">-456</td>
-      <td><span class="badge-rate badge-low">30%</span></td>
-    </tr><tr>
-      <td style="font-weight:700;font-size:.95rem">小野寺 陽丈</td>
-      <td style="font-weight:600">28</td>
-      <td style="color:var(--text2)">340</td>
-      <td style="color:#4ade80;font-weight:600">283</td>
-      <td style="color:#fb923c;font-weight:600">-255</td>
-      <td><span class="badge-rate badge-low">8%</span></td>
-      <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:8%;background:#f87171"></div></div></td>
-      <td style="color:#fb923c;font-weight:600">28</td>
-      <td style="color:var(--text2)">170</td>
-      <td style="color:#4ade80;font-weight:600">142</td>
-      <td style="color:#fb923c;font-weight:600">-114</td>
-      <td><span class="badge-rate badge-low">16%</span></td>
-    </tr><tr><td style="font-weight:700">槇戸 康博</td><td style="font-weight:600">465.5</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td colspan="2" style="color:var(--text2)">未設定</td><td style="color:#fb923c;font-weight:600">465.5</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td></tr><tr><td style="font-weight:700">今本 椋介</td><td style="font-weight:600">14</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td colspan="2" style="color:var(--text2)">未設定</td><td style="color:#fb923c;font-weight:600">14</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td></tr></tbody>
-  </table></div>
-  <div class="section-title">📅 日別 人工合計 — 棒グラフ（新規・既存・契約日空欄）</div>
+  
+    <div class="kpi-grid" style="margin-bottom:8px">
+      <div class="kpi-card"><div class="label">月目標（総合）</div><div class="value" style="color:var(--text2)">1,330</div><div class="sub">ペース目標 1,182</div></div>
+      <div class="kpi-card"><div class="label">GAP（総合）</div><div class="value }" style="color:#4ade80">+95</div><div class="sub">達成率 96%</div></div>
+      <div class="kpi-card"><div class="label">月目標（新規）</div><div class="value" style="color:var(--text2)">850</div><div class="sub">ペース目標 756</div></div>
+      <div class="kpi-card"><div class="label">GAP（新規）</div><div class="value" style="color:#f87171">-313</div><div class="sub">達成率 52%</div></div>
+    </div>
+  <div class="section-title">📅 日別 人工合計</div>
   <div class="chart-card" style="margin-bottom:24px">
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:rgba(96,165,250,0.85)"></div>新規</div>
       <div class="legend-item"><div class="legend-dot" style="background:rgba(52,211,153,0.85)"></div>既存</div>
       <div class="legend-item"><div class="legend-dot" style="background:rgba(251,191,36,0.85)"></div>契約日空欄</div>
     </div>
-    <canvas id="chart-daily-all" height="330" style="display: block; box-sizing: border-box; height: 220.1px; width: 1167.3px;" width="1751"></canvas>
+    <canvas id="chart-daily-p" height="330" style="display: block; box-sizing: border-box; height: 220.1px; width: 1167.3px;" width="1751"></canvas>
   </div>
   <div class="chart-grid">
-    <div class="chart-card"><h3>業種別内訳</h3><canvas id="chart-ind-all" height="330" width="829" style="display: block; box-sizing: border-box; height: 220px; width: 553px;"></canvas></div>
-    <div class="chart-card"><h3>新規・既存・契約日空欄</h3><canvas id="chart-pie-all" height="829" width="829" style="display: block; box-sizing: border-box; height: 553px; width: 553px;"></canvas></div>
-    <div class="chart-card"><h3>担当者別 人工合計</h3>
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(96,165,250,0.85)"></div>新規</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(52,211,153,0.85)"></div>既存</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(251,191,36,0.85)"></div>空欄</div>
-      </div>
-      <canvas id="chart-person-all" height="330" width="829" style="display: block; box-sizing: border-box; height: 220px; width: 553px;"></canvas>
-    </div>
-    <div class="chart-card"><h3>業種 × 区分</h3>
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(96,165,250,0.85)"></div>新規</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(52,211,153,0.85)"></div>既存</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(251,191,36,0.85)"></div>空欄</div>
-      </div>
-      <canvas id="chart-ind-kbn" height="330" width="829" style="display: block; box-sizing: border-box; height: 220px; width: 553px;"></canvas>
-    </div>
+    <div class="chart-card"><h3>業種別内訳</h3><canvas id="chart-ind-p" height="330" width="829" style="display: block; box-sizing: border-box; height: 220px; width: 553px;"></canvas></div>
+    <div class="chart-card"><h3>新規・既存・空欄</h3><canvas id="chart-pie-p" height="829" width="829" style="display: block; box-sizing: border-box; height: 553px; width: 553px;"></canvas></div>
   </div>
   <div class="section-title">🏆 得意先 人工ランキング TOP10</div>
-  <div class="table-wrap"><table><thead><tr><th>順</th><th>得意先名</th><th>人工</th><th>割合</th><th>売上</th></tr></thead><tbody><tr>
+  <div class="table-wrap"><table><thead><tr><th>順</th><th>得意先名</th><th>人工</th><th>割合</th></tr></thead><tbody><tr>
     <td style="color:var(--text2)">1</td>
-    <td style="font-weight:600">㈱日本解技</td>
-    <td><strong>1,190.5</strong></td>
-    <td style="color:var(--text2)">25%</td>
-    <td style="color:var(--text2)">2521万円</td>
+    <td style="font-weight:600">㈱ﾏｴﾀﾞ</td>
+    <td><strong>599</strong></td>
+    <td style="color:var(--text2)">53%</td>
   </tr><tr>
     <td style="color:var(--text2)">2</td>
-    <td style="font-weight:600">㈱ﾏｴﾀﾞ</td>
-    <td><strong>568</strong></td>
-    <td style="color:var(--text2)">12%</td>
-    <td style="color:var(--text2)">1196万円</td>
+    <td style="font-weight:600">システム機工㈱ 関西営業所</td>
+    <td><strong>124</strong></td>
+    <td style="color:var(--text2)">11%</td>
   </tr><tr>
     <td style="color:var(--text2)">3</td>
-    <td style="font-weight:600">新和環境㈱</td>
-    <td><strong>465.5</strong></td>
-    <td style="color:var(--text2)">10%</td>
-    <td style="color:var(--text2)">1098万円</td>
+    <td style="font-weight:600">奥野工業㈱</td>
+    <td><strong>103</strong></td>
+    <td style="color:var(--text2)">9%</td>
   </tr><tr>
     <td style="color:var(--text2)">4</td>
-    <td style="font-weight:600">山尾建設㈱</td>
-    <td><strong>459</strong></td>
-    <td style="color:var(--text2)">10%</td>
-    <td style="color:var(--text2)">987万円</td>
+    <td style="font-weight:600">コスモ建設工業㈱</td>
+    <td><strong>72</strong></td>
+    <td style="color:var(--text2)">6%</td>
   </tr><tr>
     <td style="color:var(--text2)">5</td>
-    <td style="font-weight:600">㈱ネクスト・ワン</td>
-    <td><strong>380.5</strong></td>
-    <td style="color:var(--text2)">8%</td>
-    <td style="color:var(--text2)">814万円</td>
+    <td style="font-weight:600">エピック㈱</td>
+    <td><strong>52</strong></td>
+    <td style="color:var(--text2)">5%</td>
   </tr><tr>
     <td style="color:var(--text2)">6</td>
-    <td style="font-weight:600">㈱昇和</td>
-    <td><strong>358</strong></td>
-    <td style="color:var(--text2)">8%</td>
-    <td style="color:var(--text2)">764万円</td>
+    <td style="font-weight:600">井前建設㈱</td>
+    <td><strong>44</strong></td>
+    <td style="color:var(--text2)">4%</td>
   </tr><tr>
     <td style="color:var(--text2)">7</td>
-    <td style="font-weight:600">㈱植田建設</td>
-    <td><strong>320.5</strong></td>
-    <td style="color:var(--text2)">7%</td>
-    <td style="color:var(--text2)">855万円</td>
+    <td style="font-weight:600">㈱清水工業</td>
+    <td><strong>37</strong></td>
+    <td style="color:var(--text2)">3%</td>
   </tr><tr>
     <td style="color:var(--text2)">8</td>
-    <td style="font-weight:600">㈱ｵｸﾀﾞ 奈良</td>
-    <td><strong>317</strong></td>
-    <td style="color:var(--text2)">7%</td>
-    <td style="color:var(--text2)">682万円</td>
+    <td style="font-weight:600">㈲カネムラ</td>
+    <td><strong>36</strong></td>
+    <td style="color:var(--text2)">3%</td>
   </tr><tr>
     <td style="color:var(--text2)">9</td>
-    <td style="font-weight:600">㈱中作</td>
-    <td><strong>308</strong></td>
-    <td style="color:var(--text2)">7%</td>
-    <td style="color:var(--text2)">659万円</td>
+    <td style="font-weight:600">木本産業㈱</td>
+    <td><strong>32</strong></td>
+    <td style="color:var(--text2)">3%</td>
   </tr><tr>
     <td style="color:var(--text2)">10</td>
-    <td style="font-weight:600">鈴川建設㈱</td>
-    <td><strong>305</strong></td>
-    <td style="color:var(--text2)">7%</td>
-    <td style="color:var(--text2)">647万円</td>
+    <td style="font-weight:600">㈱河村工務店</td>
+    <td><strong>27</strong></td>
+    <td style="color:var(--text2)">2%</td>
   </tr></tbody></table></div>
   </div>
   </div>
@@ -400,8 +278,172 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
       </div>
       <!-- 個人ビュー -->
       <div id="daily-single-view">
-        <div class="daily-person-tabs" id="daily-person-tabs"></div>
-        <div id="daily-detail-content"></div>
+        <div class="daily-person-tabs" id="daily-person-tabs"><button class="daily-ptab" onclick="switchDailyPerson(&#39;井部 辰悟&#39;)">井部 辰悟</button><button class="daily-ptab active" onclick="switchDailyPerson(&#39;新居 貴弘&#39;)">新居 貴弘</button><button class="daily-ptab" onclick="switchDailyPerson(&#39;園田 奎治&#39;)">園田 奎治</button><button class="daily-ptab" onclick="switchDailyPerson(&#39;山田 勝生&#39;)">山田 勝生</button><button class="daily-ptab" onclick="switchDailyPerson(&#39;久保木 奎伍&#39;)">久保木 奎伍</button><button class="daily-ptab" onclick="switchDailyPerson(&#39;古谷 将紀&#39;)">古谷 将紀</button><button class="daily-ptab" onclick="switchDailyPerson(&#39;小野寺 陽丈&#39;)">小野寺 陽丈</button><button class="daily-ptab" onclick="switchDailyPerson(&#39;槇戸 康博&#39;)">槇戸 康博</button><button class="daily-ptab" onclick="switchDailyPerson(&#39;今本 椋介&#39;)">今本 椋介</button></div>
+        <div id="daily-detail-content">
+  <div class="daily-summary">
+    <div class="daily-sum-card"><div class="label">総合出向（計）</div><div class="value total-val">2,291</div></div>
+    <div class="daily-sum-card"><div class="label">新規出向（計）</div><div class="value shin-val">742</div></div>
+    <div class="daily-sum-card"><div class="label">社数（月間）</div><div class="value" style="color:var(--green)">29</div></div>
+    <div class="daily-sum-card"><div class="label">現場数（月間）</div><div class="value" style="color:var(--orange)">54</div></div>
+  </div>
+  <div class="daily-table-wrap">
+    <table class="daily-table">
+      <thead><tr>
+        <th>日付</th><th>総合出向</th><th>新規出向</th><th>社数</th><th>現場数</th>
+      </tr></thead>
+      <tbody><tr>
+      <td>05/01</td>
+      <td class="total-val">98</td>
+      <td class="shin-val">31</td>
+      <td>16</td>
+      <td>23</td>
+    </tr><tr>
+      <td>05/02</td>
+      <td class="total-val">37</td>
+      <td class="shin-val">15</td>
+      <td>6</td>
+      <td>8</td>
+    </tr><tr>
+      <td>05/04</td>
+      <td class="total-val">11</td>
+      <td class="shin-val">11</td>
+      <td>2</td>
+      <td>2</td>
+    </tr><tr>
+      <td>05/05</td>
+      <td class="total-val">10</td>
+      <td class="shin-val">10</td>
+      <td>1</td>
+      <td>1</td>
+    </tr><tr>
+      <td>05/06</td>
+      <td class="total-val">10</td>
+      <td class="shin-val">10</td>
+      <td>1</td>
+      <td>1</td>
+    </tr><tr>
+      <td>05/07</td>
+      <td class="total-val">111</td>
+      <td class="shin-val">43</td>
+      <td>16</td>
+      <td>27</td>
+    </tr><tr>
+      <td>05/08</td>
+      <td class="total-val">118</td>
+      <td class="shin-val">49</td>
+      <td>20</td>
+      <td>30</td>
+    </tr><tr>
+      <td>05/09</td>
+      <td class="total-val">74</td>
+      <td class="shin-val">26</td>
+      <td>11</td>
+      <td>13</td>
+    </tr><tr>
+      <td>05/11</td>
+      <td class="total-val">128</td>
+      <td class="shin-val">42</td>
+      <td>19</td>
+      <td>29</td>
+    </tr><tr>
+      <td>05/12</td>
+      <td class="total-val">129</td>
+      <td class="shin-val">41</td>
+      <td>18</td>
+      <td>28</td>
+    </tr><tr>
+      <td>05/13</td>
+      <td class="total-val">131</td>
+      <td class="shin-val">44</td>
+      <td>20</td>
+      <td>30</td>
+    </tr><tr>
+      <td>05/14</td>
+      <td class="total-val">131</td>
+      <td class="shin-val">44</td>
+      <td>18</td>
+      <td>27</td>
+    </tr><tr>
+      <td>05/15</td>
+      <td class="total-val">130.5</td>
+      <td class="shin-val">43</td>
+      <td>19</td>
+      <td>29</td>
+    </tr><tr>
+      <td>05/16</td>
+      <td class="total-val">59</td>
+      <td class="shin-val">30</td>
+      <td>9</td>
+      <td>11</td>
+    </tr><tr>
+      <td>05/18</td>
+      <td class="total-val">125.5</td>
+      <td class="shin-val">29</td>
+      <td>19</td>
+      <td>28</td>
+    </tr><tr>
+      <td>05/19</td>
+      <td class="total-val">128</td>
+      <td class="shin-val">33</td>
+      <td>19</td>
+      <td>29</td>
+    </tr><tr>
+      <td>05/20</td>
+      <td class="total-val">125</td>
+      <td class="shin-val">32</td>
+      <td>17</td>
+      <td>26</td>
+    </tr><tr>
+      <td>05/21</td>
+      <td class="total-val">126</td>
+      <td class="shin-val">34</td>
+      <td>19</td>
+      <td>29</td>
+    </tr><tr>
+      <td>05/22</td>
+      <td class="total-val">139</td>
+      <td class="shin-val">38</td>
+      <td>21</td>
+      <td>31</td>
+    </tr><tr>
+      <td>05/23</td>
+      <td class="total-val">32</td>
+      <td class="shin-val">9</td>
+      <td>7</td>
+      <td>7</td>
+    </tr><tr>
+      <td>05/24</td>
+      <td class="total-val">0</td>
+      <td class="shin-val">0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr><tr>
+      <td>05/25</td>
+      <td class="total-val">140</td>
+      <td class="shin-val">40</td>
+      <td>19</td>
+      <td>31</td>
+    </tr><tr>
+      <td>05/26</td>
+      <td class="total-val">146</td>
+      <td class="shin-val">39</td>
+      <td>20</td>
+      <td>33</td>
+    </tr><tr>
+      <td>05/27</td>
+      <td class="total-val">152</td>
+      <td class="shin-val">49</td>
+      <td>19</td>
+      <td>32</td>
+    </tr></tbody>
+      <tfoot><tr class="total-row">
+        <td>合計</td>
+        <td class="total-val">2,291</td>
+        <td class="shin-val">742</td>
+        <td colspan="2" style="color:var(--text2);font-size:.8rem">月間ユニーク: 29社 / 54現場</td>
+      </tr></tfoot>
+    </table>
+  </div></div>
       </div>
       <!-- 全員一覧ビュー -->
       <div id="daily-all-view" style="display:none">
@@ -429,7 +471,7 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
 
 </script>
 <script>
-const RAW = {"data_range": "2026年5月1日 〜 5月26日", "targets": ["井部 辰悟", "新居 貴弘", "園田 奎治", "山田 勝生", "久保木 奎伍", "古谷 将紀", "小野寺 陽丈", "槇戸 康博", "今本 椋介"], "dates": ["2026/05/01", "2026/05/02", "2026/05/03", "2026/05/04", "2026/05/05", "2026/05/06", "2026/05/07", "2026/05/08", "2026/05/09", "2026/05/10", "2026/05/11", "2026/05/12", "2026/05/13", "2026/05/14", "2026/05/15", "2026/05/16", "2026/05/17", "2026/05/18", "2026/05/19", "2026/05/20", "2026/05/21", "2026/05/22", "2026/05/23", "2026/05/24", "2026/05/25", "2026/05/26"], "person_summary": {"井部 辰悟": {"総合_人工": 4067.0, "総合_売上": 88290500, "新規_人工": 825.0, "新規_売上": 17676650, "既存_人工": 3242.0, "既存_売上": 70613850, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 30, "月間現場数": 69}, "新居 貴弘": {"総合_人工": 2141.0, "総合_売上": 45982800, "新規_人工": 695, "新規_売上": 15257700, "既存_人工": 1446.0, "既存_売上": 30725100, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 29, "月間現場数": 54}, "園田 奎治": {"総合_人工": 1209, "総合_売上": 25727900, "新規_人工": 422, "新規_売上": 8947550, "既存_人工": 719, "既存_売上": 15308500, "空欄_人工": 68, "空欄_売上": 1471850, "月間社数": 18, "月間現場数": 21}, "山田 勝生": {"総合_人工": 2173.0, "総合_売上": 46220150, "新規_人工": 1002.0, "新規_売上": 21271150, "既存_人工": 1162, "既存_売上": 24761000, "空欄_人工": 9, "空欄_売上": 188000, "月間社数": 34, "月間現場数": 65}, "久保木 奎伍": {"総合_人工": 1573, "総合_売上": 33538300, "新規_人工": 459, "新規_売上": 10059700, "既存_人工": 1114, "既存_売上": 23478600, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 28, "月間現場数": 50}, "古谷 将紀": {"総合_人工": 1227.5, "総合_売上": 26842900, "新規_人工": 252, "新規_売上": 5290000, "既存_人工": 948.5, "既存_売上": 20976900, "空欄_人工": 27, "空欄_売上": 576000, "月間社数": 24, "月間現場数": 33}, "小野寺 陽丈": {"総合_人工": 28, "総合_売上": 574000, "新規_人工": 28, "新規_売上": 574000, "既存_人工": 0, "既存_売上": 0, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 1, "月間現場数": 1}, "槇戸 康博": {"総合_人工": 465.5, "総合_売上": 10975150, "新規_人工": 465.5, "新規_売上": 10975150, "既存_人工": 0, "既存_売上": 0, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 1, "月間現場数": 1}, "今本 椋介": {"総合_人工": 14, "総合_売上": 287000, "新規_人工": 14, "新規_売上": 287000, "既存_人工": 0, "既存_売上": 0, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 1, "月間現場数": 1}}, "daily_all": {"2026/05/01": {"新規": 101.5, "既存": 307.5, "空欄": 5}, "2026/05/02": {"新規": 43, "既存": 84, "空欄": 0}, "2026/05/03": {"新規": 7, "既存": 3, "空欄": 0}, "2026/05/04": {"新規": 14, "既存": 15, "空欄": 0}, "2026/05/05": {"新規": 12, "既存": 19, "空欄": 0}, "2026/05/06": {"新規": 11, "既存": 21, "空欄": 0}, "2026/05/07": {"新規": 231, "既存": 485, "空欄": 8}, "2026/05/08": {"新規": 244, "既存": 488, "空欄": 8}, "2026/05/09": {"新規": 105, "既存": 192, "空欄": 4}, "2026/05/10": {"新規": 4, "既存": 4, "空欄": 0}, "2026/05/11": {"新規": 272.5, "既存": 547, "空欄": 8}, "2026/05/12": {"新規": 273, "既存": 557.5, "空欄": 8}, "2026/05/13": {"新規": 279.0, "既存": 547, "空欄": 6}, "2026/05/14": {"新規": 273, "既存": 553, "空欄": 6}, "2026/05/15": {"新規": 267.0, "既存": 549.0, "空欄": 4}, "2026/05/16": {"新規": 154, "既存": 170, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 11, "空欄": 0}, "2026/05/18": {"新規": 249, "既存": 579.0, "空欄": 4}, "2026/05/19": {"新規": 249, "既存": 563, "空欄": 7}, "2026/05/20": {"新規": 236.0, "既存": 543, "空欄": 9}, "2026/05/21": {"新規": 236.5, "既存": 539, "空欄": 8}, "2026/05/22": {"新規": 255, "既存": 568, "空欄": 6}, "2026/05/23": {"新規": 117, "既存": 155, "空欄": 2}, "2026/05/24": {"新規": 8, "既存": 24, "空欄": 0}, "2026/05/25": {"新規": 260, "既存": 546.5, "空欄": 8}, "2026/05/26": {"新規": 261, "既存": 561, "空欄": 3}}, "person_daily": {"井部 辰悟": {"2026/05/01": {"新規": 11.5, "既存": 103, "空欄": 0}, "2026/05/02": {"新規": 8, "既存": 25, "空欄": 0}, "2026/05/04": {"新規": 0, "既存": 8, "空欄": 0}, "2026/05/05": {"新規": 0, "既存": 12, "空欄": 0}, "2026/05/06": {"新規": 0, "既存": 12, "空欄": 0}, "2026/05/07": {"新規": 58, "既存": 188, "空欄": 0}, "2026/05/08": {"新規": 55, "既存": 185, "空欄": 0}, "2026/05/09": {"新規": 11, "既存": 44, "空欄": 0}, "2026/05/11": {"新規": 54, "既存": 205, "空欄": 0}, "2026/05/12": {"新規": 53, "既存": 210.5, "空欄": 0}, "2026/05/13": {"新規": 56.5, "既存": 211, "空欄": 0}, "2026/05/14": {"新規": 54, "既存": 217, "空欄": 0}, "2026/05/15": {"新規": 55, "既存": 222.5, "空欄": 0}, "2026/05/16": {"新規": 2, "既存": 60, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 4, "空欄": 0}, "2026/05/18": {"新規": 52, "既存": 224.5, "空欄": 0}, "2026/05/19": {"新規": 56, "既存": 220, "空欄": 0}, "2026/05/20": {"新規": 57, "既存": 211, "空欄": 0}, "2026/05/21": {"新規": 58, "既存": 196, "空欄": 0}, "2026/05/22": {"新規": 57, "既存": 210, "空欄": 0}, "2026/05/23": {"新規": 4, "既存": 53, "空欄": 0}, "2026/05/24": {"新規": 0, "既存": 4, "空欄": 0}, "2026/05/25": {"新規": 61, "既存": 203.5, "空欄": 0}, "2026/05/26": {"新規": 62, "既存": 213, "空欄": 0}}, "新居 貴弘": {"2026/05/01": {"新規": 31, "既存": 67, "空欄": 0}, "2026/05/02": {"新規": 15, "既存": 22, "空欄": 0}, "2026/05/04": {"新規": 11, "既存": 0, "空欄": 0}, "2026/05/05": {"新規": 10, "既存": 0, "空欄": 0}, "2026/05/06": {"新規": 10, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 43, "既存": 68, "空欄": 0}, "2026/05/08": {"新規": 49, "既存": 69, "空欄": 0}, "2026/05/09": {"新規": 26, "既存": 48, "空欄": 0}, "2026/05/11": {"新規": 42, "既存": 86, "空欄": 0}, "2026/05/12": {"新規": 41, "既存": 88, "空欄": 0}, "2026/05/13": {"新規": 44, "既存": 87, "空欄": 0}, "2026/05/14": {"新規": 44, "既存": 87, "空欄": 0}, "2026/05/15": {"新規": 43, "既存": 87.5, "空欄": 0}, "2026/05/16": {"新規": 30, "既存": 29, "空欄": 0}, "2026/05/18": {"新規": 29, "既存": 96.5, "空欄": 0}, "2026/05/19": {"新規": 33, "既存": 95, "空欄": 0}, "2026/05/20": {"新規": 32, "既存": 93, "空欄": 0}, "2026/05/21": {"新規": 34, "既存": 92, "空欄": 0}, "2026/05/22": {"新規": 38, "既存": 101, "空欄": 0}, "2026/05/23": {"新規": 9, "既存": 23, "空欄": 0}, "2026/05/24": {"新規": 0, "既存": 0, "空欄": 0}, "2026/05/25": {"新規": 40, "既存": 100, "空欄": 0}, "2026/05/26": {"新規": 41, "既存": 107, "空欄": 0}}, "園田 奎治": {"2026/05/01": {"新規": 11, "既存": 42, "空欄": 5}, "2026/05/02": {"新規": 1, "既存": 16, "空欄": 0}, "2026/05/04": {"新規": 1, "既存": 0, "空欄": 0}, "2026/05/05": {"新規": 1, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 25, "既存": 39, "空欄": 6}, "2026/05/08": {"新規": 23, "既存": 41, "空欄": 6}, "2026/05/09": {"新規": 10, "既存": 38, "空欄": 0}, "2026/05/11": {"新規": 26, "既存": 41, "空欄": 6}, "2026/05/12": {"新規": 30, "既存": 42, "空欄": 4}, "2026/05/13": {"新規": 28, "既存": 41, "空欄": 4}, "2026/05/14": {"新規": 28, "既存": 41, "空欄": 2}, "2026/05/15": {"新規": 29, "既存": 39, "空欄": 4}, "2026/05/16": {"新規": 14, "既存": 30, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 2, "空欄": 0}, "2026/05/18": {"新規": 25, "既存": 39, "空欄": 4}, "2026/05/19": {"新規": 25, "既存": 38, "空欄": 7}, "2026/05/20": {"新規": 29, "既存": 38, "空欄": 6}, "2026/05/21": {"新規": 25, "既存": 38, "空欄": 4}, "2026/05/22": {"新規": 33, "既存": 40, "空欄": 6}, "2026/05/23": {"新規": 11, "既存": 32, "空欄": 0}, "2026/05/24": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/25": {"新規": 24, "既存": 43, "空欄": 4}, "2026/05/26": {"新規": 21, "既存": 39, "空欄": 0}}, "山田 勝生": {"2026/05/01": {"新規": 24, "既存": 47, "空欄": 0}, "2026/05/02": {"新規": 4, "既存": 9, "空欄": 0}, "2026/05/03": {"新規": 0, "既存": 3, "空欄": 0}, "2026/05/04": {"新規": 0, "既存": 7, "空欄": 0}, "2026/05/05": {"新規": 0, "既存": 7, "空欄": 0}, "2026/05/06": {"新規": 0, "既存": 9, "空欄": 0}, "2026/05/07": {"新規": 56, "既存": 65, "空欄": 0}, "2026/05/08": {"新規": 56, "既存": 66, "空欄": 0}, "2026/05/09": {"新規": 18, "既存": 21, "空欄": 2}, "2026/05/11": {"新規": 69, "既存": 72, "空欄": 0}, "2026/05/12": {"新規": 75, "既存": 77, "空欄": 2}, "2026/05/13": {"新規": 79.5, "既存": 78, "空欄": 0}, "2026/05/14": {"新規": 76, "既存": 75, "空欄": 2}, "2026/05/15": {"新規": 70.5, "既存": 68, "空欄": 0}, "2026/05/16": {"新規": 45, "既存": 17, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 1, "空欄": 0}, "2026/05/18": {"新規": 59, "既存": 74, "空欄": 0}, "2026/05/19": {"新規": 56, "既存": 71, "空欄": 0}, "2026/05/20": {"新規": 53.0, "既存": 67, "空欄": 0}, "2026/05/21": {"新規": 50, "既存": 81, "空欄": 1}, "2026/05/22": {"新規": 55, "既存": 78, "空欄": 0}, "2026/05/23": {"新規": 34, "既存": 22, "空欄": 2}, "2026/05/24": {"新規": 0, "既存": 16, "空欄": 0}, "2026/05/25": {"新規": 60, "既存": 63, "空欄": 0}, "2026/05/26": {"新規": 62, "既存": 68, "空欄": 0}}, "久保木 奎伍": {"2026/05/01": {"新規": 6, "既存": 27, "空欄": 0}, "2026/05/02": {"新規": 4, "既存": 1, "空欄": 0}, "2026/05/03": {"新規": 0, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 21, "既存": 69, "空欄": 0}, "2026/05/08": {"新規": 26, "既存": 68, "空欄": 0}, "2026/05/09": {"新規": 14, "既存": 24, "空欄": 0}, "2026/05/11": {"新規": 30, "既存": 80, "空欄": 0}, "2026/05/12": {"新規": 30, "既存": 78, "空欄": 0}, "2026/05/13": {"新規": 29, "既存": 73, "空欄": 0}, "2026/05/14": {"新規": 28, "既存": 73, "空欄": 0}, "2026/05/15": {"新規": 29, "既存": 72, "空欄": 0}, "2026/05/16": {"新規": 13, "既存": 19, "空欄": 0}, "2026/05/18": {"新規": 38, "既存": 79, "空欄": 0}, "2026/05/19": {"新規": 32, "既存": 77, "空欄": 0}, "2026/05/20": {"新規": 25, "既存": 75, "空欄": 0}, "2026/05/21": {"新規": 32, "既存": 73, "空欄": 0}, "2026/05/22": {"新規": 29, "既存": 75, "空欄": 0}, "2026/05/23": {"新規": 13, "既存": 9, "空欄": 0}, "2026/05/25": {"新規": 31, "既存": 72, "空欄": 0}, "2026/05/26": {"新規": 29, "既存": 70, "空欄": 0}}, "古谷 将紀": {"2026/05/01": {"新規": 16, "既存": 21.5, "空欄": 0}, "2026/05/02": {"新規": 11, "既存": 11, "空欄": 0}, "2026/05/03": {"新規": 7, "既存": 0, "空欄": 0}, "2026/05/04": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/05": {"新規": 1, "既存": 0, "空欄": 0}, "2026/05/06": {"新規": 1, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 12, "既存": 56, "空欄": 2}, "2026/05/08": {"新規": 19, "既存": 59, "空欄": 2}, "2026/05/09": {"新規": 12, "既存": 17, "空欄": 2}, "2026/05/10": {"新規": 4, "既存": 4, "空欄": 0}, "2026/05/11": {"新規": 19, "既存": 63, "空欄": 2}, "2026/05/12": {"新規": 12, "既存": 62, "空欄": 2}, "2026/05/13": {"新規": 9, "既存": 57, "空欄": 2}, "2026/05/14": {"新規": 9, "既存": 60, "空欄": 2}, "2026/05/15": {"新規": 9, "既存": 60, "空欄": 0}, "2026/05/16": {"新規": 8, "既存": 15, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 4, "空欄": 0}, "2026/05/18": {"新規": 16, "既存": 66, "空欄": 0}, "2026/05/19": {"新規": 16, "既存": 62, "空欄": 0}, "2026/05/20": {"新規": 12, "既存": 59, "空欄": 3}, "2026/05/21": {"新規": 6, "既存": 59, "空欄": 3}, "2026/05/22": {"新規": 18, "既存": 64, "空欄": 0}, "2026/05/23": {"新規": 4, "既存": 16, "空欄": 0}, "2026/05/24": {"新規": 6, "既存": 4, "空欄": 0}, "2026/05/25": {"新規": 11, "既存": 65, "空欄": 4}, "2026/05/26": {"新規": 12, "既存": 64, "空欄": 3}}, "小野寺 陽丈": {"2026/05/01": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/08": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/11": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/12": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/13": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/14": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/15": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/18": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/19": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/20": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/22": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/25": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/26": {"新規": 2, "既存": 0, "空欄": 0}}, "槇戸 康博": {"2026/05/07": {"新規": 14, "既存": 0, "空欄": 0}, "2026/05/08": {"新規": 14, "既存": 0, "空欄": 0}, "2026/05/09": {"新規": 14, "既存": 0, "空欄": 0}, "2026/05/11": {"新規": 30.5, "既存": 0, "空欄": 0}, "2026/05/12": {"新規": 30, "既存": 0, "空欄": 0}, "2026/05/13": {"新規": 29, "既存": 0, "空欄": 0}, "2026/05/14": {"新規": 30, "既存": 0, "空欄": 0}, "2026/05/15": {"新規": 27.5, "既存": 0, "空欄": 0}, "2026/05/16": {"新規": 40, "既存": 0, "空欄": 0}, "2026/05/18": {"新規": 26, "既存": 0, "空欄": 0}, "2026/05/19": {"新規": 27, "既存": 0, "空欄": 0}, "2026/05/20": {"新規": 26, "既存": 0, "空欄": 0}, "2026/05/21": {"新規": 31.5, "既存": 0, "空欄": 0}, "2026/05/22": {"新規": 21, "既存": 0, "空欄": 0}, "2026/05/23": {"新規": 42, "既存": 0, "空欄": 0}, "2026/05/25": {"新規": 31, "既存": 0, "空欄": 0}, "2026/05/26": {"新規": 32, "既存": 0, "空欄": 0}}, "今本 椋介": {"2026/05/13": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/14": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/15": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/16": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/18": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/19": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/22": {"新規": 2, "既存": 0, "空欄": 0}}}, "industry": {"井部 辰悟": {"建築": {"新規": 38, "既存": 388, "空欄": 0}, "解体": {"新規": 459, "既存": 2444.0, "空欄": 0}, "土木": {"新規": 297.5, "既存": 370, "空欄": 0}, "設備": {"新規": 15, "既存": 31, "空欄": 0}, "その他": {"新規": 15.5, "既存": 0, "空欄": 0}, "未分類": {"新規": 0, "既存": 9, "空欄": 0}}, "新居 貴弘": {"土木": {"新規": 137, "既存": 416.5, "空欄": 0}, "解体": {"新規": 435, "既存": 910, "空欄": 0}, "建築": {"新規": 98, "既存": 109.5, "空欄": 0}, "その他": {"新規": 20, "既存": 6, "空欄": 0}, "設備": {"新規": 4, "既存": 0, "空欄": 0}, "未分類": {"新規": 1, "既存": 4, "空欄": 0}}, "園田 奎治": {"土木": {"新規": 40, "既存": 634, "空欄": 0}, "その他": {"新規": 26, "既存": 0, "空欄": 0}, "解体": {"新規": 106, "既存": 16, "空欄": 0}, "建築": {"新規": 133, "既存": 69, "空欄": 68}, "設備": {"新規": 117, "既存": 0, "空欄": 0}}, "山田 勝生": {"解体": {"新規": 527.5, "既存": 564, "空欄": 0}, "土木": {"新規": 110, "既存": 183, "空欄": 0}, "建築": {"新規": 346.5, "既存": 259, "空欄": 9}, "未分類": {"新規": 0, "既存": 7, "空欄": 0}, "その他": {"新規": 18, "既存": 149, "空欄": 0}}, "久保木 奎伍": {"設備": {"新規": 62, "既存": 206, "空欄": 0}, "解体": {"新規": 169, "既存": 489, "空欄": 0}, "土木": {"新規": 177, "既存": 171, "空欄": 0}, "建築": {"新規": 46, "既存": 248, "空欄": 0}, "未分類": {"新規": 5, "既存": 0, "空欄": 0}}, "古谷 将紀": {"土木": {"新規": 80, "既存": 362, "空欄": 0}, "解体": {"新規": 100, "既存": 553.5, "空欄": 12}, "建築": {"新規": 72, "既存": 2, "空欄": 0}, "設備": {"新規": 0, "既存": 31, "空欄": 15}}, "小野寺 陽丈": {"土木": {"新規": 28, "既存": 0, "空欄": 0}}, "槇戸 康博": {"解体": {"新規": 457.5, "既存": 0, "空欄": 0}, "未分類": {"新規": 8, "既存": 0, "空欄": 0}}, "今本 椋介": {"土木": {"新規": 14, "既存": 0, "空欄": 0}}, "全体": {"土木": {"新規": 883.5, "既存": 2136.5, "空欄": 0}, "その他": {"新規": 79.5, "既存": 155, "空欄": 0}, "解体": {"新規": 2254.0, "既存": 4976.5, "空欄": 12}, "建築": {"新規": 733.5, "既存": 1075.5, "空欄": 77}, "設備": {"新規": 198, "既存": 268, "空欄": 15}, "未分類": {"新規": 14, "既存": 20, "空欄": 0}}}, "clients": {"井部 辰悟": [{"得意先名": "㈱日本解技", "人工": 1190.5, "売上": 25213600}, {"得意先名": "山尾建設㈱", "人工": 459.0, "売上": 9868000}, {"得意先名": "㈱植田建設", "人工": 320.5, "売上": 8547100}, {"得意先名": "鈴川建設㈱", "人工": 305.0, "売上": 6466500}, {"得意先名": "㈱南海興業", "人工": 296.0, "売上": 6370000}, {"得意先名": "㈱衆和金属", "人工": 230.0, "売上": 4991000}, {"得意先名": "㈱宮本組【第二神明】", "人工": 229.5, "売上": 4681400}, {"得意先名": "㈱ヤマシタ", "人工": 167.0, "売上": 3629000}, {"得意先名": "柳興業㈱", "人工": 148.0, "売上": 3009000}, {"得意先名": "㈱崇和", "人工": 140.0, "売上": 3181700}], "新居 貴弘": [{"得意先名": "㈱ｵｸﾀﾞ 奈良", "人工": 317.0, "売上": 6821300}, {"得意先名": "㈱中作", "人工": 308.0, "売上": 6586000}, {"得意先名": "木下建設㈱[堺]", "人工": 265.0, "売上": 5543500}, {"得意先名": "華美善建設興業㈱", "人工": 240.0, "売上": 5130500}, {"得意先名": "㈱岩澤組", "人工": 174.0, "売上": 3674000}, {"得意先名": "㈱マツモト創建", "人工": 133.0, "売上": 2825000}, {"得意先名": "繁栄建設工業㈱", "人工": 122.0, "売上": 2747800}, {"得意先名": "㈱津田工業", "人工": 101.0, "売上": 2197000}, {"得意先名": "㈱石本建設", "人工": 75.0, "売上": 1590000}, {"得意先名": "山吉工業㈱", "人工": 64.0, "売上": 1356000}], "園田 奎治": [{"得意先名": "㈱ﾏｴﾀﾞ", "人工": 568.0, "売上": 11957300}, {"得意先名": "システム機工㈱ 関西営業所", "人工": 117.0, "売上": 2467500}, {"得意先名": "奥野工業㈱", "人工": 97.0, "売上": 2150000}, {"得意先名": "コスモ建設工業㈱", "人工": 68.0, "売上": 1471850}, {"得意先名": "エピック㈱", "人工": 52.0, "売上": 1131000}, {"得意先名": "井前建設㈱", "人工": 38.0, "売上": 774000}, {"得意先名": "㈱清水工業", "人工": 35.0, "売上": 712000}, {"得意先名": "木本産業㈱", "人工": 30.0, "売上": 706000}, {"得意先名": "㈲カネムラ", "人工": 30.0, "売上": 665100}, {"得意先名": "㈱河村工務店", "人工": 26.0, "売上": 546150}], "山田 勝生": [{"得意先名": "㈱昇和", "人工": 358.0, "売上": 7644500}, {"得意先名": "㈱名和組", "人工": 244.0, "売上": 4769900}, {"得意先名": "㈲田浦商店", "人工": 242.5, "売上": 5224250}, {"得意先名": "㈱香山組(堺)", "人工": 183.0, "売上": 3706000}, {"得意先名": "㈱名和商店", "人工": 169.0, "売上": 3755000}, {"得意先名": "太平冷熱工業㈱", "人工": 131.0, "売上": 2961000}, {"得意先名": "㈱協栄工業", "人工": 131.0, "売上": 2705400}, {"得意先名": "ｱｽｸ･ｻﾝｼﾝｴﾝｼﾞﾆｱﾘﾝｸﾞ㈱", "人工": 79.0, "売上": 1734000}, {"得意先名": "㈱ｴｽﾎﾟﾜｰﾙ", "人工": 75.0, "売上": 1734500}, {"得意先名": "㈱池上組", "人工": 48.0, "売上": 973000}], "久保木 奎伍": [{"得意先名": "三同建設㈱", "人工": 274.0, "売上": 5840000}, {"得意先名": "真神建設㈱", "人工": 210.0, "売上": 4238000}, {"得意先名": "㈱佐藤工業", "人工": 202.0, "売上": 4371600}, {"得意先名": "誠工業㈱", "人工": 161.0, "売上": 3623050}, {"得意先名": "㈱日電機工", "人工": 155.0, "売上": 3355800}, {"得意先名": "梶谷工業㈱", "人工": 93.0, "売上": 2021000}, {"得意先名": "㈱ヤマト【大阪】", "人工": 81.0, "売上": 1839500}, {"得意先名": "三栄電気工業㈱ 大阪支店", "人工": 51.0, "売上": 1037000}, {"得意先名": "㈱神栄建設", "人工": 45.0, "売上": 879000}, {"得意先名": "㈱香山組(尼崎)", "人工": 42.0, "売上": 914600}], "古谷 将紀": [{"得意先名": "㈱ネクスト・ワン", "人工": 380.5, "売上": 8137000}, {"得意先名": "㈱冨田組", "人工": 97.0, "売上": 1857000}, {"得意先名": "歩信栄建設㈱", "人工": 86.0, "売上": 1783000}, {"得意先名": "㈱南興業", "人工": 78.0, "売上": 2559600}, {"得意先名": "咸宜建設㈱", "人工": 73.0, "売上": 1814500}, {"得意先名": "基建設㈱", "人工": 69.0, "売上": 1405000}, {"得意先名": "㈱ｵｶﾓﾄｺﾝｽﾄﾗｸｼｮﾝｼｽﾃﾑ", "人工": 64.0, "売上": 1296000}, {"得意先名": "芽生ｺﾝｽﾄﾗｸｼｮﾝ㈱", "人工": 63.0, "売上": 1278000}, {"得意先名": "㈱タカラ建設工業", "人工": 38.0, "売上": 830000}, {"得意先名": "㈱鮎活", "人工": 37.0, "売上": 769500}], "小野寺 陽丈": [{"得意先名": "㈱巴山土木", "人工": 28.0, "売上": 574000}], "槇戸 康博": [{"得意先名": "新和環境㈱", "人工": 465.5, "売上": 10975150}], "今本 椋介": [{"得意先名": "㈱亀岡土木", "人工": 14.0, "売上": 287000}], "全体": [{"得意先名": "㈱日本解技", "人工": 1190.5, "売上": 25213600}, {"得意先名": "㈱ﾏｴﾀﾞ", "人工": 568.0, "売上": 11957300}, {"得意先名": "新和環境㈱", "人工": 465.5, "売上": 10975150}, {"得意先名": "山尾建設㈱", "人工": 459.0, "売上": 9868000}, {"得意先名": "㈱ネクスト・ワン", "人工": 380.5, "売上": 8137000}, {"得意先名": "㈱昇和", "人工": 358.0, "売上": 7644500}, {"得意先名": "㈱植田建設", "人工": 320.5, "売上": 8547100}, {"得意先名": "㈱ｵｸﾀﾞ 奈良", "人工": 317.0, "売上": 6821300}, {"得意先名": "㈱中作", "人工": 308.0, "売上": 6586000}, {"得意先名": "鈴川建設㈱", "人工": 305.0, "売上": 6466500}]}, "daily_detail": {"井部 辰悟": {"2026/05/01": {"総合": 114.5, "新規": 11.5, "社数": 17, "現場数": 21}, "2026/05/02": {"総合": 33, "新規": 8, "社数": 4, "現場数": 4}, "2026/05/04": {"総合": 8, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/05": {"総合": 12, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/06": {"総合": 12, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 246, "新規": 58, "社数": 25, "現場数": 40}, "2026/05/08": {"総合": 240, "新規": 55, "社数": 24, "現場数": 40}, "2026/05/09": {"総合": 55, "新規": 11, "社数": 10, "現場数": 12}, "2026/05/11": {"総合": 259, "新規": 54, "社数": 25, "現場数": 43}, "2026/05/12": {"総合": 263.5, "新規": 53, "社数": 25, "現場数": 44}, "2026/05/13": {"総合": 267.5, "新規": 56.5, "社数": 26, "現場数": 45}, "2026/05/14": {"総合": 271, "新規": 54, "社数": 27, "現場数": 46}, "2026/05/15": {"総合": 277.5, "新規": 55, "社数": 27, "現場数": 48}, "2026/05/16": {"総合": 62, "新規": 2, "社数": 12, "現場数": 13}, "2026/05/17": {"総合": 4, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 276.5, "新規": 52, "社数": 25, "現場数": 43}, "2026/05/19": {"総合": 276, "新規": 56, "社数": 26, "現場数": 46}, "2026/05/20": {"総合": 268, "新規": 57, "社数": 25, "現場数": 45}, "2026/05/21": {"総合": 254, "新規": 58, "社数": 22, "現場数": 41}, "2026/05/22": {"総合": 267, "新規": 57, "社数": 26, "現場数": 44}, "2026/05/23": {"総合": 57, "新規": 4, "社数": 11, "現場数": 13}, "2026/05/24": {"総合": 4, "新規": 0, "社数": 2, "現場数": 2}, "2026/05/25": {"総合": 264.5, "新規": 61, "社数": 25, "現場数": 44}, "2026/05/26": {"総合": 275, "新規": 62, "社数": 26, "現場数": 44}}, "新居 貴弘": {"2026/05/01": {"総合": 98, "新規": 31, "社数": 16, "現場数": 23}, "2026/05/02": {"総合": 37, "新規": 15, "社数": 6, "現場数": 8}, "2026/05/04": {"総合": 11, "新規": 11, "社数": 2, "現場数": 2}, "2026/05/05": {"総合": 10, "新規": 10, "社数": 1, "現場数": 1}, "2026/05/06": {"総合": 10, "新規": 10, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 111, "新規": 43, "社数": 16, "現場数": 27}, "2026/05/08": {"総合": 118, "新規": 49, "社数": 20, "現場数": 30}, "2026/05/09": {"総合": 74, "新規": 26, "社数": 11, "現場数": 13}, "2026/05/11": {"総合": 128, "新規": 42, "社数": 19, "現場数": 29}, "2026/05/12": {"総合": 129, "新規": 41, "社数": 18, "現場数": 28}, "2026/05/13": {"総合": 131, "新規": 44, "社数": 20, "現場数": 30}, "2026/05/14": {"総合": 131, "新規": 44, "社数": 18, "現場数": 27}, "2026/05/15": {"総合": 130.5, "新規": 43, "社数": 19, "現場数": 29}, "2026/05/16": {"総合": 59, "新規": 30, "社数": 9, "現場数": 11}, "2026/05/18": {"総合": 125.5, "新規": 29, "社数": 19, "現場数": 28}, "2026/05/19": {"総合": 128, "新規": 33, "社数": 19, "現場数": 29}, "2026/05/20": {"総合": 125, "新規": 32, "社数": 17, "現場数": 26}, "2026/05/21": {"総合": 126, "新規": 34, "社数": 19, "現場数": 29}, "2026/05/22": {"総合": 139, "新規": 38, "社数": 21, "現場数": 31}, "2026/05/23": {"総合": 32, "新規": 9, "社数": 7, "現場数": 7}, "2026/05/24": {"総合": 0, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 140, "新規": 40, "社数": 19, "現場数": 31}, "2026/05/26": {"総合": 148, "新規": 41, "社数": 20, "現場数": 33}}, "園田 奎治": {"2026/05/01": {"総合": 58, "新規": 11, "社数": 11, "現場数": 11}, "2026/05/02": {"総合": 17, "新規": 1, "社数": 2, "現場数": 2}, "2026/05/04": {"総合": 1, "新規": 1, "社数": 1, "現場数": 1}, "2026/05/05": {"総合": 1, "新規": 1, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 70, "新規": 25, "社数": 14, "現場数": 15}, "2026/05/08": {"総合": 70, "新規": 23, "社数": 13, "現場数": 14}, "2026/05/09": {"総合": 48, "新規": 10, "社数": 4, "現場数": 4}, "2026/05/11": {"総合": 73, "新規": 26, "社数": 13, "現場数": 14}, "2026/05/12": {"総合": 76, "新規": 30, "社数": 15, "現場数": 16}, "2026/05/13": {"総合": 73, "新規": 28, "社数": 14, "現場数": 14}, "2026/05/14": {"総合": 71, "新規": 28, "社数": 14, "現場数": 14}, "2026/05/15": {"総合": 72, "新規": 29, "社数": 15, "現場数": 15}, "2026/05/16": {"総合": 44, "新規": 14, "社数": 6, "現場数": 6}, "2026/05/17": {"総合": 2, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 68, "新規": 25, "社数": 13, "現場数": 13}, "2026/05/19": {"総合": 70, "新規": 25, "社数": 13, "現場数": 13}, "2026/05/20": {"総合": 73, "新規": 29, "社数": 12, "現場数": 13}, "2026/05/21": {"総合": 67, "新規": 25, "社数": 10, "現場数": 10}, "2026/05/22": {"総合": 79, "新規": 33, "社数": 15, "現場数": 15}, "2026/05/23": {"総合": 43, "新規": 11, "社数": 5, "現場数": 5}, "2026/05/24": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 71, "新規": 24, "社数": 12, "現場数": 12}, "2026/05/26": {"総合": 60, "新規": 21, "社数": 10, "現場数": 10}}, "山田 勝生": {"2026/05/01": {"総合": 71, "新規": 24, "社数": 12, "現場数": 16}, "2026/05/02": {"総合": 13, "新規": 4, "社数": 5, "現場数": 5}, "2026/05/03": {"総合": 3, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/04": {"総合": 7, "新規": 0, "社数": 1, "現場数": 2}, "2026/05/05": {"総合": 7, "新規": 0, "社数": 1, "現場数": 2}, "2026/05/06": {"総合": 9, "新規": 0, "社数": 2, "現場数": 3}, "2026/05/07": {"総合": 121, "新規": 56, "社数": 22, "現場数": 33}, "2026/05/08": {"総合": 122, "新規": 56, "社数": 20, "現場数": 32}, "2026/05/09": {"総合": 41, "新規": 18, "社数": 9, "現場数": 13}, "2026/05/11": {"総合": 141, "新規": 69, "社数": 24, "現場数": 37}, "2026/05/12": {"総合": 154, "新規": 75, "社数": 24, "現場数": 40}, "2026/05/13": {"総合": 157.5, "新規": 79.5, "社数": 24, "現場数": 39}, "2026/05/14": {"総合": 153, "新規": 76, "社数": 24, "現場数": 39}, "2026/05/15": {"総合": 138.5, "新規": 70.5, "社数": 22, "現場数": 35}, "2026/05/16": {"総合": 62, "新規": 45, "社数": 13, "現場数": 14}, "2026/05/17": {"総合": 1, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 133, "新規": 59, "社数": 21, "現場数": 35}, "2026/05/19": {"総合": 127, "新規": 56, "社数": 19, "現場数": 32}, "2026/05/20": {"総合": 120.0, "新規": 53.0, "社数": 20, "現場数": 31}, "2026/05/21": {"総合": 132, "新規": 50, "社数": 25, "現場数": 36}, "2026/05/22": {"総合": 133, "新規": 55, "社数": 21, "現場数": 33}, "2026/05/23": {"総合": 58, "新規": 34, "社数": 11, "現場数": 13}, "2026/05/24": {"総合": 16, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 123, "新規": 60, "社数": 22, "現場数": 35}, "2026/05/26": {"総合": 130, "新規": 62, "社数": 21, "現場数": 37}}, "久保木 奎伍": {"2026/05/01": {"総合": 33, "新規": 6, "社数": 10, "現場数": 11}, "2026/05/02": {"総合": 5, "新規": 4, "社数": 3, "現場数": 4}, "2026/05/03": {"総合": 0, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 90, "新規": 21, "社数": 18, "現場数": 25}, "2026/05/08": {"総合": 94, "新規": 26, "社数": 20, "現場数": 27}, "2026/05/09": {"総合": 38, "新規": 14, "社数": 11, "現場数": 11}, "2026/05/11": {"総合": 110, "新規": 30, "社数": 20, "現場数": 32}, "2026/05/12": {"総合": 108, "新規": 30, "社数": 22, "現場数": 34}, "2026/05/13": {"総合": 102, "新規": 29, "社数": 20, "現場数": 30}, "2026/05/14": {"総合": 101, "新規": 28, "社数": 20, "現場数": 29}, "2026/05/15": {"総合": 101, "新規": 29, "社数": 21, "現場数": 29}, "2026/05/16": {"総合": 32, "新規": 13, "社数": 10, "現場数": 10}, "2026/05/18": {"総合": 117, "新規": 38, "社数": 23, "現場数": 36}, "2026/05/19": {"総合": 109, "新規": 32, "社数": 22, "現場数": 33}, "2026/05/20": {"総合": 100, "新規": 25, "社数": 20, "現場数": 31}, "2026/05/21": {"総合": 105, "新規": 32, "社数": 19, "現場数": 30}, "2026/05/22": {"総合": 104, "新規": 29, "社数": 20, "現場数": 30}, "2026/05/23": {"総合": 22, "新規": 13, "社数": 8, "現場数": 8}, "2026/05/25": {"総合": 103, "新規": 31, "社数": 20, "現場数": 28}, "2026/05/26": {"総合": 99, "新規": 29, "社数": 20, "現場数": 27}}, "古谷 将紀": {"2026/05/01": {"総合": 37.5, "新規": 16, "社数": 10, "現場数": 11}, "2026/05/02": {"総合": 22, "新規": 11, "社数": 6, "現場数": 6}, "2026/05/03": {"総合": 7, "新規": 7, "社数": 2, "現場数": 2}, "2026/05/04": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/05": {"総合": 1, "新規": 1, "社数": 1, "現場数": 1}, "2026/05/06": {"総合": 1, "新規": 1, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 70, "新規": 12, "社数": 17, "現場数": 20}, "2026/05/08": {"総合": 80, "新規": 19, "社数": 18, "現場数": 21}, "2026/05/09": {"総合": 31, "新規": 12, "社数": 9, "現場数": 10}, "2026/05/10": {"総合": 8, "新規": 4, "社数": 3, "現場数": 3}, "2026/05/11": {"総合": 84, "新規": 19, "社数": 18, "現場数": 21}, "2026/05/12": {"総合": 76, "新規": 12, "社数": 17, "現場数": 20}, "2026/05/13": {"総合": 68, "新規": 9, "社数": 16, "現場数": 18}, "2026/05/14": {"総合": 71, "新規": 9, "社数": 15, "現場数": 18}, "2026/05/15": {"総合": 69, "新規": 9, "社数": 14, "現場数": 17}, "2026/05/16": {"総合": 23, "新規": 8, "社数": 7, "現場数": 7}, "2026/05/17": {"総合": 4, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 82, "新規": 16, "社数": 19, "現場数": 23}, "2026/05/19": {"総合": 78, "新規": 16, "社数": 18, "現場数": 22}, "2026/05/20": {"総合": 74, "新規": 12, "社数": 18, "現場数": 21}, "2026/05/21": {"総合": 68, "新規": 6, "社数": 16, "現場数": 19}, "2026/05/22": {"総合": 82, "新規": 18, "社数": 19, "現場数": 22}, "2026/05/23": {"総合": 20, "新規": 4, "社数": 5, "現場数": 5}, "2026/05/24": {"総合": 10, "新規": 6, "社数": 2, "現場数": 2}, "2026/05/25": {"総合": 80, "新規": 11, "社数": 19, "現場数": 22}, "2026/05/26": {"総合": 79, "新規": 12, "社数": 18, "現場数": 21}}, "小野寺 陽丈": {"2026/05/01": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/08": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/11": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/12": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/13": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/14": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/15": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/19": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/20": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/22": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/26": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}}, "槇戸 康博": {"2026/05/07": {"総合": 14, "新規": 14, "社数": 1, "現場数": 1}, "2026/05/08": {"総合": 14, "新規": 14, "社数": 1, "現場数": 1}, "2026/05/09": {"総合": 14, "新規": 14, "社数": 1, "現場数": 1}, "2026/05/11": {"総合": 30.5, "新規": 30.5, "社数": 1, "現場数": 1}, "2026/05/12": {"総合": 30, "新規": 30, "社数": 1, "現場数": 1}, "2026/05/13": {"総合": 29, "新規": 29, "社数": 1, "現場数": 1}, "2026/05/14": {"総合": 30, "新規": 30, "社数": 1, "現場数": 1}, "2026/05/15": {"総合": 27.5, "新規": 27.5, "社数": 1, "現場数": 1}, "2026/05/16": {"総合": 40, "新規": 40, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 26, "新規": 26, "社数": 1, "現場数": 1}, "2026/05/19": {"総合": 27, "新規": 27, "社数": 1, "現場数": 1}, "2026/05/20": {"総合": 26, "新規": 26, "社数": 1, "現場数": 1}, "2026/05/21": {"総合": 31.5, "新規": 31.5, "社数": 1, "現場数": 1}, "2026/05/22": {"総合": 21, "新規": 21, "社数": 1, "現場数": 1}, "2026/05/23": {"総合": 42, "新規": 42, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 31, "新規": 31, "社数": 1, "現場数": 1}, "2026/05/26": {"総合": 32, "新規": 32, "社数": 1, "現場数": 1}}, "今本 椋介": {"2026/05/13": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/14": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/15": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/16": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/19": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/22": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}}}};
+const RAW = {"data_range": "2026年5月1日 〜 5月27日", "targets": ["井部 辰悟", "新居 貴弘", "園田 奎治", "山田 勝生", "久保木 奎伍", "古谷 将紀", "小野寺 陽丈", "槇戸 康博", "今本 椋介"], "dates": ["2026/05/01", "2026/05/02", "2026/05/03", "2026/05/04", "2026/05/05", "2026/05/06", "2026/05/07", "2026/05/08", "2026/05/09", "2026/05/10", "2026/05/11", "2026/05/12", "2026/05/13", "2026/05/14", "2026/05/15", "2026/05/16", "2026/05/17", "2026/05/18", "2026/05/19", "2026/05/20", "2026/05/21", "2026/05/22", "2026/05/23", "2026/05/24", "2026/05/25", "2026/05/26", "2026/05/27"], "person_summary": {"井部 辰悟": {"総合_人工": 4334.5, "総合_売上": 94029900, "新規_人工": 888.0, "新規_売上": 19057150, "既存_人工": 3446.5, "既存_売上": 74972750, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 30, "月間現場数": 72}, "新居 貴弘": {"総合_人工": 2291.0, "総合_売上": 49247800, "新規_人工": 742, "新規_売上": 16315200, "既存_人工": 1549.0, "既存_売上": 32932600, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 29, "月間現場数": 54}, "園田 奎治": {"総合_人工": 1277, "総合_売上": 27189400, "新規_人工": 443, "新規_売上": 9392250, "既存_人工": 762, "既存_売上": 16241800, "空欄_人工": 72, "空欄_売上": 1555350, "月間社数": 18, "月間現場数": 22}, "山田 勝生": {"総合_人工": 2307.5, "総合_売上": 49053250, "新規_人工": 1066.5, "新規_売上": 22637650, "既存_人工": 1232, "既存_売上": 26227600, "空欄_人工": 9, "空欄_売上": 188000, "月間社数": 34, "月間現場数": 66}, "久保木 奎伍": {"総合_人工": 1678, "総合_売上": 35774300, "新規_人工": 497, "新規_売上": 10889200, "既存_人工": 1181, "既存_売上": 24885100, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 29, "月間現場数": 51}, "古谷 将紀": {"総合_人工": 1307.5, "総合_売上": 28533800, "新規_人工": 264, "新規_売上": 5547400, "既存_人工": 1013.5, "既存_売上": 22343400, "空欄_人工": 30, "空欄_売上": 643000, "月間社数": 24, "月間現場数": 34}, "小野寺 陽丈": {"総合_人工": 30, "総合_売上": 615000, "新規_人工": 30, "新規_売上": 615000, "既存_人工": 0, "既存_売上": 0, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 1, "月間現場数": 1}, "槇戸 康博": {"総合_人工": 495.5, "総合_売上": 11761350, "新規_人工": 495.5, "新規_売上": 11761350, "既存_人工": 0, "既存_売上": 0, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 1, "月間現場数": 1}, "今本 椋介": {"総合_人工": 14, "総合_売上": 287000, "新規_人工": 14, "新規_売上": 287000, "既存_人工": 0, "既存_売上": 0, "空欄_人工": 0, "空欄_売上": 0, "月間社数": 1, "月間現場数": 1}}, "daily_all": {"2026/05/01": {"新規": 101.5, "既存": 307.5, "空欄": 5}, "2026/05/02": {"新規": 43, "既存": 84, "空欄": 0}, "2026/05/03": {"新規": 7, "既存": 3, "空欄": 0}, "2026/05/04": {"新規": 14, "既存": 15, "空欄": 0}, "2026/05/05": {"新規": 12, "既存": 19, "空欄": 0}, "2026/05/06": {"新規": 11, "既存": 21, "空欄": 0}, "2026/05/07": {"新規": 231, "既存": 485, "空欄": 8}, "2026/05/08": {"新規": 244, "既存": 488, "空欄": 8}, "2026/05/09": {"新規": 105, "既存": 192, "空欄": 4}, "2026/05/10": {"新規": 4, "既存": 4, "空欄": 0}, "2026/05/11": {"新規": 272.5, "既存": 547, "空欄": 8}, "2026/05/12": {"新規": 273, "既存": 557.5, "空欄": 8}, "2026/05/13": {"新規": 279.0, "既存": 547, "空欄": 6}, "2026/05/14": {"新規": 273, "既存": 553, "空欄": 6}, "2026/05/15": {"新規": 267.0, "既存": 549.0, "空欄": 4}, "2026/05/16": {"新規": 154, "既存": 170, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 11, "空欄": 0}, "2026/05/18": {"新規": 249, "既存": 579.0, "空欄": 4}, "2026/05/19": {"新規": 249, "既存": 563, "空欄": 7}, "2026/05/20": {"新規": 237.0, "既存": 543, "空欄": 9}, "2026/05/21": {"新規": 237.5, "既存": 539, "空欄": 8}, "2026/05/22": {"新規": 256, "既存": 568, "空欄": 6}, "2026/05/23": {"新規": 117, "既存": 155, "空欄": 2}, "2026/05/24": {"新規": 8, "既存": 24, "空欄": 0}, "2026/05/25": {"新規": 261, "既存": 546.5, "空欄": 8}, "2026/05/26": {"新規": 257.5, "既存": 556.5, "空欄": 3}, "2026/05/27": {"新規": 277, "既存": 557, "空欄": 7}}, "person_daily": {"井部 辰悟": {"2026/05/01": {"新規": 11.5, "既存": 103, "空欄": 0}, "2026/05/02": {"新規": 8, "既存": 25, "空欄": 0}, "2026/05/04": {"新規": 0, "既存": 8, "空欄": 0}, "2026/05/05": {"新規": 0, "既存": 12, "空欄": 0}, "2026/05/06": {"新規": 0, "既存": 12, "空欄": 0}, "2026/05/07": {"新規": 58, "既存": 188, "空欄": 0}, "2026/05/08": {"新規": 55, "既存": 185, "空欄": 0}, "2026/05/09": {"新規": 11, "既存": 44, "空欄": 0}, "2026/05/11": {"新規": 54, "既存": 205, "空欄": 0}, "2026/05/12": {"新規": 53, "既存": 210.5, "空欄": 0}, "2026/05/13": {"新規": 56.5, "既存": 211, "空欄": 0}, "2026/05/14": {"新規": 54, "既存": 217, "空欄": 0}, "2026/05/15": {"新規": 55, "既存": 222.5, "空欄": 0}, "2026/05/16": {"新規": 2, "既存": 60, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 4, "空欄": 0}, "2026/05/18": {"新規": 52, "既存": 224.5, "空欄": 0}, "2026/05/19": {"新規": 56, "既存": 220, "空欄": 0}, "2026/05/20": {"新規": 57, "既存": 211, "空欄": 0}, "2026/05/21": {"新規": 58, "既存": 196, "空欄": 0}, "2026/05/22": {"新規": 57, "既存": 210, "空欄": 0}, "2026/05/23": {"新規": 4, "既存": 53, "空欄": 0}, "2026/05/24": {"新規": 0, "既存": 4, "空欄": 0}, "2026/05/25": {"新規": 61, "既存": 203.5, "空欄": 0}, "2026/05/26": {"新規": 61, "既存": 209.5, "空欄": 0}, "2026/05/27": {"新規": 64, "既存": 208, "空欄": 0}}, "新居 貴弘": {"2026/05/01": {"新規": 31, "既存": 67, "空欄": 0}, "2026/05/02": {"新規": 15, "既存": 22, "空欄": 0}, "2026/05/04": {"新規": 11, "既存": 0, "空欄": 0}, "2026/05/05": {"新規": 10, "既存": 0, "空欄": 0}, "2026/05/06": {"新規": 10, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 43, "既存": 68, "空欄": 0}, "2026/05/08": {"新規": 49, "既存": 69, "空欄": 0}, "2026/05/09": {"新規": 26, "既存": 48, "空欄": 0}, "2026/05/11": {"新規": 42, "既存": 86, "空欄": 0}, "2026/05/12": {"新規": 41, "既存": 88, "空欄": 0}, "2026/05/13": {"新規": 44, "既存": 87, "空欄": 0}, "2026/05/14": {"新規": 44, "既存": 87, "空欄": 0}, "2026/05/15": {"新規": 43, "既存": 87.5, "空欄": 0}, "2026/05/16": {"新規": 30, "既存": 29, "空欄": 0}, "2026/05/18": {"新規": 29, "既存": 96.5, "空欄": 0}, "2026/05/19": {"新規": 33, "既存": 95, "空欄": 0}, "2026/05/20": {"新規": 32, "既存": 93, "空欄": 0}, "2026/05/21": {"新規": 34, "既存": 92, "空欄": 0}, "2026/05/22": {"新規": 38, "既存": 101, "空欄": 0}, "2026/05/23": {"新規": 9, "既存": 23, "空欄": 0}, "2026/05/24": {"新規": 0, "既存": 0, "空欄": 0}, "2026/05/25": {"新規": 40, "既存": 100, "空欄": 0}, "2026/05/26": {"新規": 39, "既存": 107, "空欄": 0}, "2026/05/27": {"新規": 49, "既存": 103, "空欄": 0}}, "園田 奎治": {"2026/05/01": {"新規": 11, "既存": 42, "空欄": 5}, "2026/05/02": {"新規": 1, "既存": 16, "空欄": 0}, "2026/05/04": {"新規": 1, "既存": 0, "空欄": 0}, "2026/05/05": {"新規": 1, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 25, "既存": 39, "空欄": 6}, "2026/05/08": {"新規": 23, "既存": 41, "空欄": 6}, "2026/05/09": {"新規": 10, "既存": 38, "空欄": 0}, "2026/05/11": {"新規": 26, "既存": 41, "空欄": 6}, "2026/05/12": {"新規": 30, "既存": 42, "空欄": 4}, "2026/05/13": {"新規": 28, "既存": 41, "空欄": 4}, "2026/05/14": {"新規": 28, "既存": 41, "空欄": 2}, "2026/05/15": {"新規": 29, "既存": 39, "空欄": 4}, "2026/05/16": {"新規": 14, "既存": 30, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 2, "空欄": 0}, "2026/05/18": {"新規": 25, "既存": 39, "空欄": 4}, "2026/05/19": {"新規": 25, "既存": 38, "空欄": 7}, "2026/05/20": {"新規": 29, "既存": 38, "空欄": 6}, "2026/05/21": {"新規": 25, "既存": 38, "空欄": 4}, "2026/05/22": {"新規": 33, "既存": 40, "空欄": 6}, "2026/05/23": {"新規": 11, "既存": 32, "空欄": 0}, "2026/05/24": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/25": {"新規": 24, "既存": 43, "空欄": 4}, "2026/05/26": {"新規": 21, "既存": 39, "空欄": 0}, "2026/05/27": {"新規": 21, "既存": 43, "空欄": 4}}, "山田 勝生": {"2026/05/01": {"新規": 24, "既存": 47, "空欄": 0}, "2026/05/02": {"新規": 4, "既存": 9, "空欄": 0}, "2026/05/03": {"新規": 0, "既存": 3, "空欄": 0}, "2026/05/04": {"新規": 0, "既存": 7, "空欄": 0}, "2026/05/05": {"新規": 0, "既存": 7, "空欄": 0}, "2026/05/06": {"新規": 0, "既存": 9, "空欄": 0}, "2026/05/07": {"新規": 56, "既存": 65, "空欄": 0}, "2026/05/08": {"新規": 56, "既存": 66, "空欄": 0}, "2026/05/09": {"新規": 18, "既存": 21, "空欄": 2}, "2026/05/11": {"新規": 69, "既存": 72, "空欄": 0}, "2026/05/12": {"新規": 75, "既存": 77, "空欄": 2}, "2026/05/13": {"新規": 79.5, "既存": 78, "空欄": 0}, "2026/05/14": {"新規": 76, "既存": 75, "空欄": 2}, "2026/05/15": {"新規": 70.5, "既存": 68, "空欄": 0}, "2026/05/16": {"新規": 45, "既存": 17, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 1, "空欄": 0}, "2026/05/18": {"新規": 59, "既存": 74, "空欄": 0}, "2026/05/19": {"新規": 56, "既存": 71, "空欄": 0}, "2026/05/20": {"新規": 53.0, "既存": 67, "空欄": 0}, "2026/05/21": {"新規": 50, "既存": 81, "空欄": 1}, "2026/05/22": {"新規": 55, "既存": 78, "空欄": 0}, "2026/05/23": {"新規": 34, "既存": 22, "空欄": 2}, "2026/05/24": {"新規": 0, "既存": 16, "空欄": 0}, "2026/05/25": {"新規": 60, "既存": 63, "空欄": 0}, "2026/05/26": {"新規": 61.5, "既存": 68, "空欄": 0}, "2026/05/27": {"新規": 65, "既存": 70, "空欄": 0}}, "久保木 奎伍": {"2026/05/01": {"新規": 6, "既存": 27, "空欄": 0}, "2026/05/02": {"新規": 4, "既存": 1, "空欄": 0}, "2026/05/03": {"新規": 0, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 21, "既存": 69, "空欄": 0}, "2026/05/08": {"新規": 26, "既存": 68, "空欄": 0}, "2026/05/09": {"新規": 14, "既存": 24, "空欄": 0}, "2026/05/11": {"新規": 30, "既存": 80, "空欄": 0}, "2026/05/12": {"新規": 30, "既存": 78, "空欄": 0}, "2026/05/13": {"新規": 29, "既存": 73, "空欄": 0}, "2026/05/14": {"新規": 28, "既存": 73, "空欄": 0}, "2026/05/15": {"新規": 29, "既存": 72, "空欄": 0}, "2026/05/16": {"新規": 13, "既存": 19, "空欄": 0}, "2026/05/18": {"新規": 38, "既存": 79, "空欄": 0}, "2026/05/19": {"新規": 32, "既存": 77, "空欄": 0}, "2026/05/20": {"新規": 26, "既存": 75, "空欄": 0}, "2026/05/21": {"新規": 33, "既存": 73, "空欄": 0}, "2026/05/22": {"新規": 30, "既存": 75, "空欄": 0}, "2026/05/23": {"新規": 13, "既存": 9, "空欄": 0}, "2026/05/25": {"新規": 32, "既存": 72, "空欄": 0}, "2026/05/26": {"新規": 30, "既存": 70, "空欄": 0}, "2026/05/27": {"新規": 33, "既存": 67, "空欄": 0}}, "古谷 将紀": {"2026/05/01": {"新規": 16, "既存": 21.5, "空欄": 0}, "2026/05/02": {"新規": 11, "既存": 11, "空欄": 0}, "2026/05/03": {"新規": 7, "既存": 0, "空欄": 0}, "2026/05/04": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/05": {"新規": 1, "既存": 0, "空欄": 0}, "2026/05/06": {"新規": 1, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 12, "既存": 56, "空欄": 2}, "2026/05/08": {"新規": 19, "既存": 59, "空欄": 2}, "2026/05/09": {"新規": 12, "既存": 17, "空欄": 2}, "2026/05/10": {"新規": 4, "既存": 4, "空欄": 0}, "2026/05/11": {"新規": 19, "既存": 63, "空欄": 2}, "2026/05/12": {"新規": 12, "既存": 62, "空欄": 2}, "2026/05/13": {"新規": 9, "既存": 57, "空欄": 2}, "2026/05/14": {"新規": 9, "既存": 60, "空欄": 2}, "2026/05/15": {"新規": 9, "既存": 60, "空欄": 0}, "2026/05/16": {"新規": 8, "既存": 15, "空欄": 0}, "2026/05/17": {"新規": 0, "既存": 4, "空欄": 0}, "2026/05/18": {"新規": 16, "既存": 66, "空欄": 0}, "2026/05/19": {"新規": 16, "既存": 62, "空欄": 0}, "2026/05/20": {"新規": 12, "既存": 59, "空欄": 3}, "2026/05/21": {"新規": 6, "既存": 59, "空欄": 3}, "2026/05/22": {"新規": 18, "既存": 64, "空欄": 0}, "2026/05/23": {"新規": 4, "既存": 16, "空欄": 0}, "2026/05/24": {"新規": 6, "既存": 4, "空欄": 0}, "2026/05/25": {"新規": 11, "既存": 65, "空欄": 4}, "2026/05/26": {"新規": 12, "既存": 63, "空欄": 3}, "2026/05/27": {"新規": 12, "既存": 66, "空欄": 3}}, "小野寺 陽丈": {"2026/05/01": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/07": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/08": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/11": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/12": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/13": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/14": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/15": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/18": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/19": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/20": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/22": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/25": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/26": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/27": {"新規": 2, "既存": 0, "空欄": 0}}, "槇戸 康博": {"2026/05/07": {"新規": 14, "既存": 0, "空欄": 0}, "2026/05/08": {"新規": 14, "既存": 0, "空欄": 0}, "2026/05/09": {"新規": 14, "既存": 0, "空欄": 0}, "2026/05/11": {"新規": 30.5, "既存": 0, "空欄": 0}, "2026/05/12": {"新規": 30, "既存": 0, "空欄": 0}, "2026/05/13": {"新規": 29, "既存": 0, "空欄": 0}, "2026/05/14": {"新規": 30, "既存": 0, "空欄": 0}, "2026/05/15": {"新規": 27.5, "既存": 0, "空欄": 0}, "2026/05/16": {"新規": 40, "既存": 0, "空欄": 0}, "2026/05/18": {"新規": 26, "既存": 0, "空欄": 0}, "2026/05/19": {"新規": 27, "既存": 0, "空欄": 0}, "2026/05/20": {"新規": 26, "既存": 0, "空欄": 0}, "2026/05/21": {"新規": 31.5, "既存": 0, "空欄": 0}, "2026/05/22": {"新規": 21, "既存": 0, "空欄": 0}, "2026/05/23": {"新規": 42, "既存": 0, "空欄": 0}, "2026/05/25": {"新規": 31, "既存": 0, "空欄": 0}, "2026/05/26": {"新規": 31, "既存": 0, "空欄": 0}, "2026/05/27": {"新規": 31, "既存": 0, "空欄": 0}}, "今本 椋介": {"2026/05/13": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/14": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/15": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/16": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/18": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/19": {"新規": 2, "既存": 0, "空欄": 0}, "2026/05/22": {"新規": 2, "既存": 0, "空欄": 0}}}, "industry": {"井部 辰悟": {"建築": {"新規": 41, "既存": 416, "空欄": 0}, "解体": {"新規": 496, "既存": 2600.5, "空欄": 0}, "土木": {"新規": 318.5, "既存": 388, "空欄": 0}, "設備": {"新規": 16, "既存": 33, "空欄": 0}, "その他": {"新規": 16.5, "既存": 0, "空欄": 0}, "未分類": {"新規": 0, "既存": 9, "空欄": 0}}, "新居 貴弘": {"土木": {"新規": 144, "既存": 449.5, "空欄": 0}, "解体": {"新規": 468, "既存": 975, "空欄": 0}, "建築": {"新規": 103, "既存": 114.5, "空欄": 0}, "その他": {"新規": 22, "既存": 6, "空欄": 0}, "設備": {"新規": 4, "既存": 0, "空欄": 0}, "未分類": {"新規": 1, "既存": 4, "空欄": 0}}, "園田 奎治": {"土木": {"新規": 42, "既存": 670, "空欄": 0}, "その他": {"新規": 27, "既存": 0, "空欄": 0}, "解体": {"新規": 108, "既存": 16, "空欄": 0}, "建築": {"新規": 142, "既存": 73, "空欄": 72}, "設備": {"新規": 124, "既存": 0, "空欄": 0}, "未分類": {"新規": 0, "既存": 3, "空欄": 0}}, "山田 勝生": {"解体": {"新規": 560.5, "既存": 596, "空欄": 0}, "土木": {"新規": 114, "既存": 193, "空欄": 0}, "建築": {"新規": 374.0, "既存": 277, "空欄": 9}, "未分類": {"新規": 0, "既存": 7, "空欄": 0}, "その他": {"新規": 18, "既存": 159, "空欄": 0}}, "久保木 奎伍": {"設備": {"新規": 67, "既存": 218, "空欄": 0}, "解体": {"新規": 182, "既存": 522, "空欄": 0}, "土木": {"新規": 187, "既存": 178, "空欄": 0}, "建築": {"新規": 56, "既存": 263, "空欄": 0}, "未分類": {"新規": 5, "既存": 0, "空欄": 0}}, "古谷 将紀": {"土木": {"新規": 84, "既存": 386, "空欄": 0}, "解体": {"新規": 105, "既存": 592.5, "空欄": 15}, "建築": {"新規": 75, "既存": 2, "空欄": 0}, "設備": {"新規": 0, "既存": 33, "空欄": 15}}, "小野寺 陽丈": {"土木": {"新規": 30, "既存": 0, "空欄": 0}}, "槇戸 康博": {"解体": {"新規": 487.5, "既存": 0, "空欄": 0}, "未分類": {"新規": 8, "既存": 0, "空欄": 0}}, "今本 椋介": {"土木": {"新規": 14, "既存": 0, "空欄": 0}}, "全体": {"土木": {"新規": 933.5, "既存": 2264.5, "空欄": 0}, "その他": {"新規": 83.5, "既存": 165, "空欄": 0}, "解体": {"新規": 2407.0, "既存": 5302.0, "空欄": 15}, "建築": {"新規": 791.0, "既存": 1145.5, "空欄": 81}, "設備": {"新規": 211, "既存": 284, "空欄": 15}, "未分類": {"新規": 14, "既存": 23, "空欄": 0}}}, "clients": {"井部 辰悟": [{"得意先名": "㈱日本解技", "人工": 1274.0, "売上": 26986600}, {"得意先名": "山尾建設㈱", "人工": 496.0, "売上": 10682000}, {"得意先名": "㈱植田建設", "人工": 338.5, "売上": 8947200}, {"得意先名": "鈴川建設㈱", "人工": 321.0, "売上": 6804000}, {"得意先名": "㈱南海興業", "人工": 321.0, "売上": 6906500}, {"得意先名": "㈱宮本組【第二神明】", "人工": 245.5, "売上": 5019900}, {"得意先名": "㈱衆和金属", "人工": 245.0, "売上": 5318000}, {"得意先名": "㈱ヤマシタ", "人工": 173.0, "売上": 3760600}, {"得意先名": "柳興業㈱", "人工": 158.0, "売上": 3212000}, {"得意先名": "㈱崇和", "人工": 148.0, "売上": 3359900}], "新居 貴弘": [{"得意先名": "㈱ｵｸﾀﾞ 奈良", "人工": 346.0, "売上": 7442300}, {"得意先名": "㈱中作", "人工": 324.0, "売上": 6930000}, {"得意先名": "木下建設㈱[堺]", "人工": 286.0, "売上": 5978500}, {"得意先名": "華美善建設興業㈱", "人工": 269.0, "売上": 5773000}, {"得意先名": "㈱岩澤組", "人工": 183.0, "売上": 3879000}, {"得意先名": "㈱マツモト創建", "人工": 133.0, "売上": 2825000}, {"得意先名": "繁栄建設工業㈱", "人工": 130.0, "売上": 2927800}, {"得意先名": "㈱津田工業", "人工": 112.0, "売上": 2433000}, {"得意先名": "㈱石本建設", "人工": 81.0, "売上": 1727000}, {"得意先名": "山吉工業㈱", "人工": 68.0, "売上": 1440000}], "園田 奎治": [{"得意先名": "㈱ﾏｴﾀﾞ", "人工": 599.0, "売上": 12638600}, {"得意先名": "システム機工㈱ 関西営業所", "人工": 124.0, "売上": 2615000}, {"得意先名": "奥野工業㈱", "人工": 103.0, "売上": 2280000}, {"得意先名": "コスモ建設工業㈱", "人工": 72.0, "売上": 1555350}, {"得意先名": "エピック㈱", "人工": 52.0, "売上": 1131000}, {"得意先名": "井前建設㈱", "人工": 44.0, "売上": 896000}, {"得意先名": "㈱清水工業", "人工": 37.0, "売上": 753000}, {"得意先名": "㈲カネムラ", "人工": 36.0, "売上": 791300}, {"得意先名": "木本産業㈱", "人工": 32.0, "売上": 753000}, {"得意先名": "㈱河村工務店", "人工": 27.0, "売上": 567150}], "山田 勝生": [{"得意先名": "㈱昇和", "人工": 377.0, "売上": 8052600}, {"得意先名": "㈱名和組", "人工": 260.0, "売上": 5078900}, {"得意先名": "㈲田浦商店", "人工": 254.5, "売上": 5482750}, {"得意先名": "㈱香山組(堺)", "人工": 200.0, "売上": 4050000}, {"得意先名": "㈱名和商店", "人工": 182.0, "売上": 4039000}, {"得意先名": "㈱協栄工業", "人工": 139.0, "売上": 2867400}, {"得意先名": "太平冷熱工業㈱", "人工": 137.0, "売上": 3091000}, {"得意先名": "ｱｽｸ･ｻﾝｼﾝｴﾝｼﾞﾆｱﾘﾝｸﾞ㈱", "人工": 88.0, "売上": 1930500}, {"得意先名": "㈱ｴｽﾎﾟﾜｰﾙ", "人工": 79.0, "売上": 1825500}, {"得意先名": "㈱池上組", "人工": 50.0, "売上": 1014000}], "久保木 奎伍": [{"得意先名": "三同建設㈱", "人工": 294.0, "売上": 6266500}, {"得意先名": "真神建設㈱", "人工": 222.0, "売上": 4480000}, {"得意先名": "㈱佐藤工業", "人工": 214.0, "売上": 4629600}, {"得意先名": "誠工業㈱", "人工": 175.0, "売上": 3934050}, {"得意先名": "㈱日電機工", "人工": 164.0, "売上": 3548800}, {"得意先名": "梶谷工業㈱", "人工": 101.0, "売上": 2201000}, {"得意先名": "㈱ヤマト【大阪】", "人工": 86.0, "売上": 1953000}, {"得意先名": "三栄電気工業㈱ 大阪支店", "人工": 54.0, "売上": 1098000}, {"得意先名": "㈱神栄建設", "人工": 47.0, "売上": 918000}, {"得意先名": "㈱香山組(尼崎)", "人工": 43.0, "売上": 935600}], "古谷 将紀": [{"得意先名": "㈱ネクスト・ワン", "人工": 407.5, "売上": 8712000}, {"得意先名": "㈱冨田組", "人工": 104.0, "売上": 1991000}, {"得意先名": "歩信栄建設㈱", "人工": 95.0, "売上": 1971000}, {"得意先名": "㈱南興業", "人工": 82.0, "売上": 2650600}, {"得意先名": "咸宜建設㈱", "人工": 75.0, "売上": 1864500}, {"得意先名": "基建設㈱", "人工": 71.0, "売上": 1446000}, {"得意先名": "㈱ｵｶﾓﾄｺﾝｽﾄﾗｸｼｮﾝｼｽﾃﾑ", "人工": 68.0, "売上": 1377000}, {"得意先名": "芽生ｺﾝｽﾄﾗｸｼｮﾝ㈱", "人工": 67.0, "売上": 1359000}, {"得意先名": "㈱タカラ建設工業", "人工": 42.0, "売上": 923400}, {"得意先名": "㈱鮎活", "人工": 40.0, "売上": 832000}], "小野寺 陽丈": [{"得意先名": "㈱巴山土木", "人工": 30.0, "売上": 615000}], "槇戸 康博": [{"得意先名": "新和環境㈱", "人工": 495.5, "売上": 11761350}], "今本 椋介": [{"得意先名": "㈱亀岡土木", "人工": 14.0, "売上": 287000}], "全体": [{"得意先名": "㈱日本解技", "人工": 1274.0, "売上": 26986600}, {"得意先名": "㈱ﾏｴﾀﾞ", "人工": 599.0, "売上": 12638600}, {"得意先名": "山尾建設㈱", "人工": 496.0, "売上": 10682000}, {"得意先名": "新和環境㈱", "人工": 495.5, "売上": 11761350}, {"得意先名": "㈱ネクスト・ワン", "人工": 407.5, "売上": 8712000}, {"得意先名": "㈱昇和", "人工": 377.0, "売上": 8052600}, {"得意先名": "㈱ｵｸﾀﾞ 奈良", "人工": 346.0, "売上": 7442300}, {"得意先名": "㈱植田建設", "人工": 338.5, "売上": 8947200}, {"得意先名": "㈱中作", "人工": 324.0, "売上": 6930000}, {"得意先名": "鈴川建設㈱", "人工": 321.0, "売上": 6804000}]}, "daily_detail": {"井部 辰悟": {"2026/05/01": {"総合": 114.5, "新規": 11.5, "社数": 17, "現場数": 21}, "2026/05/02": {"総合": 33, "新規": 8, "社数": 4, "現場数": 4}, "2026/05/04": {"総合": 8, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/05": {"総合": 12, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/06": {"総合": 12, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 246, "新規": 58, "社数": 25, "現場数": 40}, "2026/05/08": {"総合": 240, "新規": 55, "社数": 24, "現場数": 40}, "2026/05/09": {"総合": 55, "新規": 11, "社数": 10, "現場数": 12}, "2026/05/11": {"総合": 259, "新規": 54, "社数": 25, "現場数": 43}, "2026/05/12": {"総合": 263.5, "新規": 53, "社数": 25, "現場数": 44}, "2026/05/13": {"総合": 267.5, "新規": 56.5, "社数": 26, "現場数": 45}, "2026/05/14": {"総合": 271, "新規": 54, "社数": 27, "現場数": 46}, "2026/05/15": {"総合": 277.5, "新規": 55, "社数": 27, "現場数": 48}, "2026/05/16": {"総合": 62, "新規": 2, "社数": 12, "現場数": 13}, "2026/05/17": {"総合": 4, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 276.5, "新規": 52, "社数": 25, "現場数": 43}, "2026/05/19": {"総合": 276, "新規": 56, "社数": 26, "現場数": 46}, "2026/05/20": {"総合": 268, "新規": 57, "社数": 25, "現場数": 45}, "2026/05/21": {"総合": 254, "新規": 58, "社数": 22, "現場数": 41}, "2026/05/22": {"総合": 267, "新規": 57, "社数": 26, "現場数": 44}, "2026/05/23": {"総合": 57, "新規": 4, "社数": 11, "現場数": 13}, "2026/05/24": {"総合": 4, "新規": 0, "社数": 2, "現場数": 2}, "2026/05/25": {"総合": 264.5, "新規": 61, "社数": 25, "現場数": 44}, "2026/05/26": {"総合": 270.5, "新規": 61, "社数": 26, "現場数": 45}, "2026/05/27": {"総合": 272, "新規": 64, "社数": 26, "現場数": 45}}, "新居 貴弘": {"2026/05/01": {"総合": 98, "新規": 31, "社数": 16, "現場数": 23}, "2026/05/02": {"総合": 37, "新規": 15, "社数": 6, "現場数": 8}, "2026/05/04": {"総合": 11, "新規": 11, "社数": 2, "現場数": 2}, "2026/05/05": {"総合": 10, "新規": 10, "社数": 1, "現場数": 1}, "2026/05/06": {"総合": 10, "新規": 10, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 111, "新規": 43, "社数": 16, "現場数": 27}, "2026/05/08": {"総合": 118, "新規": 49, "社数": 20, "現場数": 30}, "2026/05/09": {"総合": 74, "新規": 26, "社数": 11, "現場数": 13}, "2026/05/11": {"総合": 128, "新規": 42, "社数": 19, "現場数": 29}, "2026/05/12": {"総合": 129, "新規": 41, "社数": 18, "現場数": 28}, "2026/05/13": {"総合": 131, "新規": 44, "社数": 20, "現場数": 30}, "2026/05/14": {"総合": 131, "新規": 44, "社数": 18, "現場数": 27}, "2026/05/15": {"総合": 130.5, "新規": 43, "社数": 19, "現場数": 29}, "2026/05/16": {"総合": 59, "新規": 30, "社数": 9, "現場数": 11}, "2026/05/18": {"総合": 125.5, "新規": 29, "社数": 19, "現場数": 28}, "2026/05/19": {"総合": 128, "新規": 33, "社数": 19, "現場数": 29}, "2026/05/20": {"総合": 125, "新規": 32, "社数": 17, "現場数": 26}, "2026/05/21": {"総合": 126, "新規": 34, "社数": 19, "現場数": 29}, "2026/05/22": {"総合": 139, "新規": 38, "社数": 21, "現場数": 31}, "2026/05/23": {"総合": 32, "新規": 9, "社数": 7, "現場数": 7}, "2026/05/24": {"総合": 0, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 140, "新規": 40, "社数": 19, "現場数": 31}, "2026/05/26": {"総合": 146, "新規": 39, "社数": 20, "現場数": 33}, "2026/05/27": {"総合": 152, "新規": 49, "社数": 19, "現場数": 32}}, "園田 奎治": {"2026/05/01": {"総合": 58, "新規": 11, "社数": 11, "現場数": 11}, "2026/05/02": {"総合": 17, "新規": 1, "社数": 2, "現場数": 2}, "2026/05/04": {"総合": 1, "新規": 1, "社数": 1, "現場数": 1}, "2026/05/05": {"総合": 1, "新規": 1, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 70, "新規": 25, "社数": 14, "現場数": 15}, "2026/05/08": {"総合": 70, "新規": 23, "社数": 13, "現場数": 14}, "2026/05/09": {"総合": 48, "新規": 10, "社数": 4, "現場数": 4}, "2026/05/11": {"総合": 73, "新規": 26, "社数": 13, "現場数": 14}, "2026/05/12": {"総合": 76, "新規": 30, "社数": 15, "現場数": 16}, "2026/05/13": {"総合": 73, "新規": 28, "社数": 14, "現場数": 14}, "2026/05/14": {"総合": 71, "新規": 28, "社数": 14, "現場数": 14}, "2026/05/15": {"総合": 72, "新規": 29, "社数": 15, "現場数": 15}, "2026/05/16": {"総合": 44, "新規": 14, "社数": 6, "現場数": 6}, "2026/05/17": {"総合": 2, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 68, "新規": 25, "社数": 13, "現場数": 13}, "2026/05/19": {"総合": 70, "新規": 25, "社数": 13, "現場数": 13}, "2026/05/20": {"総合": 73, "新規": 29, "社数": 12, "現場数": 13}, "2026/05/21": {"総合": 67, "新規": 25, "社数": 10, "現場数": 10}, "2026/05/22": {"総合": 79, "新規": 33, "社数": 15, "現場数": 15}, "2026/05/23": {"総合": 43, "新規": 11, "社数": 5, "現場数": 5}, "2026/05/24": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 71, "新規": 24, "社数": 12, "現場数": 12}, "2026/05/26": {"総合": 60, "新規": 21, "社数": 10, "現場数": 10}, "2026/05/27": {"総合": 68, "新規": 21, "社数": 11, "現場数": 12}}, "山田 勝生": {"2026/05/01": {"総合": 71, "新規": 24, "社数": 12, "現場数": 16}, "2026/05/02": {"総合": 13, "新規": 4, "社数": 5, "現場数": 5}, "2026/05/03": {"総合": 3, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/04": {"総合": 7, "新規": 0, "社数": 1, "現場数": 2}, "2026/05/05": {"総合": 7, "新規": 0, "社数": 1, "現場数": 2}, "2026/05/06": {"総合": 9, "新規": 0, "社数": 2, "現場数": 3}, "2026/05/07": {"総合": 121, "新規": 56, "社数": 22, "現場数": 33}, "2026/05/08": {"総合": 122, "新規": 56, "社数": 20, "現場数": 32}, "2026/05/09": {"総合": 41, "新規": 18, "社数": 9, "現場数": 13}, "2026/05/11": {"総合": 141, "新規": 69, "社数": 24, "現場数": 37}, "2026/05/12": {"総合": 154, "新規": 75, "社数": 24, "現場数": 40}, "2026/05/13": {"総合": 157.5, "新規": 79.5, "社数": 24, "現場数": 39}, "2026/05/14": {"総合": 153, "新規": 76, "社数": 24, "現場数": 39}, "2026/05/15": {"総合": 138.5, "新規": 70.5, "社数": 22, "現場数": 35}, "2026/05/16": {"総合": 62, "新規": 45, "社数": 13, "現場数": 14}, "2026/05/17": {"総合": 1, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 133, "新規": 59, "社数": 21, "現場数": 35}, "2026/05/19": {"総合": 127, "新規": 56, "社数": 19, "現場数": 32}, "2026/05/20": {"総合": 120.0, "新規": 53.0, "社数": 20, "現場数": 31}, "2026/05/21": {"総合": 132, "新規": 50, "社数": 25, "現場数": 36}, "2026/05/22": {"総合": 133, "新規": 55, "社数": 21, "現場数": 33}, "2026/05/23": {"総合": 58, "新規": 34, "社数": 11, "現場数": 13}, "2026/05/24": {"総合": 16, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 123, "新規": 60, "社数": 22, "現場数": 35}, "2026/05/26": {"総合": 129.5, "新規": 61.5, "社数": 21, "現場数": 37}, "2026/05/27": {"総合": 135, "新規": 65, "社数": 23, "現場数": 37}}, "久保木 奎伍": {"2026/05/01": {"総合": 33, "新規": 6, "社数": 10, "現場数": 11}, "2026/05/02": {"総合": 5, "新規": 4, "社数": 3, "現場数": 4}, "2026/05/03": {"総合": 0, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 90, "新規": 21, "社数": 18, "現場数": 25}, "2026/05/08": {"総合": 94, "新規": 26, "社数": 20, "現場数": 27}, "2026/05/09": {"総合": 38, "新規": 14, "社数": 11, "現場数": 11}, "2026/05/11": {"総合": 110, "新規": 30, "社数": 20, "現場数": 32}, "2026/05/12": {"総合": 108, "新規": 30, "社数": 22, "現場数": 34}, "2026/05/13": {"総合": 102, "新規": 29, "社数": 20, "現場数": 30}, "2026/05/14": {"総合": 101, "新規": 28, "社数": 20, "現場数": 29}, "2026/05/15": {"総合": 101, "新規": 29, "社数": 21, "現場数": 29}, "2026/05/16": {"総合": 32, "新規": 13, "社数": 10, "現場数": 10}, "2026/05/18": {"総合": 117, "新規": 38, "社数": 23, "現場数": 36}, "2026/05/19": {"総合": 109, "新規": 32, "社数": 22, "現場数": 33}, "2026/05/20": {"総合": 101, "新規": 26, "社数": 20, "現場数": 31}, "2026/05/21": {"総合": 106, "新規": 33, "社数": 19, "現場数": 30}, "2026/05/22": {"総合": 105, "新規": 30, "社数": 20, "現場数": 30}, "2026/05/23": {"総合": 22, "新規": 13, "社数": 8, "現場数": 8}, "2026/05/25": {"総合": 104, "新規": 32, "社数": 20, "現場数": 28}, "2026/05/26": {"総合": 100, "新規": 30, "社数": 20, "現場数": 27}, "2026/05/27": {"総合": 100, "新規": 33, "社数": 21, "現場数": 25}}, "古谷 将紀": {"2026/05/01": {"総合": 37.5, "新規": 16, "社数": 10, "現場数": 11}, "2026/05/02": {"総合": 22, "新規": 11, "社数": 6, "現場数": 6}, "2026/05/03": {"総合": 7, "新規": 7, "社数": 2, "現場数": 2}, "2026/05/04": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/05": {"総合": 1, "新規": 1, "社数": 1, "現場数": 1}, "2026/05/06": {"総合": 1, "新規": 1, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 70, "新規": 12, "社数": 17, "現場数": 20}, "2026/05/08": {"総合": 80, "新規": 19, "社数": 18, "現場数": 21}, "2026/05/09": {"総合": 31, "新規": 12, "社数": 9, "現場数": 10}, "2026/05/10": {"総合": 8, "新規": 4, "社数": 3, "現場数": 3}, "2026/05/11": {"総合": 84, "新規": 19, "社数": 18, "現場数": 21}, "2026/05/12": {"総合": 76, "新規": 12, "社数": 17, "現場数": 20}, "2026/05/13": {"総合": 68, "新規": 9, "社数": 16, "現場数": 18}, "2026/05/14": {"総合": 71, "新規": 9, "社数": 15, "現場数": 18}, "2026/05/15": {"総合": 69, "新規": 9, "社数": 14, "現場数": 17}, "2026/05/16": {"総合": 23, "新規": 8, "社数": 7, "現場数": 7}, "2026/05/17": {"総合": 4, "新規": 0, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 82, "新規": 16, "社数": 19, "現場数": 23}, "2026/05/19": {"総合": 78, "新規": 16, "社数": 18, "現場数": 22}, "2026/05/20": {"総合": 74, "新規": 12, "社数": 18, "現場数": 21}, "2026/05/21": {"総合": 68, "新規": 6, "社数": 16, "現場数": 19}, "2026/05/22": {"総合": 82, "新規": 18, "社数": 19, "現場数": 22}, "2026/05/23": {"総合": 20, "新規": 4, "社数": 5, "現場数": 5}, "2026/05/24": {"総合": 10, "新規": 6, "社数": 2, "現場数": 2}, "2026/05/25": {"総合": 80, "新規": 11, "社数": 19, "現場数": 22}, "2026/05/26": {"総合": 78, "新規": 12, "社数": 18, "現場数": 21}, "2026/05/27": {"総合": 81, "新規": 12, "社数": 18, "現場数": 22}}, "小野寺 陽丈": {"2026/05/01": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/07": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/08": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/11": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/12": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/13": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/14": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/15": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/19": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/20": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/22": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/26": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/27": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}}, "槇戸 康博": {"2026/05/07": {"総合": 14, "新規": 14, "社数": 1, "現場数": 1}, "2026/05/08": {"総合": 14, "新規": 14, "社数": 1, "現場数": 1}, "2026/05/09": {"総合": 14, "新規": 14, "社数": 1, "現場数": 1}, "2026/05/11": {"総合": 30.5, "新規": 30.5, "社数": 1, "現場数": 1}, "2026/05/12": {"総合": 30, "新規": 30, "社数": 1, "現場数": 1}, "2026/05/13": {"総合": 29, "新規": 29, "社数": 1, "現場数": 1}, "2026/05/14": {"総合": 30, "新規": 30, "社数": 1, "現場数": 1}, "2026/05/15": {"総合": 27.5, "新規": 27.5, "社数": 1, "現場数": 1}, "2026/05/16": {"総合": 40, "新規": 40, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 26, "新規": 26, "社数": 1, "現場数": 1}, "2026/05/19": {"総合": 27, "新規": 27, "社数": 1, "現場数": 1}, "2026/05/20": {"総合": 26, "新規": 26, "社数": 1, "現場数": 1}, "2026/05/21": {"総合": 31.5, "新規": 31.5, "社数": 1, "現場数": 1}, "2026/05/22": {"総合": 21, "新規": 21, "社数": 1, "現場数": 1}, "2026/05/23": {"総合": 42, "新規": 42, "社数": 1, "現場数": 1}, "2026/05/25": {"総合": 31, "新規": 31, "社数": 1, "現場数": 1}, "2026/05/26": {"総合": 31, "新規": 31, "社数": 1, "現場数": 1}, "2026/05/27": {"総合": 31, "新規": 31, "社数": 1, "現場数": 1}}, "今本 椋介": {"2026/05/13": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/14": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/15": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/16": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/18": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/19": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}, "2026/05/22": {"総合": 2, "新規": 2, "社数": 1, "現場数": 1}}}};
 const DEFAULT_GOALS = {"井部 辰悟": {"総合": 3910, "新規": 850, "1日総合": 230, "1日新規": 50}, "新居 貴弘": {"総合": 2890, "新規": 850, "1日総合": 170, "1日新規": 50}, "園田 奎治": {"総合": 1330, "新規": 850, "1日総合": 78, "1日新規": 50}, "山田 勝生": {"総合": 2040, "新規": 850, "1日総合": 120, "1日新規": 50}, "久保木 奎伍": {"総合": 2040, "新規": 850, "1日総合": 120, "1日新規": 50}, "古谷 将紀": {"総合": 1530, "新規": 850, "1日総合": 90, "1日新規": 50}, "小野寺 陽丈": {"総合": 340, "新規": 170, "1日総合": 20, "1日新規": 10}};
 
 // Persistent goals — バージョン管理で古いキャッシュを自動破棄
@@ -719,9 +761,8 @@ function buildClientTable(person){
     <td style="font-weight:600">${c['得意先名']}</td>
     <td><strong>${fmt(c['人工'])}</strong></td>
     <td style="color:var(--text2)">${pct(c['人工'],totalP)}%</td>
-    <td style="color:var(--text2)">${fmtYen(c['売上'])}</td>
   </tr>`).join('');
-  return `<table><thead><tr><th>順</th><th>得意先名</th><th>人工</th><th>割合</th><th>売上</th></tr></thead><tbody>${rows}</tbody></table>`;
+  return `<table><thead><tr><th>順</th><th>得意先名</th><th>人工</th><th>割合</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 // ---- PERSON VIEW ----
@@ -749,10 +790,10 @@ function renderPerson(el, person){
 
   el.innerHTML = `
   <div class="kpi-grid">
-    <div class="kpi-card total" style="text-align:left"><div class="label">人工合計</div><div class="value">${fmt(total)}</div><div class="sub">売上 ${fmtYen(s['総合_売上'])}</div></div>
-    <div class="kpi-card shin" style="text-align:left"><div class="label"><span style="color:var(--shin)">●</span> 新規</div><div class="value">${fmt(shin)}</div><div class="sub">${pct(shin,total)}% / ${fmtYen(s['新規_売上'])}</div></div>
-    <div class="kpi-card kison" style="text-align:left"><div class="label"><span style="color:var(--kison)">●</span> 既存</div><div class="value">${fmt(kison)}</div><div class="sub">${pct(kison,total)}% / ${fmtYen(s['既存_売上'])}</div></div>
-    <div class="kpi-card kuran" style="text-align:left"><div class="label"><span style="color:var(--kuran)">●</span> 契約日空欄</div><div class="value">${fmt(kuran)}</div><div class="sub">${pct(kuran,total)}% / ${fmtYen(s['空欄_売上'])}</div></div>
+    <div class="kpi-card total" style="text-align:left"><div class="label">人工合計</div><div class="value">${fmt(total)}</div><div class="sub">本社全体</div></div>
+    <div class="kpi-card shin" style="text-align:left"><div class="label"><span style="color:var(--shin)">●</span> 新規</div><div class="value">${fmt(shin)}</div><div class="sub">${pct(shin,total)}%</div></div>
+    <div class="kpi-card kison" style="text-align:left"><div class="label"><span style="color:var(--kison)">●</span> 既存</div><div class="value">${fmt(kison)}</div><div class="sub">${pct(kison,total)}%</div></div>
+    <div class="kpi-card kuran" style="text-align:left"><div class="label"><span style="color:var(--kuran)">●</span> 契約日空欄</div><div class="value">${fmt(kuran)}</div><div class="sub">${pct(kuran,total)}%</div></div>
   </div>
   ${goalBlock}
   <div class="section-title">📅 日別 人工合計</div>
