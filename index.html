@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0081)file:///C:/Users/%E6%96%B0%E5%B1%85%E8%B2%B4%E5%BC%98/Downloads/index%20(42).html -->
+<!-- saved from url=(0081)file:///C:/Users/%E6%96%B0%E5%B1%85%E8%B2%B4%E5%BC%98/Downloads/index%20(46).html -->
 <html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <link rel="icon" type="image/png" sizes="256x256" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAEc0lEQVR4nO3Wy3EUQRBAQYQf4oo3wla8EVccEQeCgwgEK3Zm+vMyHdieiq7X+/D49PzyAUj6OPoAwDgCAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECAGECEPf96+fRR2AgAQj7tfwi0CUAUb8vvQg0CQCECUDQW6+9fwE9AhDzryUXgRYBCLl1uUWgQwAi3rvUItAgABAmAAH/+5r7F7A/AdjcvUssAnsTgI0dtbwisC8B2NTRSysCexIACBOADZ31WvsXsB8B2MzZSyoCexGAjVy1nCKwDwHYxNVLKQJ7EAAIE4ANjHqN/QtYnwAsbvQSjv597iMAC5tl+WY5B+8nAIuabelmOw+3EQAIE4AFzfraznou3iYAi5l9yWY/H68JwEJWWa5VzokALGO1pVrtvFUCAGECsIBVX9NVz10iAJNbfYlWP//uBGBiuyzPLt+xIwGY1G5Ls9v37EIAIEwAJrTra7nrd61MACaz+5Ls/n2rEYCJVJaj8p0rEIBJ1Jai9r2zEgAIE4AJVF/D6nfPRAAGqy9B/ftHE4CBXP6fzGEcARjEpX/NPMYQAAgTgAG8dn9mLtcTgIu55H9nPtcSgAu53Lcxp+sIwEVc6vcxr2sIAIQJwAW8Zv/H3M4nACdzie9jfucSgBO5vMcwx/MIwElc2mOZ5zkEAMIE4AReq3OY6/EE4GAu6bnM91gCcCCX8xrmfBwBOIhLeS3zPoYAQJgAHMBrNIa5308A7uQSjmX+93l4fHp+GX0IbrfChf/05dvoI3Aj/wAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAgTAAg7OHx6fll9CGAMfwDgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgDABgLAfHr6zPtA7vhIAAAAASUVORK5CYII=">
@@ -1149,6 +1149,8 @@ function buildPersonDailyTable(name){
   dates.forEach(d=>{ totSogou+=detail[d].総合||0; totShinki+=detail[d].新規||0; });
   const shaCount   = ps['月間社数']   || 0;
   const genbaCount = ps['月間現場数'] || 0;
+  const avgSogou = dates.length>0 ? Math.round(totSogou/dates.length*10)/10 : 0;
+  const avgShinki = dates.length>0 ? Math.round(totShinki/dates.length*10)/10 : 0;
   const rows = dates.map(d=>{
     const v=detail[d];
     return `<tr>
@@ -1160,11 +1162,17 @@ function buildPersonDailyTable(name){
     </tr>`;
   }).join('');
   return `
-  <div class="daily-summary" style="grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px">
-    <div class="daily-sum-card"><div class="label">総合出向</div><div class="value total-val" style="font-size:1.2rem">${fmt(totSogou)}</div></div>
-    <div class="daily-sum-card"><div class="label">新規出向</div><div class="value shin-val" style="font-size:1.2rem">${fmt(totShinki)}</div></div>
-    <div class="daily-sum-card"><div class="label">社数（月間）</div><div class="value" style="font-size:1.2rem;color:var(--green)">${shaCount}</div></div>
-    <div class="daily-sum-card"><div class="label">現場数（月間）</div><div class="value" style="font-size:1.2rem;color:var(--orange)">${genbaCount}</div></div>
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:10px">
+    <div class="daily-sum-card" style="padding:8px"><div class="label">総合</div><div class="value total-val" style="font-size:1rem">${fmt(totSogou)}</div></div>
+    <div class="daily-sum-card" style="padding:8px"><div class="label">新規</div><div class="value shin-val" style="font-size:1rem">${fmt(totShinki)}</div></div>
+    <div class="daily-sum-card" style="padding:8px"><div class="label">平均総合</div><div class="value" style="font-size:1rem;color:#a78bfa">${avgSogou}</div></div>
+    <div class="daily-sum-card" style="padding:8px"><div class="label">平均新規</div><div class="value shin-val" style="font-size:1rem">${avgShinki}</div></div>
+    <div class="daily-sum-card" style="padding:8px"><div class="label">社数</div><div class="value" style="font-size:1rem;color:var(--green)">${shaCount}</div></div>
+    <div class="daily-sum-card" style="padding:8px"><div class="label">現場数</div><div class="value" style="font-size:1rem;color:var(--orange)">${genbaCount}</div></div>
+  </div>
+  <div class="daily-sum-card"><div class=""label">1日平均（新規）</div><div class="value shin-val" style="font-size:1.1rem">${avgShinki}</div></div>
+  </div>
+  
   </div>
   <div class="daily-table-wrap">
     <table class="daily-table" style="font-size:.82rem">
