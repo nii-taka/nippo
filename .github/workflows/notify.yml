@@ -1,0 +1,78 @@
+name: LINEワークス通知
+
+on:
+  push:
+    branches: [main]
+    paths: [index.html]
+  schedule:
+    - cron: '30 23 * * *'  # 日本時間 翌朝8:30 (UTC 23:30)
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: LINEワークスに通知送信
+        env:
+          LW_CLIENT_ID: ${{ secrets.LW_CLIENT_ID }}
+          LW_CLIENT_SECRET: ${{ secrets.LW_CLIENT_SECRET }}
+          LW_SERVICE_ACCOUNT: ${{ secrets.LW_SERVICE_ACCOUNT }}
+          LW_BOT_ID: ${{ secrets.LW_BOT_ID }}
+          LW_CHANNEL_ID: ${{ secrets.LW_CHANNEL_ID }}
+          LW_PRIVATE_KEY: ${{ secrets.LW_PRIVATE_KEY }}
+        run: |
+          pip install PyJWT cryptography requests -q
+
+          python3 << 'PYEOF'
+          import jwt, time, requests, os, json
+          from datetime import datetime
+
+          CLIENT_ID = os.environ['LW_CLIENT_ID']
+          CLIENT_SECRET = os.environ['LW_CLIENT_SECRET']
+          SERVICE_ACCOUNT = os.environ['LW_SERVICE_ACCOUNT']
+          BOT_ID = os.environ['LW_BOT_ID']
+          CHANNEL_ID = os.environ['LW_CHANNEL_ID']
+          PRIVATE_KEY = os.environ['LW_PRIVATE_KEY'].replace('\\n', '\n')
+
+          # JWT生成
+          now = int(time.time())
+          payload = {
+              "iss": CLIENT_ID,
+              "sub": SERVICE_ACCOUNT,
+              "iat": now,
+              "exp": now + 3600,
+          }
+          jwt_token = jwt.encode(payload, PRIVATE_KEY, algorithm="RS256")
+
+          # アクセストークン取得
+          res = requests.post("https://auth.worksmobile.com/oauth2/v2.0/token", data={
+              "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+              "client_id": CLIENT_ID,
+              "client_secret": CLIENT_SECRET,
+              "assertion": jwt_token,
+              "scope": "bot",
+          })
+          token_data = res.json()
+          access_token = token_data["access_token"]
+
+          # 今日の日付
+          today = datetime.now().strftime("%Y年%-m月%-d日")
+
+          # メッセージ送信
+          message = {
+              "content": {
+                  "type": "text",
+                  "text": f"📊 作業日報ダッシュボード更新\n\n{today} のデータを更新しました！\n\n▶ https://nii-taka.github.io/nippo/"
+              }
+          }
+
+          res2 = requests.post(
+              f"https://www.worksapis.com/v1.0/bots/{BOT_ID}/channels/{CHANNEL_ID}/messages",
+              headers={
+                  "Authorization": f"Bearer {access_token}",
+                  "Content-Type": "application/json"
+              },
+              data=json.dumps(message)
+          )
+          print(f"送信結果: {res2.status_code}")
+          print(res2.text)
+          PYEOF
