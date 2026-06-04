@@ -1,17 +1,27 @@
 name: LINEワークス通知
 
 on:
-  push:
-    branches: [main]
-    paths: [index.html]
   schedule:
-    - cron: '30 23 * * *'  # 日本時間 翌朝8:30 (UTC 23:30)
+    - cron: '30 23 * * 1-5'  # 平日朝8:30 (UTC 23:30) → 毎朝通知
+    - cron: '30 23 1 * *'    # 毎月1日 朝8:30 (UTC 23:30) → 月次サマリー
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '実行モード: daily（毎朝）/ summary（月次）'
+        required: false
+        default: 'daily'
 
 jobs:
-  notify:
+  # ─────────────────────────────
+  # ① 毎朝通知（平日スケジュール or 手動daily）
+  # ─────────────────────────────
+  daily-notify:
+    if: |
+      (github.event_name == 'schedule' && contains(github.event.schedule, '1-5')) ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'daily')
     runs-on: ubuntu-latest
     steps:
-      - name: LINEワークスに通知送信
+      - name: 毎朝通知
         env:
           LW_CLIENT_ID: ${{ secrets.LW_CLIENT_ID }}
           LW_CLIENT_SECRET: ${{ secrets.LW_CLIENT_SECRET }}
@@ -21,58 +31,159 @@ jobs:
           LW_PRIVATE_KEY: ${{ secrets.LW_PRIVATE_KEY }}
         run: |
           pip install PyJWT cryptography requests -q
-
           python3 << 'PYEOF'
           import jwt, time, requests, os, json
           from datetime import datetime
 
-          CLIENT_ID = os.environ['LW_CLIENT_ID']
+          CLIENT_ID     = os.environ['LW_CLIENT_ID']
           CLIENT_SECRET = os.environ['LW_CLIENT_SECRET']
           SERVICE_ACCOUNT = os.environ['LW_SERVICE_ACCOUNT']
-          BOT_ID = os.environ['LW_BOT_ID']
-          CHANNEL_ID = os.environ['LW_CHANNEL_ID']
-          PRIVATE_KEY = os.environ['LW_PRIVATE_KEY'].replace('\\n', '\n')
+          BOT_ID        = os.environ['LW_BOT_ID']
+          CHANNEL_ID    = os.environ['LW_CHANNEL_ID']
+          PRIVATE_KEY   = os.environ['LW_PRIVATE_KEY'].replace('\\n', '\n')
 
-          # JWT生成
           now = int(time.time())
-          payload = {
-              "iss": CLIENT_ID,
-              "sub": SERVICE_ACCOUNT,
-              "iat": now,
-              "exp": now + 3600,
-          }
-          jwt_token = jwt.encode(payload, PRIVATE_KEY, algorithm="RS256")
-
-          # アクセストークン取得
+          jwt_token = jwt.encode(
+              {"iss": CLIENT_ID, "sub": SERVICE_ACCOUNT, "iat": now, "exp": now + 3600},
+              PRIVATE_KEY, algorithm="RS256"
+          )
           res = requests.post("https://auth.worksmobile.com/oauth2/v2.0/token", data={
               "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
-              "client_id": CLIENT_ID,
-              "client_secret": CLIENT_SECRET,
-              "assertion": jwt_token,
-              "scope": "bot",
+              "client_id": CLIENT_ID, "client_secret": CLIENT_SECRET,
+              "assertion": jwt_token, "scope": "bot",
           })
-          token_data = res.json()
-          access_token = token_data["access_token"]
+          access_token = res.json()["access_token"]
 
-          # 今日の日付
           today = datetime.now().strftime("%Y年%-m月%-d日")
+          text = f"📊 作業日報ダッシュボード\n\n{today} の最新データを確認できます！\n\n▶ https://nii-taka.github.io/nippo/"
 
-          # メッセージ送信
-          message = {
-              "content": {
-                  "type": "text",
-                  "text": f"📊 作業日報ダッシュボード更新\n\n{today} のデータを更新しました！\n\n▶ https://nii-taka.github.io/nippo/"
-              }
-          }
+          requests.post(
+              f"https://www.worksapis.com/v1.0/bots/{BOT_ID}/channels/{CHANNEL_ID}/messages",
+              headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+              data=json.dumps({"content": {"type": "text", "text": text}})
+          )
+          PYEOF
+
+  # ─────────────────────────────
+  # ② 月次サマリー（毎月1日 or 手動summary）
+  # ─────────────────────────────
+  monthly-summary:
+    if: |
+      (github.event_name == 'schedule' && contains(github.event.schedule, '1 * *')) ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'summary')
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: 月次サマリー通知
+        env:
+          LW_CLIENT_ID: ${{ secrets.LW_CLIENT_ID }}
+          LW_CLIENT_SECRET: ${{ secrets.LW_CLIENT_SECRET }}
+          LW_SERVICE_ACCOUNT: ${{ secrets.LW_SERVICE_ACCOUNT }}
+          LW_BOT_ID: ${{ secrets.LW_BOT_ID }}
+          LW_CHANNEL_ID: ${{ secrets.LW_CHANNEL_ID }}
+          LW_PRIVATE_KEY: ${{ secrets.LW_PRIVATE_KEY }}
+        run: |
+          pip install PyJWT cryptography requests -q
+          python3 << 'PYEOF'
+          import jwt, time, requests, os, json, re
+          from datetime import datetime
+
+          CLIENT_ID     = os.environ['LW_CLIENT_ID']
+          CLIENT_SECRET = os.environ['LW_CLIENT_SECRET']
+          SERVICE_ACCOUNT = os.environ['LW_SERVICE_ACCOUNT']
+          BOT_ID        = os.environ['LW_BOT_ID']
+          CHANNEL_ID    = os.environ['LW_CHANNEL_ID']
+          PRIVATE_KEY   = os.environ['LW_PRIVATE_KEY'].replace('\\n', '\n')
+
+          # index.html から RAW・DEFAULT_GOALS を読み込む
+          with open('index.html', encoding='utf-8') as f:
+              html = f.read()
+
+          RAW   = json.loads(re.search(r'const RAW = (\{.*?\});', html, re.DOTALL).group(1))
+          GOALS = json.loads(re.search(r'const DEFAULT_GOALS = (\{.*?\});', html).group(1))
+
+          history = RAW.get('history', [])
+          if not history:
+              print("historyなし、スキップ")
+              exit(0)
+
+          prev    = history[-1]
+          month   = prev['month']
+          persons = prev.get('persons', [])
+          ranking = prev.get('ranking', {})
+
+          medals = ['🥇', '🥈', '🥉']
+          def fmt(v):
+              return f"{v:,.1f}".rstrip('0').rstrip('.') if isinstance(v, float) and v != int(v) else f"{int(v):,}"
+
+          # 総合TOP3 / 新規TOP3
+          def rank_lines(key):
+              return "\n".join(
+                  f"{medals[i]} {r['name']}  {fmt(r['value'])}人工"
+                  for i, r in enumerate(ranking.get(key, [])[:3])
+              )
+
+          # 目標達成率（目標設定ありの人のみ）
+          achieve_lines = []
+          shin_achievers = []   # 新規目標達成者（100%以上）
+          for p in persons:
+              if p.get('目標総合'):
+                  rt = p.get('達成率総合') or 0
+                  rs = p.get('達成率新規') or 0
+                  mark = '✅' if rt >= 100 else ('🔥' if rt >= 90 else '📈')
+                  achieve_lines.append(f"{mark} {p['name']}  総合{rt:.1f}%  新規{rs:.1f}%")
+                  if rs >= 100:
+                      shin_achievers.append(p['name'])
+
+          shin_achieve_text = (
+              "🎊 " + "・".join(shin_achievers)
+              if shin_achievers else "（達成者なし）"
+          )
+
+          text = f"""🏆 {month} 月次サマリー
+
+━━━━━━━━━━━━
+📦 全体実績
+  総合: {fmt(prev.get('total', 0))} 人工
+  新規: {fmt(prev.get('shin', 0))} 人工
+
+━━━━━━━━━━━━
+🏅 総合ランキング TOP3
+{rank_lines('総合')}
+
+🏅 新規ランキング TOP3
+{rank_lines('新規')}
+
+━━━━━━━━━━━━
+🎯 目標達成率
+{chr(10).join(achieve_lines) if achieve_lines else '（目標設定なし）'}
+
+━━━━━━━━━━━━
+🌟 新規目標達成者
+{shin_achieve_text}
+
+━━━━━━━━━━━━
+▶ https://nii-taka.github.io/nippo/"""
+
+          # 送信
+          now = int(time.time())
+          jwt_token = jwt.encode(
+              {"iss": CLIENT_ID, "sub": SERVICE_ACCOUNT, "iat": now, "exp": now + 3600},
+              PRIVATE_KEY, algorithm="RS256"
+          )
+          res = requests.post("https://auth.worksmobile.com/oauth2/v2.0/token", data={
+              "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+              "client_id": CLIENT_ID, "client_secret": CLIENT_SECRET,
+              "assertion": jwt_token, "scope": "bot",
+          })
+          access_token = res.json()["access_token"]
 
           res2 = requests.post(
               f"https://www.worksapis.com/v1.0/bots/{BOT_ID}/channels/{CHANNEL_ID}/messages",
-              headers={
-                  "Authorization": f"Bearer {access_token}",
-                  "Content-Type": "application/json"
-              },
-              data=json.dumps(message)
+              headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+              data=json.dumps({"content": {"type": "text", "text": text}})
           )
-          print(f"送信結果: {res2.status_code}")
-          print(res2.text)
+          print(f"送信結果: {res2.status_code}", res2.text)
           PYEOF
