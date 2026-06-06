@@ -928,7 +928,7 @@ function renderPerson(el, person){
 function renderGoalForm(){
   const grid = document.getElementById('goal-grid');
   grid.innerHTML = RAW.targets.map(p=>{
-    const regionDefaults = {'東京':{'1日新規':50,'総合':0,'新規':0,'1日総合':0},'警備':{'1日新規':40,'総合':0,'新規':0,'1日総合':0},'仙台':{'1日新規':50,'総合':0,'新規':0,'1日総合':0}};
+    const regionDefaults = {'東京':{'1日新規':50,'総合':0,'新規':1100,'1日総合':0},'警備':{'1日新規':40,'総合':0,'新規':880,'1日総合':0},'仙台':{'1日新規':50,'総合':0,'新規':1100,'1日総合':0}};
     const g = goals[p]||DEFAULT_GOALS[p]||(currentRegion!=='本社'?regionDefaults[currentRegion]:{})||{};
     return `<div class="goal-row">
       <label>${p}</label>
@@ -958,7 +958,7 @@ function saveGoals(){
 
 function resetGoals(){
   const _rd2 = ALL_REGIONS[currentRegion];
-  const _rdg = {'東京':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':50}])),'警備':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':40}])),'仙台':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':50}]))};
+  const _rdg = {'東京':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:1100,'1日総合':0,'1日新規':50}])),'警備':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:880,'1日総合':0,'1日新規':40}])),'仙台':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:1100,'1日総合':0,'1日新規':50}]))};
   goals = JSON.parse(JSON.stringify(currentRegion==='本社'?DEFAULT_GOALS:(_rdg[currentRegion]||{})));
   localStorage.removeItem('nippo_goals_' + currentRegion);
   renderGoalForm();
