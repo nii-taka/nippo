@@ -511,9 +511,14 @@ function switchRegion(region) {
 
   // goals 拠点別ストレージ
   const storageKey = 'nippo_goals_' + region;
-  const defaultG = {};
-  rd.targets.forEach(p => { defaultG[p] = {総合:0,新規:0,'1日総合':0,'1日新規':0}; });
-  goals = JSON.parse(localStorage.getItem(storageKey) || 'null') || defaultG;
+  const REGION_DEFAULT_GOALS = {
+    '本社': DEFAULT_GOALS,
+    '東京': Object.fromEntries(rd.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':50}])),
+    '警備': Object.fromEntries(rd.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':40}])),
+    '仙台': Object.fromEntries(rd.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':50}])),
+  };
+  const defaultG = REGION_DEFAULT_GOALS[region] || {};
+  goals = JSON.parse(localStorage.getItem(storageKey) || 'null') || JSON.parse(JSON.stringify(defaultG));
 
   // 稼働日再計算
   const _dm = RAW.dates[RAW.dates.length-1].slice(0,7);
@@ -923,7 +928,8 @@ function renderPerson(el, person){
 function renderGoalForm(){
   const grid = document.getElementById('goal-grid');
   grid.innerHTML = RAW.targets.map(p=>{
-    const g = goals[p]||DEFAULT_GOALS[p]||{};
+    const regionDefaults = {'東京':{'1日新規':50,'総合':0,'新規':0,'1日総合':0},'警備':{'1日新規':40,'総合':0,'新規':0,'1日総合':0},'仙台':{'1日新規':50,'総合':0,'新規':0,'1日総合':0}};
+    const g = goals[p]||DEFAULT_GOALS[p]||(currentRegion!=='本社'?regionDefaults[currentRegion]:{})||{};
     return `<div class="goal-row">
       <label>${p}</label>
       <div class="goal-inputs">
@@ -951,7 +957,9 @@ function saveGoals(){
 }
 
 function resetGoals(){
-  goals = JSON.parse(JSON.stringify(DEFAULT_GOALS));
+  const _rd2 = ALL_REGIONS[currentRegion];
+  const _rdg = {'東京':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':50}])),'警備':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':40}])),'仙台':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:0,'1日総合':0,'1日新規':50}]))};
+  goals = JSON.parse(JSON.stringify(currentRegion==='本社'?DEFAULT_GOALS:(_rdg[currentRegion]||{})));
   localStorage.removeItem('nippo_goals_' + currentRegion);
   renderGoalForm();
   renderOverview();
