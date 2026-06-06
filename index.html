@@ -1197,8 +1197,8 @@ function renderDailyDetail(){
   <div class="daily-summary">
     <div class="daily-sum-card"><div class="label">総合出向（計）</div><div class="value total-val">${fmt(totSogou)}</div></div>
     <div class="daily-sum-card"><div class="label">新規出向（計）</div><div class="value shin-val">${fmt(totShinki)}</div></div>
-    <div class="daily-sum-card"><div class="label">1日平均（総合）</div><div class="value" style="color:#a78bfa">${dates.length>0?Math.round(totSogou/dates.length*10)/10:0}</div></div>
-    <div class="daily-sum-card"><div class="label">1日平均（新規）</div><div class="value shin-val" style="font-size:1.3rem">${dates.length>0?Math.round(totShinki/dates.length*10)/10:0}</div></div>
+    <div class="daily-sum-card"><div class="label">1日平均（総合）</div><div class="value" style="color:#a78bfa">${workedDays>0?Math.round(totSogou/workedDays*10)/10:0}</div></div>
+    <div class="daily-sum-card"><div class="label">1日平均（新規）</div><div class="value shin-val" style="font-size:1.3rem">${workedDays>0?Math.round(totShinki/workedDays*10)/10:0}</div></div>
     <div class="daily-sum-card"><div class="label">社数（月間）</div><div class="value" style="color:var(--green)">${totShaCount}</div></div>
     <div class="daily-sum-card"><div class="label">現場数（月間）</div><div class="value" style="color:var(--orange)">${totGenbaCount}</div></div>
   </div>
@@ -1234,8 +1234,8 @@ function buildPersonDailyTable(name){
   dates.forEach(d=>{ totSogou+=detail[d].総合||0; totShinki+=detail[d].新規||0; });
   const shaCount   = ps['月間社数']   || 0;
   const genbaCount = ps['月間現場数'] || 0;
-  const avgSogou = dates.length>0 ? Math.round(totSogou/dates.length*10)/10 : 0;
-  const avgShinki = dates.length>0 ? Math.round(totShinki/dates.length*10)/10 : 0;
+  const avgSogou = workedDays>0 ? Math.round(totSogou/workedDays*10)/10 : 0;
+  const avgShinki = workedDays>0 ? Math.round(totShinki/workedDays*10)/10 : 0;
   const rows = dates.map(d=>{
     const v=detail[d];
     return `<tr>
