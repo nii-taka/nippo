@@ -801,7 +801,7 @@ function renderExpiryAlert(){
   const monthLabel = {'2026/07':'7月','2026/08':'8月','2026/09':'9月'};
   const monthColor = {'2026/07':'#f87171','2026/08':'#fb923c','2026/09':'#facc15'};
 
-  let html = `<div class="section-title" style="margin-top:8px">⚠️ 新規期限切れ予告（翌3ヶ月）</div>`;
+  let html = `<div class="section-title" style="margin-top:8px">⚠️ 新規期限切れ予告（翌3ヶ月）<span style="font-size:.8rem;font-weight:400;color:var(--text2);margin-left:12px">💪 頑張って他ユーザー探そう！</span></div>`;
   html += `<div style="display:flex;flex-wrap:wrap;gap:12px">`;
   Object.entries(regionExpiry).forEach(([ym, persons]) => {
     const color = monthColor[ym] || '#94a3b8';
