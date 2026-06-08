@@ -355,6 +355,7 @@ function switchRegion(region) {
   renderPersonTabs();
   renderOverview();
   if(document.querySelector('#tab-daily.active')) renderExpiryAlert();
+  if(document.querySelector('#tab-ranking.active')){
     // ランキング表示を「現在の地域」にリセット
     document.querySelectorAll('.ranking-region-btn').forEach(b=>b.classList.toggle('active', b.dataset.rregion==='current'));
     document.getElementById('ranking-content').style.display='';
