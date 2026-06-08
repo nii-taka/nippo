@@ -2,7 +2,7 @@ name: LINEワークス通知
 
 on:
   schedule:
-    - cron: '30 23 * * 1-5'  # 平日朝8:30 (UTC 23:30) → 毎朝通知
+    - cron: '30 23 * * 0-4'  # 平日朝8:30 (UTC 23:30) → 毎朝通知
     - cron: '30 23 1 * *'    # 毎月1日 朝8:30 (UTC 23:30) → 月次サマリー
   workflow_dispatch:
     inputs:
