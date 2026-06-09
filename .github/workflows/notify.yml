@@ -13,12 +13,17 @@ on:
 
 jobs:
   daily-notify:
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'schedule' && contains(github.event.schedule, '0-4'))
     runs-on: ubuntu-latest
     steps:
+      - name: スケジュール確認
+        run: |
+          echo "event: ${{ github.event_name }}"
+          echo "schedule: ${{ github.event.schedule }}"
+
       - name: 毎朝通知
+        if: |
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'schedule' && contains(github.event.schedule, '0-4'))
         env:
           LW_CLIENT_ID: ${{ secrets.LW_CLIENT_ID }}
           LW_CLIENT_SECRET: ${{ secrets.LW_CLIENT_SECRET }}
@@ -63,15 +68,21 @@ jobs:
           PYEOF
 
   monthly-summary:
-    if: |
-      (github.event_name == 'schedule' && contains(github.event.schedule, '1 * *')) ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'summary')
     runs-on: ubuntu-latest
     steps:
+      - name: スケジュール確認
+        run: echo "event=${{ github.event_name }} schedule=${{ github.event.schedule }}"
+
       - name: リポジトリをチェックアウト
+        if: |
+          (github.event_name == 'schedule' && contains(github.event.schedule, '1 * *')) ||
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'summary')
         uses: actions/checkout@v4
 
       - name: 月次サマリー通知
+        if: |
+          (github.event_name == 'schedule' && contains(github.event.schedule, '1 * *')) ||
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'summary')
         env:
           LW_CLIENT_ID: ${{ secrets.LW_CLIENT_ID }}
           LW_CLIENT_SECRET: ${{ secrets.LW_CLIENT_SECRET }}
