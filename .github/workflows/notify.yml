@@ -17,7 +17,7 @@ jobs:
   # ─────────────────────────────
   daily-notify:
     if: |
-      (github.event_name == 'schedule' && contains(github.event.schedule, '1-5')) ||
+      (github.event_name == 'schedule' && contains(github.event.schedule, '0-4')) ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'daily')
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +55,7 @@ jobs:
           access_token = res.json()["access_token"]
 
           today = datetime.now().strftime("%Y年%-m月%-d日")
-          text = f"📊 作業日報ダッシュボード\n\n{today} の最新データを確認できます！\n\n▶ https://nii-taka.github.io/nippo/"
+          text = f"📊 NEXUS\n\n{today} の最新データを確認できます！\n\n▶ https://nii-taka.github.io/nippo/"
 
           requests.post(
               f"https://www.worksapis.com/v1.0/bots/{BOT_ID}/channels/{CHANNEL_ID}/messages",
@@ -97,7 +97,6 @@ jobs:
           CHANNEL_ID    = os.environ['LW_CHANNEL_ID']
           PRIVATE_KEY   = os.environ['LW_PRIVATE_KEY'].replace('\\n', '\n')
 
-          # index.html から RAW・DEFAULT_GOALS を読み込む
           with open('index.html', encoding='utf-8') as f:
               html = f.read()
 
@@ -118,16 +117,14 @@ jobs:
           def fmt(v):
               return f"{v:,.1f}".rstrip('0').rstrip('.') if isinstance(v, float) and v != int(v) else f"{int(v):,}"
 
-          # 総合TOP3 / 新規TOP3
           def rank_lines(key):
               return "\n".join(
                   f"{medals[i]} {r['name']}  {fmt(r['value'])}人工"
                   for i, r in enumerate(ranking.get(key, [])[:3])
               )
 
-          # 目標達成率（目標設定ありの人のみ）
           achieve_lines = []
-          shin_achievers = []   # 新規目標達成者（100%以上）
+          shin_achievers = []
           for p in persons:
               if p.get('目標総合'):
                   rt = p.get('達成率総合') or 0
@@ -142,7 +139,7 @@ jobs:
               if shin_achievers else "（達成者なし）"
           )
 
-          text = f"""🏆 {month} 月次サマリー
+          text = f"""🏆 NEXUS {month} 月次サマリー
 
 ━━━━━━━━━━━━
 📦 全体実績
@@ -167,7 +164,6 @@ jobs:
 ━━━━━━━━━━━━
 ▶ https://nii-taka.github.io/nippo/"""
 
-          # 送信
           now = int(time.time())
           jwt_token = jwt.encode(
               {"iss": CLIENT_ID, "sub": SERVICE_ACCOUNT, "iat": now, "exp": now + 3600},
