@@ -2,7 +2,7 @@ name: LINEワークス通知
 
 on:
   schedule:
-    - cron: '30 23 * * 0-4'
+    - cron: '20 23 * * 0-4'
     - cron: '30 23 1 * *'
   workflow_dispatch:
     inputs:
@@ -18,7 +18,7 @@ jobs:
       - name: 毎朝通知（daily）
         if: >-
           github.event_name == 'workflow_dispatch' ||
-          (github.event_name == 'schedule' && github.event.schedule == '30 23 * * 0-4')
+          (github.event_name == 'schedule' && github.event.schedule == '20 23 * * 0-4')
         env:
           LW_CLIENT_ID: ${{ secrets.LW_CLIENT_ID }}
           LW_CLIENT_SECRET: ${{ secrets.LW_CLIENT_SECRET }}
