@@ -331,6 +331,9 @@ function switchRegion(region) {
   RAW.daily_detail   = rd.daily_detail;
   RAW.ranking        = rd.ranking;
   RAW.history        = rd.history || [];
+  RAW.expiry         = rd.expiry || {};
+  RAW.seasonal_gyoshu = rd.seasonal_gyoshu || {};
+  RAW.shinki_clients  = rd.shinki_clients || {};
 
   // goals 拠点別ストレージ
   const storageKey = 'nippo_goals_' + region;
