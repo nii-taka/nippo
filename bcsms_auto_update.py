@@ -666,12 +666,16 @@ def main():
 ━━━━━━━━━━━━
 ▶ https://nii-taka.github.io/nippo/"""
 
-        if send_lineworks:
+        # 業務時間内（7:00〜20:00）のみ通知
+        now_hour = datetime.datetime.now().hour
+        if send_lineworks and 7 <= now_hour < 20:
             send_lineworks(msg)
+        elif send_lineworks:
+            print(f"[INFO] 業務時間外のため通知スキップ ({now_hour}時)")
         print(f"[OK] 完了! {datetime.datetime.now().strftime('%H:%M:%S')}")
 
     except Exception as e:
-        # エラー通知
+        # エラー通知（時間帯問わず送信）
         err_msg = f"""[ERROR] NIPPO 自動更新失敗
 
 {datetime.date.today().strftime('%Y年%m月%d日')} のデータ取得に失敗しました。
