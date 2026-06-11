@@ -26,14 +26,24 @@ jobs:
 
       - name: config.py を Secrets から生成
         run: |
-          cat > config.py << 'EOF'
-          BCSMS_URL   = "${{ secrets.BCSMS_URL }}"
-          BCSMS_ID    = "${{ secrets.BCSMS_ID }}"
-          BCSMS_PW    = "${{ secrets.BCSMS_PW }}"
-          GITHUB_TOKEN = "${{ secrets.GH_PAT }}"
-          GITHUB_REPO  = "nii-taka/nippo"
-          DOWNLOAD_DIR = "/tmp/nippo_excel"
-          EOF
+          python - <<'PYEOF'
+          import os
+          lines = [
+              'BCSMS_URL    = "https://www.bcsms.work/bcsms/SPR"',
+              f'BCSMS_ID     = "{os.environ["BCSMS_ID"]}"',
+              f'BCSMS_PW     = "{os.environ["BCSMS_PW"]}"',
+              f'GITHUB_TOKEN = "{os.environ["GH_PAT"]}"',
+              'GITHUB_REPO  = "nii-taka/nippo"',
+              'DOWNLOAD_DIR = "/tmp/nippo_excel"',
+          ]
+          with open("config.py", "w") as f:
+              f.write("\n".join(lines) + "\n")
+          print("config.py 生成完了")
+          PYEOF
+        env:
+          BCSMS_ID: ${{ secrets.BCSMS_ID }}
+          BCSMS_PW: ${{ secrets.BCSMS_PW }}
+          GH_PAT: ${{ secrets.GH_PAT }}
 
       - name: NIPPO データ更新スクリプトを実行
         run: python bcsms_auto_update.py
