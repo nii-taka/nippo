@@ -125,86 +125,125 @@ def download_excel_from_bcsms(start_date=None, end_date=None):
         print("[OK] ログイン完了")
         print(f"[DEBUG] ログイン後URL: {driver.current_url}")
 
-        # メニュー：随時出力処理（フレーム対応）
-        def find_and_click_text(driver, text, timeout=20):
-            """テキストを含む要素をフレームも含めて検索してクリック"""
-            from selenium.common.exceptions import TimeoutException as TE
-            # メインフレームで試す
-            try:
-                driver.switch_to.default_content()
-                el = WebDriverWait(driver, 5).until(
-                    EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(),'{text}')]"))
-                )
-                el.click()
-                return True
-            except TE:
-                pass
-            # 各フレームで試す
-            frames = driver.find_elements(By.TAG_NAME, 'frame') + driver.find_elements(By.TAG_NAME, 'iframe')
-            print(f"[DEBUG] フレーム数: {len(frames)}")
-            for i, frame in enumerate(frames):
-                try:
-                    driver.switch_to.default_content()
-                    driver.switch_to.frame(frame)
-                    el = WebDriverWait(driver, 3).until(
-                        EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(),'{text}')]"))
-                    )
-                    el.click()
+        # SweetAlert ダイアログが出ていれば閉じる
+        time.sleep(2)
+        try:
+            # JS でダイアログ内のボタンを探してクリック
+            dismissed = driver.execute_script("""
+                var btn = document.querySelector('.swal-button--confirm, .swal-button, .swal2-confirm, button.confirm, .sweet-alert button');
+                if (btn) { btn.click(); return true; }
+                return false;
+            """)
+            if dismissed:
+                print("[INFO] SweetAlertダイアログを閉じました")
+                time.sleep(1)
+            else:
+                # Escapeキーで閉じる試み
+                from selenium.webdriver.common.keys import Keys
+                driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ESCAPE)
+                time.sleep(1)
+        except Exception:
+            pass
+
+        # メニュー：随時出力処理（JS検索でテキストマッチ）
+        def find_and_click_text(driver, text, timeout=30):
+            """テキストを含む要素をJSで検索してクリック（スペース無視）"""
+            deadline = time.time() + timeout
+            while time.time() < deadline:
+                found = driver.execute_script(f"""
+                    var search = '{text}'.replace(/\\s/g, '');
+                    var all = document.querySelectorAll('input[type=button], input[type=submit], button, a, td, div');
+                    for (var i = 0; i < all.length; i++) {{
+                        var t = (all[i].textContent || all[i].value || '').replace(/\\s/g, '');
+                        if (t.indexOf(search) !== -1) {{
+                            all[i].click();
+                            return true;
+                        }}
+                    }}
+                    return false;
+                """)
+                if found:
                     return True
-                except Exception:
-                    pass
+                time.sleep(1)
             return False
 
         if not find_and_click_text(driver, '随時出力'):
-            # ページソースをデバッグ出力（先頭2000文字）
-            print(f"[DEBUG] ページソース: {driver.page_source[:2000]}")
+            # スクリーンショット保存してデバッグ
+            ss_path = os.path.join(os.path.abspath(DOWNLOAD_DIR), 'bcsms_debug.png')
+            driver.save_screenshot(ss_path)
+            print(f"[DEBUG] スクリーンショット保存: {ss_path}")
+            # SweetAlertのメッセージを取得
+            try:
+                msg_el = driver.find_element(By.CSS_SELECTOR, '.swal-text, .swal2-content, .sweet-alert p')
+                print(f"[DEBUG] SweetAlertメッセージ: {msg_el.text}")
+            except Exception:
+                pass
+            print(f"[DEBUG] ページソース（先頭3000文字）: {driver.page_source[:3000]}")
             raise Exception("随時出力ボタンが見つかりません")
-        time.sleep(2)
+        time.sleep(3)
         print("[OK] 随時出力処理クリック")
 
-        # 作業日報
-        wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'作業日報') or contains(text(),'作 業 日 報')]"))).click()
-        time.sleep(2)
+        # 作業日報（JS検索）
+        if not find_and_click_text(driver, '作業日報'):
+            ss_path = os.path.join(os.path.abspath(DOWNLOAD_DIR), 'bcsms_debug2.png')
+            driver.save_screenshot(ss_path)
+            raise Exception(f"作業日報ボタンが見つかりません（スクリーンショット: {ss_path}）")
+        time.sleep(3)
         print("[OK] 作業日報クリック")
 
-        # 出力選択：担当者別
-        wait.until(EC.presence_of_element_located((By.XPATH, "//input[@type='radio']"))).click()
-        # 担当者別ラジオボタンを選択
-        radios = driver.find_elements(By.XPATH, "//input[@type='radio']")
-        for r in radios:
+        # フォームのスクリーンショット（デバッグ用）
+        driver.save_screenshot(os.path.join(os.path.abspath(DOWNLOAD_DIR), 'bcsms_form.png'))
+
+        # ラジオボタンの状況をJSで確認
+        radio_info = driver.execute_script("""
+            var radios = document.querySelectorAll('input[type=radio]');
+            var info = [];
+            for (var i = 0; i < radios.length; i++) {
+                var label = '';
+                var next = radios[i].nextSibling;
+                while (next) {
+                    if (next.textContent) { label += next.textContent.trim(); break; }
+                    next = next.nextSibling;
+                }
+                info.push({value: radios[i].value, label: label, checked: radios[i].checked});
+            }
+            return info;
+        """)
+        print(f"[DEBUG] ラジオボタン: {radio_info}")
+
+        # 出力選択：担当者別をJSで選択（ラベルに「担当者」を含むものを選択）
+        selected = driver.execute_script("""
+            var radios = document.querySelectorAll('input[type=radio]');
+            for (var i = 0; i < radios.length; i++) {
+                var label = '';
+                var next = radios[i].nextSibling;
+                while (next) {
+                    if (next.textContent) { label += next.textContent.trim(); break; }
+                    next = next.nextSibling;
+                }
+                if (label.replace(/\\s/g,'').indexOf('担当者') !== -1) {
+                    radios[i].click();
+                    return label;
+                }
+            }
+            return null;
+        """)
+        print(f"[DEBUG] 担当者別選択: {selected}")
+
+        # 日付設定：U004=開始日、U006=終了日（スクリーンショット確認済み）
+        time.sleep(1)
+        from selenium.webdriver.common.keys import Keys
+        for name, date_val in [('U004', start_date), ('U006', end_date)]:
             try:
-                label = r.find_element(By.XPATH, "following-sibling::*[1]").text
-                if '担当者' in label:
-                    r.click()
-                    break
-            except:
-                pass
-
-        # 日付設定
-        date_inputs = driver.find_elements(By.XPATH, "//input[@type='text']")
-        for inp in date_inputs:
-            val = inp.get_attribute('value')
-            if '/' in str(val) and len(str(val)) == 10:
-                # 開始日
-                inp.clear()
-                inp.send_keys(start_date)
-                break
-
-        # 終了日を今日に設定
-        date_inputs2 = driver.find_elements(By.XPATH, "//input[@type='text']")
-        found_start = False
-        for inp in date_inputs2:
-            val = inp.get_attribute('value')
-            if '/' in str(val) and len(str(val)) == 10:
-                if not found_start:
-                    found_start = True
-                    inp.clear()
-                    inp.send_keys(start_date)
-                else:
-                    inp.clear()
-                    inp.send_keys(end_date)
-                    break
-
+                el = driver.find_element(By.NAME, name)
+                driver.execute_script("arguments[0].value = '';", el)
+                el.click()
+                el.send_keys(Keys.CONTROL + 'a')
+                el.send_keys(date_val)
+                el.send_keys(Keys.TAB)
+                print(f"[DEBUG] {name} = {date_val}")
+            except Exception as e:
+                print(f"[WARN] {name} 設定失敗: {e}")
         time.sleep(1)
 
         # Excel出力ボタン（F10）
@@ -505,6 +544,17 @@ def _is_valid_seasonal(data):
     return False
 
 
+def merge_daily_detail(old_detail, new_detail):
+    """daily_detail を日付キーでマージ（新データ優先）"""
+    merged = {}
+    all_persons = set(list(old_detail.keys()) + list(new_detail.keys()))
+    for person in all_persons:
+        old_days = old_detail.get(person, {})
+        new_days = new_detail.get(person, {})
+        merged[person] = {**old_days, **new_days}  # new_days が優先
+    return merged
+
+
 def _get_valid_seasonal(old_data, new_per_region_data):
     """有効な seasonal_gyoshu を返す（正しい形式ならそのまま、なければ空）"""
     if _is_valid_seasonal(old_data):
@@ -543,9 +593,11 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
         'data_range': data_range,
         'targets': honsha['targets'], 'dates': honsha['dates'], 'worked_dates': honsha['worked_dates'],
         'person_summary': honsha['person_summary'], 'ranking': honsha['ranking'],
-        'daily': honsha['daily'], 'daily_all': honsha['daily_all'],
-        'person_daily': honsha['person_daily'], 'industry': honsha['industry'],
-        'clients': honsha['clients'], 'daily_detail': honsha['daily_detail'],
+        'daily': {**raw_old.get('daily',{}), **honsha['daily']},
+        'daily_all': {**raw_old.get('daily_all',{}), **honsha['daily_all']},
+        'person_daily': merge_daily_detail(raw_old.get('person_daily',{}), honsha['person_daily']),
+        'industry': honsha['industry'],
+        'clients': honsha['clients'], 'daily_detail': merge_daily_detail(raw_old.get('daily_detail',{}), honsha['daily_detail']),
         'region_total': honsha['region_total'],
         'history': raw_old.get('history', []),
         'expiry': merge_expiry({}, shinki_expire or {}, '本社'),
@@ -556,11 +608,17 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
 
     all_new = {}
     for region in ['本社','東京','警備','仙台']:
+        rd_old = all_old.get(region, {})
         all_new[region] = new_data[region]
-        all_new[region]['history'] = all_old.get(region,{}).get('history',[])
+        # 日別データは累積マージ（日付キーで新データ優先）
+        all_new[region]['daily'] = {**rd_old.get('daily',{}), **new_data[region]['daily']}
+        all_new[region]['daily_all'] = {**rd_old.get('daily_all',{}), **new_data[region].get('daily_all',{})}
+        all_new[region]['person_daily'] = merge_daily_detail(rd_old.get('person_daily',{}), new_data[region]['person_daily'])
+        all_new[region]['history'] = rd_old.get('history',[])
         all_new[region]['expiry'] = merge_expiry({}, shinki_expire or {}, region)
         all_new[region]['seasonal_gyoshu'] = _get_valid_seasonal(all_old.get(region,{}).get('seasonal_gyoshu',{}), seasonal_per_region.get(region))
         all_new[region]['shinki_clients'] = all_old.get(region,{}).get('shinki_clients',{})
+        all_new[region]['daily_detail'] = merge_daily_detail(all_old.get(region,{}).get('daily_detail',{}), new_data[region]['daily_detail'])
     content = _replace_js_var(content, 'ALL_REGIONS', all_new)
 
     with open(html_path, 'w', encoding='utf-8') as f:

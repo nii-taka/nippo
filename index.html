@@ -1175,7 +1175,7 @@ function switchDailyPerson(p){
 function renderDailyDetail(){
   const el = document.getElementById('daily-detail-content');
   const detail = RAW.daily_detail[currentDailyPerson] || {};
-  const dates = RAW.dates.filter(d => detail[d]);
+  const dates = Object.keys(detail).sort();
   let totSogou=0, totShinki=0;
   dates.forEach(d=>{
     totSogou  += detail[d].総合||0;
@@ -1243,7 +1243,7 @@ function setDailyView(mode){
 
 function buildPersonDailyTable(name){
   const detail = RAW.daily_detail[name] || {};
-  const dates = RAW.dates.filter(d => detail[d]);
+  const dates = Object.keys(detail).sort();
   const ps = RAW.person_summary[name];
   let totSogou=0, totShinki=0;
   dates.forEach(d=>{ totSogou+=detail[d].総合||0; totShinki+=detail[d].新規||0; });
