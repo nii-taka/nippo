@@ -76,7 +76,7 @@ def get_holidays(year, month):
     return holidays
 
 
-def download_excel_from_bcsms():
+def download_excel_from_bcsms(start_date=None, end_date=None):
     """BCSMSにログインしてExcelをダウンロード"""
     from selenium import webdriver
     from selenium.webdriver.common.by import By
@@ -86,8 +86,10 @@ def download_excel_from_bcsms():
     from selenium.webdriver.chrome.service import Service
 
     today = datetime.date.today()
-    start_date = today.replace(day=1).strftime('%Y/%m/%d')
-    end_date = today.strftime('%Y/%m/%d')
+    if start_date is None:
+        start_date = today.replace(day=1).strftime('%Y/%m/%d')
+    if end_date is None:
+        end_date = today.strftime('%Y/%m/%d')
 
     print(f"[DL] BCSMSから取得: {start_date} 〜 {end_date}")
 
@@ -228,6 +230,49 @@ def download_excel_from_bcsms():
 
     finally:
         driver.quit()
+
+
+def calc_seasonal_gyoshu_all():
+    """2024/07-09 と 2025/07-09 の業種別集計をBCSMSからダウンロードして全地域分を返す
+    戻り値: {region: {'2024/07': {'解体': X, ...}, ...}, ...}
+             + special key '__all__' for 本社（RAW用）
+    """
+    import pandas as pd
+    target_periods = [
+        ('2024/07/01', '2024/07/31', '2024/07'),
+        ('2024/08/01', '2024/08/31', '2024/08'),
+        ('2024/09/01', '2024/09/30', '2024/09'),
+        ('2025/07/01', '2025/07/31', '2025/07'),
+        ('2025/08/01', '2025/08/31', '2025/08'),
+        ('2025/09/01', '2025/09/30', '2025/09'),
+    ]
+    # 全地域の結果を蓄積
+    per_region = {r: {} for r in REGIONS}
+
+    for start, end, key in target_periods:
+        print(f"[季節] {key} のダウンロード開始...")
+        excel_path = download_excel_from_bcsms(start_date=start, end_date=end)
+        if not excel_path:
+            print(f"[WARN] {key} ダウンロード失敗、スキップ")
+            continue
+        try:
+            df = pd.read_excel(excel_path, sheet_name='作業日報')
+            df.columns = [str(c).strip() for c in df.columns]
+            if '担当者名' not in df.columns or '業種' not in df.columns or '人工合計' not in df.columns:
+                print(f"[WARN] {key}: 必須列が見つかりません")
+                continue
+            df = df[~df['担当者名'].isin(EXCLUDE_PERSONS)]
+            for region, persons in REGION_PERSONS.items():
+                df_r = df[df['担当者名'].isin(persons)]
+                gyoshu_totals = {}
+                for g, grp in df_r.groupby('業種'):
+                    gyoshu_totals[str(g)] = round(float(grp['人工合計'].sum()), 1)
+                if gyoshu_totals:
+                    per_region[region][key] = gyoshu_totals
+            print(f"[OK] {key}: 集計完了")
+        except Exception as e:
+            print(f"[WARN] {key} 処理エラー: {e}")
+    return per_region
 
 
 def process_excel(excel_path):
@@ -450,6 +495,25 @@ def merge_expiry(old_expiry, shinki_expire, region):
     return merged
 
 
+def _is_valid_seasonal(data):
+    """seasonal_gyoshu が year/month キー形式かチェック"""
+    if not data:
+        return False
+    for k in data.keys():
+        if '/' in k and len(k) == 7:  # '2024/07' 形式
+            return True
+    return False
+
+
+def _get_valid_seasonal(old_data, new_per_region_data):
+    """有効な seasonal_gyoshu を返す（正しい形式ならそのまま、なければ空）"""
+    if _is_valid_seasonal(old_data):
+        return old_data
+    if new_per_region_data is not None:
+        return new_per_region_data
+    return {}
+
+
 def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
     """index.htmlのRAWとALL_REGIONSを更新"""
     html_path = os.path.join(repo_path, 'index.html')
@@ -459,6 +523,20 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
     # 既存の保持すべきキーを引き継ぐ
     raw_old = _extract_js_var(content, 'RAW')
     all_old = _extract_js_var(content, 'ALL_REGIONS')
+
+    # seasonal_gyoshu が不正な形式（担当者名キー）なら再ダウンロードして計算
+    need_seasonal = not _is_valid_seasonal(raw_old.get('seasonal_gyoshu', {}))
+    if need_seasonal:
+        for region in REGIONS:
+            if not _is_valid_seasonal(all_old.get(region, {}).get('seasonal_gyoshu', {})):
+                need_seasonal = True
+                break
+        else:
+            need_seasonal = False
+    seasonal_per_region = {}
+    if need_seasonal:
+        print("[INFO] seasonal_gyoshu を再取得します（初回のみ）...")
+        seasonal_per_region = calc_seasonal_gyoshu_all()
 
     honsha = new_data['本社']
     raw_new = {
@@ -471,7 +549,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
         'region_total': honsha['region_total'],
         'history': raw_old.get('history', []),
         'expiry': merge_expiry({}, shinki_expire or {}, '本社'),
-        'seasonal_gyoshu': raw_old.get('seasonal_gyoshu', {}),
+        'seasonal_gyoshu': _get_valid_seasonal(raw_old.get('seasonal_gyoshu', {}), seasonal_per_region.get('本社')),
         'shinki_clients': raw_old.get('shinki_clients', {}),
     }
     content = _replace_js_var(content, 'RAW', raw_new)
@@ -481,7 +559,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
         all_new[region] = new_data[region]
         all_new[region]['history'] = all_old.get(region,{}).get('history',[])
         all_new[region]['expiry'] = merge_expiry({}, shinki_expire or {}, region)
-        all_new[region]['seasonal_gyoshu'] = all_old.get(region,{}).get('seasonal_gyoshu',{})
+        all_new[region]['seasonal_gyoshu'] = _get_valid_seasonal(all_old.get(region,{}).get('seasonal_gyoshu',{}), seasonal_per_region.get(region))
         all_new[region]['shinki_clients'] = all_old.get(region,{}).get('shinki_clients',{})
     content = _replace_js_var(content, 'ALL_REGIONS', all_new)
 
