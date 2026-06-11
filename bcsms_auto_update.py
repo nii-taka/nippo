@@ -467,7 +467,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
         'clients': honsha['clients'], 'daily_detail': honsha['daily_detail'],
         'region_total': honsha['region_total'],
         'history': raw_old.get('history', []),
-        'expiry': merge_expiry(raw_old.get('expiry', {}), shinki_expire or {}, '本社'),
+        'expiry': merge_expiry({}, shinki_expire or {}, '本社'),
         'seasonal_gyoshu': raw_old.get('seasonal_gyoshu', {}),
         'shinki_clients': raw_old.get('shinki_clients', {}),
     }
@@ -477,7 +477,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
     for region in ['本社','東京','警備','仙台']:
         all_new[region] = new_data[region]
         all_new[region]['history'] = all_old.get(region,{}).get('history',[])
-        all_new[region]['expiry'] = merge_expiry(all_old.get(region,{}).get('expiry',{}), shinki_expire or {}, region)
+        all_new[region]['expiry'] = merge_expiry({}, shinki_expire or {}, region)
         all_new[region]['seasonal_gyoshu'] = all_old.get(region,{}).get('seasonal_gyoshu',{})
         all_new[region]['shinki_clients'] = all_old.get(region,{}).get('shinki_clients',{})
     content = _replace_js_var(content, 'ALL_REGIONS', all_new)
