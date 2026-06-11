@@ -341,6 +341,39 @@ def process_excel(excel_path):
     worked_str = [d.strftime('%Y/%m/%d') for d in worked_dates]
     data_range = f"{today.year}年{today.month}月1日 〜 {today.month}月{today.day}日"
 
+    # 2024/07-09の契約 → 2026/07-09に新規ステータス失効
+    def calc_shinki_expire(df_all):
+        expire_map = {7: '2026/07', 8: '2026/08', 9: '2026/09'}
+        result = {}
+        for month, expire_ym in expire_map.items():
+            mask = (df_all['契約日'].dt.year == 2024) & (df_all['契約日'].dt.month == month) & df_all['契約日'].notna()
+            df_m = df_all[mask]
+            if len(df_m) == 0:
+                continue
+            regions_data = {}
+            for region, persons in REGION_PERSONS.items():
+                df_r = df_m[df_m['担当者名'].isin(persons)]
+                if len(df_r) == 0:
+                    continue
+                persons_data = {}
+                for person, pg in df_r.groupby('担当者名'):
+                    clients = []
+                    seen = set()
+                    for (cd, name), cg in pg.groupby(['得意先CD','得意先名']):
+                        if name in seen: continue
+                        seen.add(name)
+                        kt = cg['契約日'].iloc[0]
+                        clients.append({'name':str(name),'契約日':kt.strftime('%Y/%m/%d') if pd.notna(kt) else ''})
+                    if clients:
+                        persons_data[str(person)] = clients
+                if persons_data:
+                    regions_data[region] = persons_data
+            if regions_data:
+                result[expire_ym] = regions_data
+        return result
+
+    shinki_expire = calc_shinki_expire(df)
+
     new_data = {}
     for region, persons in REGION_PERSONS.items():
         df_r = df[df['地域']==region]
@@ -356,7 +389,7 @@ def process_excel(excel_path):
         }
         print(f"  {region}: 総合={new_data[region]['region_total']['総合_人工']}")
 
-    return new_data, data_range
+    return new_data, data_range, shinki_expire
 
 
 def _find_js_var_prefix(content, var_name):
@@ -393,7 +426,28 @@ def _replace_js_var(content, var_name, new_obj):
     raise ValueError(f'{var_name} が index.html に見つかりません')
 
 
-def update_index_html(new_data, data_range, repo_path):
+def merge_expiry(old_expiry, shinki_expire, region):
+    """既存のexpiryにshinki_expireをマージ（重複除去）"""
+    merged = {ym: dict(v) for ym, v in old_expiry.items()}
+    for ym, regions_data in shinki_expire.items():
+        if region not in regions_data:
+            continue
+        if ym not in merged:
+            merged[ym] = {}
+        existing_persons = merged[ym].get(region, {})
+        for person, clients in regions_data[region].items():
+            if person not in existing_persons:
+                existing_persons[person] = clients
+            else:
+                existing_names = {c['name'] for c in existing_persons[person]}
+                for c in clients:
+                    if c['name'] not in existing_names:
+                        existing_persons[person].append(c)
+        merged[ym][region] = existing_persons
+    return merged
+
+
+def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
     """index.htmlのRAWとALL_REGIONSを更新"""
     html_path = os.path.join(repo_path, 'index.html')
     with open(html_path, 'r', encoding='utf-8') as f:
@@ -413,7 +467,7 @@ def update_index_html(new_data, data_range, repo_path):
         'clients': honsha['clients'], 'daily_detail': honsha['daily_detail'],
         'region_total': honsha['region_total'],
         'history': raw_old.get('history', []),
-        'expiry': raw_old.get('expiry', {}),
+        'expiry': merge_expiry(raw_old.get('expiry', {}), shinki_expire or {}, '本社'),
         'seasonal_gyoshu': raw_old.get('seasonal_gyoshu', {}),
         'shinki_clients': raw_old.get('shinki_clients', {}),
     }
@@ -423,7 +477,7 @@ def update_index_html(new_data, data_range, repo_path):
     for region in ['本社','東京','警備','仙台']:
         all_new[region] = new_data[region]
         all_new[region]['history'] = all_old.get(region,{}).get('history',[])
-        all_new[region]['expiry'] = all_old.get(region,{}).get('expiry',{})
+        all_new[region]['expiry'] = merge_expiry(all_old.get(region,{}).get('expiry',{}), shinki_expire or {}, region)
         all_new[region]['seasonal_gyoshu'] = all_old.get(region,{}).get('seasonal_gyoshu',{})
         all_new[region]['shinki_clients'] = all_old.get(region,{}).get('shinki_clients',{})
     content = _replace_js_var(content, 'ALL_REGIONS', all_new)
@@ -499,10 +553,10 @@ def main():
 
         # 2. Excelを集計
         print("[DATA] データ集計中...")
-        new_data, data_range = process_excel(excel_path)
+        new_data, data_range, shinki_expire = process_excel(excel_path)
 
         # 3. index.html更新
-        update_index_html(new_data, data_range, repo_path)
+        update_index_html(new_data, data_range, repo_path, shinki_expire)
 
         # 4. GitHubプッシュ（GitHub Actions環境ではワークフロー側で実行）
         if not os.environ.get('GITHUB_ACTIONS'):
