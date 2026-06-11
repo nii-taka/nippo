@@ -668,7 +668,7 @@ def main():
 
         # 業務時間内（7:00〜20:00）のみ通知
         now_hour = datetime.datetime.now().hour
-        if send_lineworks and 7 <= now_hour < 20:
+        if send_lineworks and 7 <= now_hour < 17:
             send_lineworks(msg)
         elif send_lineworks:
             print(f"[INFO] 業務時間外のため通知スキップ ({now_hour}時)")
