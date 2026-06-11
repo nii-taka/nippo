@@ -118,9 +118,42 @@ def download_excel_from_bcsms():
         driver.find_element(By.CSS_SELECTOR, 'input[type="submit"][value="ログイン"]').click()
         time.sleep(3)
         print("[OK] ログイン完了")
+        print(f"[DEBUG] ログイン後URL: {driver.current_url}")
 
-        # メニュー：随時出力処理
-        wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'随時出力')]"))).click()
+        # メニュー：随時出力処理（フレーム対応）
+        def find_and_click_text(driver, text, timeout=20):
+            """テキストを含む要素をフレームも含めて検索してクリック"""
+            from selenium.common.exceptions import TimeoutException as TE
+            # メインフレームで試す
+            try:
+                driver.switch_to.default_content()
+                el = WebDriverWait(driver, 5).until(
+                    EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(),'{text}')]"))
+                )
+                el.click()
+                return True
+            except TE:
+                pass
+            # 各フレームで試す
+            frames = driver.find_elements(By.TAG_NAME, 'frame') + driver.find_elements(By.TAG_NAME, 'iframe')
+            print(f"[DEBUG] フレーム数: {len(frames)}")
+            for i, frame in enumerate(frames):
+                try:
+                    driver.switch_to.default_content()
+                    driver.switch_to.frame(frame)
+                    el = WebDriverWait(driver, 3).until(
+                        EC.element_to_be_clickable((By.XPATH, f"//*[contains(text(),'{text}')]"))
+                    )
+                    el.click()
+                    return True
+                except Exception:
+                    pass
+            return False
+
+        if not find_and_click_text(driver, '随時出力'):
+            # ページソースをデバッグ出力（先頭2000文字）
+            print(f"[DEBUG] ページソース: {driver.page_source[:2000]}")
+            raise Exception("随時出力ボタンが見つかりません")
         time.sleep(2)
         print("[OK] 随時出力処理クリック")
 
