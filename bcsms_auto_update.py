@@ -343,7 +343,7 @@ def process_excel(excel_path):
 
     # 2024/07-09の契約 → 2026/07-09に新規ステータス失効
     def calc_shinki_expire(df_all):
-        expire_map = {7: '2026/07', 8: '2026/08', 9: '2026/09'}
+        expire_map = {7: '2024/07', 8: '2024/08', 9: '2024/09'}
         result = {}
         for month, expire_ym in expire_map.items():
             mask = (df_all['契約日'].dt.year == 2024) & (df_all['契約日'].dt.month == month) & df_all['契約日'].notna()
