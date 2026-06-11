@@ -80,7 +80,6 @@ def download_excel_from_bcsms():
     from selenium.webdriver.support.ui import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.chrome.options import Options
-    from webdriver_manager.chrome import ChromeDriverManager
     from selenium.webdriver.chrome.service import Service
 
     today = datetime.date.today()
@@ -94,20 +93,20 @@ def download_excel_from_bcsms():
     os.makedirs(dl_dir, exist_ok=True)
 
     options = Options()
-    options.add_experimental_option('prefs', {
-        'download.default_directory': dl_dir,
-        'download.prompt_for_download': False,
-        'download.directory_upgrade': True,
-        'safebrowsing.enabled': True,
-    })
     options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
     options.add_argument('--window-size=1920,1080')
 
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+    # Selenium 4.6+ の selenium-manager で自動的にChromeDriverを管理
+    driver = webdriver.Chrome(options=options)
+
+    # ダウンロード先をCDPで設定（experimental_optionより確実）
+    driver.execute_cdp_cmd('Page.setDownloadBehavior', {
+        'behavior': 'allow',
+        'downloadPath': dl_dir,
+    })
     wait = WebDriverWait(driver, 20)
 
     try:

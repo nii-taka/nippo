@@ -19,7 +19,7 @@ jobs:
           python-version: '3.11'
 
       - name: 依存ライブラリをインストール
-        run: pip install selenium webdriver-manager pandas openpyxl
+        run: pip install selenium pandas openpyxl
 
       - name: Chrome をセットアップ
         uses: browser-actions/setup-chrome@v1
