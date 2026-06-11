@@ -1,0 +1,52 @@
+name: NIPPO 自動更新
+
+on:
+  schedule:
+    - cron: '0 23 * * *'  # 毎日 23:00 UTC = 翌08:00 JST
+  workflow_dispatch:       # 手動実行ボタン
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Python セットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 依存ライブラリをインストール
+        run: pip install selenium webdriver-manager pandas openpyxl
+
+      - name: Chrome をセットアップ
+        uses: browser-actions/setup-chrome@v1
+
+      - name: config.py を Secrets から生成
+        run: |
+          cat > config.py << 'EOF'
+          BCSMS_URL   = "${{ secrets.BCSMS_URL }}"
+          BCSMS_ID    = "${{ secrets.BCSMS_ID }}"
+          BCSMS_PW    = "${{ secrets.BCSMS_PW }}"
+          GITHUB_TOKEN = "${{ secrets.GH_PAT }}"
+          GITHUB_REPO  = "nii-taka/nippo"
+          DOWNLOAD_DIR = "/tmp/nippo_excel"
+          EOF
+
+      - name: NIPPO データ更新スクリプトを実行
+        run: python bcsms_auto_update.py
+        env:
+          PYTHONIOENCODING: utf-8
+          DISPLAY: ''
+
+      - name: 変更をコミット・プッシュ
+        run: |
+          git config user.email "nii-taka@users.noreply.github.com"
+          git config user.name "nii-taka"
+          git add index.html
+          git diff --cached --quiet || git commit -m "data: $(date '+%Y/%m/%d') 自動更新 [Actions]"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
