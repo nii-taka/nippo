@@ -53,6 +53,9 @@ jobs:
           from datetime import timezone, timedelta
           JST = timezone(timedelta(hours=9))
           now_jst = datetime.now(JST)
+          if not (7 <= now_jst.hour < 17):
+              print(f"[SKIP] 業務時間外のため通知スキップ ({now_jst.hour}時)")
+              exit(0)
           today = now_jst.strftime("%Y年%-m月%-d日")
           start = now_jst.strftime("%Y年%-m月1日")
           text = f"📊 NIPPO\n\n最新データを確認できます！\n（{start}～{today}）\n\n▶ https://nii-taka.github.io/nippo/"
