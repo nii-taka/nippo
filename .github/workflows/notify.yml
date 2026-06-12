@@ -50,8 +50,11 @@ jobs:
               "assertion": jwt_token, "scope": "bot",
           })
           access_token = res.json()["access_token"]
-          today = datetime.now().strftime("%Y年%-m月%-d日")
-          start = datetime.now().strftime("%Y年%-m月1日")
+          from datetime import timezone, timedelta
+          JST = timezone(timedelta(hours=9))
+          now_jst = datetime.now(JST)
+          today = now_jst.strftime("%Y年%-m月%-d日")
+          start = now_jst.strftime("%Y年%-m月1日")
           text = f"📊 NIPPO\n\n最新データを確認できます！\n（{start}～{today}）\n\n▶ https://nii-taka.github.io/nippo/"
           r = requests.post(
               f"https://www.worksapis.com/v1.0/bots/{BOT_ID}/channels/{CHANNEL_ID}/messages",
