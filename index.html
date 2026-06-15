@@ -566,10 +566,10 @@ function renderOverview(){
 // ---- OVERALL VIEW ----
 function renderAll(el){
   const ps = RAW.person_summary;
-  const total = RAW.targets.reduce((a,p)=>a+ps[p]['総合_人工'],0);
-  const shin = RAW.targets.reduce((a,p)=>a+ps[p]['新規_人工'],0);
-  const kison = RAW.targets.reduce((a,p)=>a+ps[p]['既存_人工'],0);
-  const kuran = RAW.targets.reduce((a,p)=>a+ps[p]['空欄_人工'],0);
+  const total = RAW.targets.reduce((a,p)=>a+(ps[p]?.['総合_人工']||0),0);
+  const shin = RAW.targets.reduce((a,p)=>a+(ps[p]?.['新規_人工']||0),0);
+  const kison = RAW.targets.reduce((a,p)=>a+(ps[p]?.['既存_人工']||0),0);
+  const kuran = RAW.targets.reduce((a,p)=>a+(ps[p]?.['空欄_人工']||0),0);
 
   el.innerHTML = `
   <div class="kpi-grid">
@@ -635,9 +635,9 @@ function renderAll(el){
   mkChart('chart-person-all',{type:'bar',data:{
     labels:RAW.targets,
     datasets:[
-      {label:'新規',data:RAW.targets.map(p=>ps[p]['新規_人工']),backgroundColor:SHIN_C,stack:'s'},
-      {label:'既存',data:RAW.targets.map(p=>ps[p]['既存_人工']),backgroundColor:KISON_C,stack:'s'},
-      {label:'空欄',data:RAW.targets.map(p=>ps[p]['空欄_人工']),backgroundColor:KURAN_C,stack:'s'},
+      {label:'新規',data:RAW.targets.map(p=>ps[p]?.['新規_人工']||0),backgroundColor:SHIN_C,stack:'s'},
+      {label:'既存',data:RAW.targets.map(p=>ps[p]?.['既存_人工']||0),backgroundColor:KISON_C,stack:'s'},
+      {label:'空欄',data:RAW.targets.map(p=>ps[p]?.['空欄_人工']||0),backgroundColor:KURAN_C,stack:'s'},
     ]
   },options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#94a3b8'}},y:{ticks:{color:'#94a3b8'}}}}});
 
