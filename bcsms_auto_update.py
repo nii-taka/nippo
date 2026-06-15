@@ -463,9 +463,8 @@ def process_excel(excel_path):
     # 当月から2年以内の契約先を担当者別に抽出
     def calc_shinki_clients_all():
         import calendar
-        # 1年前の月初を cutoff とする
-        cutoff_year = today.year - 1
-        cutoff = datetime.date(cutoff_year, today.month, 1)
+        # 2026年6月から2年前（2024年6月）を固定 cutoff とする
+        cutoff = datetime.date(2024, 6, 1)
         mask = df['契約日'].notna() & (df['契約日'].dt.date >= cutoff)
         df_shinki = df[mask]
         result = {}  # region -> {person -> [{name, 契約日, 戦略}]}
@@ -603,6 +602,28 @@ def _get_valid_seasonal(old_data, new_per_region_data):
     return {}
 
 
+def _merge_shinki_strategy(old_clients, new_clients):
+    """新データに旧データの戦略〇を引き継ぐ"""
+    if not new_clients:
+        return old_clients
+    # 旧データから {得意先名: 戦略} のマップ作成
+    strategy_map = {}
+    for person, clients in old_clients.items():
+        for c in clients:
+            if c.get('戦略'):
+                strategy_map[c['name']] = c['戦略']
+    # 新データに適用
+    merged = {}
+    for person, clients in new_clients.items():
+        merged[person] = []
+        for c in clients:
+            nc = dict(c)
+            if not nc.get('戦略') and nc['name'] in strategy_map:
+                nc['戦略'] = strategy_map[nc['name']]
+            merged[person].append(nc)
+    return merged
+
+
 def update_index_html(new_data, data_range, repo_path, shinki_expire=None, shinki_clients_all=None):
     """index.htmlのRAWとALL_REGIONSを更新"""
     html_path = os.path.join(repo_path, 'index.html')
@@ -641,7 +662,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None, shink
         'history': raw_old.get('history', []),
         'expiry': merge_expiry({}, shinki_expire or {}, '本社'),
         'seasonal_gyoshu': _get_valid_seasonal(raw_old.get('seasonal_gyoshu', {}), seasonal_per_region.get('本社')),
-        'shinki_clients': (shinki_clients_all or {}).get('本社', raw_old.get('shinki_clients', {})),
+        'shinki_clients': _merge_shinki_strategy(raw_old.get('shinki_clients', {}), (shinki_clients_all or {}).get('本社', {})),
     }
     content = _replace_js_var(content, 'RAW', raw_new)
 
@@ -656,7 +677,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None, shink
         all_new[region]['history'] = rd_old.get('history',[])
         all_new[region]['expiry'] = merge_expiry({}, shinki_expire or {}, region)
         all_new[region]['seasonal_gyoshu'] = _get_valid_seasonal(all_old.get(region,{}).get('seasonal_gyoshu',{}), seasonal_per_region.get(region))
-        all_new[region]['shinki_clients'] = (shinki_clients_all or {}).get(region, all_old.get(region,{}).get('shinki_clients',{}))
+        all_new[region]['shinki_clients'] = _merge_shinki_strategy(all_old.get(region,{}).get('shinki_clients',{}), (shinki_clients_all or {}).get(region, {}))
         all_new[region]['daily_detail'] = merge_daily_detail(all_old.get(region,{}).get('daily_detail',{}), new_data[region]['daily_detail'])
     content = _replace_js_var(content, 'ALL_REGIONS', all_new)
 
