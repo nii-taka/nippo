@@ -80,8 +80,9 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   body{background:#fff!important;color:#000!important;padding:0!important;margin:0!important}
   header,.main-tabs,.daily-toolbar,.daily-person-tabs,.daily-view-toggle,
-  #btn-view-single,#btn-view-all,.print-btn,.btn,.person-tabs{display:none!important}
+  #btn-view-single,#btn-view-all,.print-btn,.btn,.person-tabs,.no-print,.eigyo-toolbar{display:none!important}
   .tab-pane{display:none!important}
+  #tab-eigyo.active-print{display:block!important}
   #tab-daily{display:block!important}
   #daily-single-view{display:none!important}
   #daily-all-view{display:block!important}
@@ -1090,6 +1091,10 @@ function renderEigyo(){
   }
 
   el.innerHTML = `<div class="eigyo-wrap">
+    <div class="eigyo-toolbar no-print" style="display:flex;gap:8px;margin-bottom:20px">
+      <button class="print-btn" onclick="printEigyo()">🖨️ PDF・印刷</button>
+      <button class="print-btn" onclick="exportEigyoExcel()">📥 Excel出力</button>
+    </div>
     <div class="eigyo-section">
       <h3>📊 新規 1日あたり出向数（月別）</h3>
       ${REGION_ORDER.map(r => buildRegionBlock(r,'新規')).join('')}
@@ -1499,6 +1504,93 @@ document.querySelectorAll('.main-tab').forEach(btn=>{
   });
 });
 </script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script>
+// ===== 営業実績 エクスポート =====
+function printEigyo(){
+  const pane = document.getElementById('tab-eigyo');
+  pane.classList.add('active-print');
+  window.print();
+  pane.classList.remove('active-print');
+}
 
+function exportEigyoExcel(){
+  const REGION_ORDER = ['本社','東京','警備','仙台'];
+  const workedDaysActual = {'2026年4月': 20};
 
+  function weekdaysInMonth(y,m){
+    const days=new Date(y,m,0).getDate(); let cnt=0;
+    for(let d=1;d<=days;d++){const wd=new Date(y,m-1,d).getDay();if(wd!==0&&wd!==6)cnt++;}
+    return cnt;
+  }
+  function workedDays(label, isCur, wdates){
+    if(isCur) return (wdates||[]).length||20;
+    if(workedDaysActual[label]) return workedDaysActual[label];
+    const m=label.match(/(\d+)年(\d+)月/);
+    return m?weekdaysInMonth(parseInt(m[1]),parseInt(m[2])):20;
+  }
+
+  const curLabel=(()=>{const dr=RAW.data_range||'';const m=dr.match(/(\d+)年(\d+)月/);return m?`${m[1]}年${m[2]}月`:'当月';})();
+  const monthSet=new Set();
+  REGION_ORDER.forEach(r=>(ALL_REGIONS[r]?.history||[]).forEach(h=>monthSet.add(h.month)));
+  const months=[...monthSet].sort();months.push(curLabel);
+
+  const wb = XLSX.utils.book_new();
+
+  // シート①②: 新規・総合 出向数
+  ['新規','総合'].forEach(key=>{
+    const rows=[['拠点','担当者',...months]];
+    REGION_ORDER.forEach(region=>{
+      const rd=ALL_REGIONS[region]||{};
+      const targets=rd.targets||[];
+      const ps=rd.person_summary||{};
+      const history=rd.history||[];
+      const wdates=rd.worked_dates||[];
+      const byPerson={};
+      targets.forEach(p=>{byPerson[p]={};});
+      history.forEach(h=>(h.persons||[]).forEach(pd=>{
+        if(!byPerson[pd.name])byPerson[pd.name]={};
+        byPerson[pd.name][h.month]={総合:pd.総合||0,新規:pd.新規||0};
+      }));
+      Object.entries(ps).forEach(([name,pd])=>{
+        if(!byPerson[name])byPerson[name]={};
+        byPerson[name][curLabel]={総合:pd['総合_人工']||0,新規:pd['新規_人工']||0};
+      });
+      targets.forEach(p=>{
+        if(!byPerson[p])return;
+        const row=[region,p];
+        months.forEach((m,i)=>{
+          const raw=byPerson[p]?.[m]?.[key];
+          if(raw==null||raw===0){row.push('');}
+          else{const d=workedDays(m,i===months.length-1,wdates);row.push(+(raw/d).toFixed(1));}
+        });
+        rows.push(row);
+      });
+    });
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols']=[{wch:8},{wch:14},...months.map(()=>({wch:10}))];
+    XLSX.utils.book_append_sheet(wb,ws,`${key}_1日あたり出向数`);
+  });
+
+  // シート③: 新規契約実績
+  const crows=[['拠点','担当者','得意先名','契約月']];
+  REGION_ORDER.forEach(region=>{
+    const rd=ALL_REGIONS[region]||{};
+    const targets=rd.targets||[];
+    const shinki=rd.shinki_clients||{};
+    targets.forEach(p=>{
+      (shinki[p]||[]).forEach(c=>{
+        crows.push([region,p,c.name,c['契約日'].slice(0,7)]);
+      });
+    });
+  });
+  const ws3=XLSX.utils.aoa_to_sheet(crows);
+  ws3['!cols']=[{wch:8},{wch:14},{wch:28},{wch:10}];
+  XLSX.utils.book_append_sheet(wb,ws3,'新規契約実績');
+
+  const today=new Date();
+  const fname=`営業実績_${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}.xlsx`;
+  XLSX.writeFile(wb,fname);
+}
+</script>
 </body></html>
