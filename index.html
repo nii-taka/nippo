@@ -83,6 +83,10 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
   #btn-view-single,#btn-view-all,.print-btn,.btn,.person-tabs,.no-print,.eigyo-toolbar{display:none!important}
   .tab-pane{display:none!important}
   #tab-eigyo.active-print{display:block!important}
+  #tab-eigyo.active-print *{color:#000!important;background:#fff!important;border-color:#ccc!important}
+  #tab-eigyo.active-print .eigyo-monthly-table th{background:#eee!important;color:#000!important}
+  #tab-eigyo.active-print .eigyo-monthly-table td{color:#000!important}
+  #tab-eigyo.active-print .cur-month{color:#1d4ed8!important}
   #tab-daily{display:block!important}
   #daily-single-view{display:none!important}
   #daily-all-view{display:block!important}
@@ -1090,6 +1094,11 @@ function renderEigyo(){
     return html || '<div style="color:var(--text2);padding:16px">データがありません</div>';
   }
 
+  function buildSideBySide(key){
+    const blocks = REGION_ORDER.map(r => buildRegionBlock(r, key)).filter(b => b);
+    return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;align-items:start">${blocks.join('')}</div>`;
+  }
+
   el.innerHTML = `<div class="eigyo-wrap">
     <div class="eigyo-toolbar no-print" style="display:flex;gap:8px;margin-bottom:20px">
       <button class="print-btn" onclick="printEigyo()">🖨️ PDF・印刷</button>
@@ -1097,11 +1106,11 @@ function renderEigyo(){
     </div>
     <div class="eigyo-section">
       <h3>📊 新規 1日あたり出向数（月別）</h3>
-      ${REGION_ORDER.map(r => buildRegionBlock(r,'新規')).join('')}
+      ${buildSideBySide('新規')}
     </div>
     <div class="eigyo-section">
       <h3>📦 総合 1日あたり出向数（月別）</h3>
-      ${REGION_ORDER.map(r => buildRegionBlock(r,'総合')).join('')}
+      ${buildSideBySide('総合')}
     </div>
     <div class="eigyo-section">
       <h3>🏢 新規契約実績（直近1年以内）</h3>
