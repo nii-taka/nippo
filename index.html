@@ -974,6 +974,11 @@ function renderEigyo(){
   const ps = RAW.person_summary || {};
   const targets = RAW.targets || Object.keys(ps);
 
+  // 実績稼働日数（確定値）
+  const workedDaysActual = {
+    '2026年4月': 24,
+  };
+
   // 月の平日数を計算（土日除く近似値）
   function weekdaysInMonth(yearNum, monthNum){
     const days = new Date(yearNum, monthNum, 0).getDate();
@@ -988,6 +993,7 @@ function renderEigyo(){
   // 月ラベルをパースして稼働日数を返す
   function workedDaysForMonth(label, isCurrent){
     if(isCurrent) return (RAW.worked_dates || RAW.dates || []).length || 20;
+    if(workedDaysActual[label]) return workedDaysActual[label];
     const m = label.match(/(\d+)年(\d+)月/);
     if(!m) return 20;
     return weekdaysInMonth(parseInt(m[1]), parseInt(m[2]));
