@@ -463,8 +463,8 @@ def process_excel(excel_path):
     # 当月から2年以内の契約先を担当者別に抽出
     def calc_shinki_clients_all():
         import calendar
-        # 2年前の月初を cutoff とする
-        cutoff_year = today.year - 2
+        # 1年前の月初を cutoff とする
+        cutoff_year = today.year - 1
         cutoff = datetime.date(cutoff_year, today.month, 1)
         mask = df['契約日'].notna() & (df['契約日'].dt.date >= cutoff)
         df_shinki = df[mask]

@@ -970,18 +970,39 @@ function setShinkiFilter(p){
 function renderEigyo(){
   const el = document.getElementById('eigyo-content');
 
-  // 月別データ: history(過去月) + 当月(person_summary)
   const history = RAW.history || [];
   const ps = RAW.person_summary || {};
   const targets = RAW.targets || Object.keys(ps);
 
-  // 月ラベルと各月のpersonデータを構築
-  // history: [{month:'2025年5月', persons:[{name,総合,新規,...}]}]
+  // 月の平日数を計算（土日除く近似値）
+  function weekdaysInMonth(yearNum, monthNum){
+    const days = new Date(yearNum, monthNum, 0).getDate();
+    let cnt = 0;
+    for(let d=1; d<=days; d++){
+      const wd = new Date(yearNum, monthNum-1, d).getDay();
+      if(wd !== 0 && wd !== 6) cnt++;
+    }
+    return cnt;
+  }
+
+  // 月ラベルをパースして稼働日数を返す
+  function workedDaysForMonth(label, isCurrent){
+    if(isCurrent) return (RAW.worked_dates || RAW.dates || []).length || 20;
+    const m = label.match(/(\d+)年(\d+)月/);
+    if(!m) return 20;
+    return weekdaysInMonth(parseInt(m[1]), parseInt(m[2]));
+  }
+
+  // 月ラベル構築
   const months = history.map(h => h.month);
-  const curLabel = RAW.data_range ? RAW.data_range.replace(/\d+日\s*〜.*$/, '〜') : '当月';
+  const curLabel = (() => {
+    const dr = RAW.data_range || '';
+    const m = dr.match(/(\d+)年(\d+)月/);
+    return m ? `${m[1]}年${m[2]}月` : '当月';
+  })();
   months.push(curLabel);
 
-  // person → month → {総合, 新規}
+  // person → month → {総合_人工, 新規_人工}
   const byPerson = {};
   targets.forEach(p => { byPerson[p] = {}; });
 
@@ -998,16 +1019,18 @@ function renderEigyo(){
 
   const persons = Object.keys(byPerson).filter(p => targets.includes(p));
 
-  function buildMonthlyTable(key, label, colorClass){
+  function buildMonthlyTable(key){
     if(persons.length === 0) return '<div style="color:var(--text2);padding:16px">データがありません</div>';
     const thCols = months.map((m,i) =>
       `<th${i===months.length-1?' class="cur-month"':''}>${m}</th>`
     ).join('');
     const rows = persons.map(p => {
       const tds = months.map((m,i) => {
-        const v = byPerson[p]?.[m]?.[key];
-        if(v == null || v === 0) return `<td class="blank">—</td>`;
-        return `<td${i===months.length-1?' class="cur-month"':''}>${v.toLocaleString('ja-JP',{maximumFractionDigits:1})}</td>`;
+        const raw = byPerson[p]?.[m]?.[key];
+        if(raw == null || raw === 0) return `<td class="blank">—</td>`;
+        const days = workedDaysForMonth(m, i===months.length-1);
+        const v = days > 0 ? (raw / days).toFixed(1) : '—';
+        return `<td${i===months.length-1?' class="cur-month"':''}>${v}</td>`;
       }).join('');
       return `<tr><td class="name-col">${p}</td>${tds}</tr>`;
     }).join('');
@@ -1018,26 +1041,21 @@ function renderEigyo(){
       </table></div>`;
   }
 
-  // 新規契約実績
+  // 新規契約実績（直近1年以内）
   const shinki = RAW.shinki_clients || {};
   const contractPersons = Object.keys(shinki).filter(p => targets.includes(p) && shinki[p].length > 0);
   let contractHtml = '';
   if(contractPersons.length === 0){
     contractHtml = '<div style="color:var(--text2);padding:16px">データがありません</div>';
   } else {
-    const today = new Date();
-    const oneYearAgo = new Date(today.getFullYear()-1, today.getMonth(), 1);
     contractHtml = '<div class="eigyo-contracts-grid">' +
       contractPersons.map(p => {
         const clients = shinki[p];
-        const rows = clients.map(c => {
-          const cd = new Date(c['契約日']);
-          const isNew = cd >= oneYearAgo;
-          return `<div class="client-row">
-            <span>${c.name}${isNew ? ' <span class="client-new">NEW</span>' : ''}</span>
+        const rows = clients.map(c => `
+          <div class="client-row">
+            <span>${c.name}</span>
             <span class="client-date">${c['契約日'].slice(0,7)}</span>
-          </div>`;
-        }).join('');
+          </div>`).join('');
         return `<div class="eigyo-contracts-card">
           <h4>👤 ${p} <span style="color:var(--text2);font-weight:400;font-size:.8rem">${clients.length}件</span></h4>
           ${rows}
@@ -1047,15 +1065,15 @@ function renderEigyo(){
 
   el.innerHTML = `<div class="eigyo-wrap">
     <div class="eigyo-section">
-      <h3>📊 新規出向数（月別・人工）</h3>
-      ${buildMonthlyTable('新規','新規','shin')}
+      <h3>📊 新規 1日あたり出向数（月別）</h3>
+      ${buildMonthlyTable('新規')}
     </div>
     <div class="eigyo-section">
-      <h3>📦 総合出向数（月別・人工）</h3>
-      ${buildMonthlyTable('総合','総合','accent')}
+      <h3>📦 総合 1日あたり出向数（月別）</h3>
+      ${buildMonthlyTable('総合')}
     </div>
     <div class="eigyo-section">
-      <h3>🏢 新規契約実績（直近2年以内）</h3>
+      <h3>🏢 新規契約実績（直近1年以内）</h3>
       ${contractHtml}
     </div>
   </div>`;
