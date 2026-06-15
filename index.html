@@ -165,6 +165,25 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
 .shinki-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .shinki-filter-btn{padding:5px 14px;border:none;border-radius:16px;font-size:.82rem;font-weight:600;cursor:pointer;background:var(--surface2);color:var(--text2);transition:all .2s}
 .shinki-filter-btn.active{background:#1d4ed8;color:#93c5fd}
+/* 営業実績 */
+.eigyo-wrap{padding:24px}
+.eigyo-section{margin-bottom:36px}
+.eigyo-section h3{font-size:1rem;font-weight:700;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--border);color:var(--text)}
+.eigyo-monthly-table{width:100%;border-collapse:collapse;font-size:.82rem;overflow-x:auto;display:block}
+.eigyo-monthly-table th{background:var(--surface2);padding:7px 10px;text-align:center;color:var(--text2);font-weight:600;white-space:nowrap;position:sticky;top:0}
+.eigyo-monthly-table th.name-col{text-align:left;position:sticky;left:0;background:var(--surface2);z-index:2}
+.eigyo-monthly-table td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:center;color:var(--text);white-space:nowrap}
+.eigyo-monthly-table td.name-col{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1;font-weight:600}
+.eigyo-monthly-table tr:hover td{background:var(--surface2)}
+.eigyo-monthly-table .cur-month{color:var(--accent);font-weight:700}
+.eigyo-monthly-table .blank{color:var(--text2)}
+.eigyo-contracts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.eigyo-contracts-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
+.eigyo-contracts-card h4{font-size:.9rem;font-weight:700;margin-bottom:10px;color:var(--text)}
+.eigyo-contracts-card .client-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:.82rem}
+.eigyo-contracts-card .client-row:last-child{border-bottom:none}
+.eigyo-contracts-card .client-date{color:var(--text2);font-size:.78rem}
+.eigyo-contracts-card .client-new{color:var(--shin);font-size:.75rem;font-weight:700}
 .ranking-region-btn{padding:6px 16px;border:none;border-radius:20px;font-size:.85rem;font-weight:600;cursor:pointer;background:var(--surface2);color:var(--text2);transition:all .2s}
 .ranking-region-btn.active{background:#1d4ed8;color:#93c5fd}
 .ranking-region-btn:hover:not(.active){background:var(--surface);color:var(--text)}
@@ -235,6 +254,7 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
   <button class="main-tab active" data-tab="overview">📊 集計グラフ</button>
   <button class="main-tab" data-tab="daily">📋 日別出向数</button>
   <button class="main-tab" data-tab="shinki">🏢 新規取引先</button>
+  <button class="main-tab" data-tab="eigyo">📈 営業実績</button>
   <button class="main-tab" data-tab="history">📅 過去実績</button>
   <button class="main-tab" data-tab="ranking">🏆 ランキング</button>
 
@@ -256,6 +276,11 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
     <div class="ranking-wrap" id="ranking-content"></div>
     <div class="ranking-wrap" id="ranking-all-content" style="display:none"></div>
   </div>
+  <!-- 営業実績タブ -->
+  <div class="tab-pane" id="tab-eigyo">
+    <div id="eigyo-content"></div>
+  </div>
+
     <!-- 新規取引先タブ -->
   <div class="tab-pane" id="tab-shinki">
     <div class="shinki-wrap" id="shinki-content"></div>
@@ -941,6 +966,101 @@ function setShinkiFilter(p){
   renderShinki();
 }
 
+// ===== 営業実績タブ =====
+function renderEigyo(){
+  const el = document.getElementById('eigyo-content');
+
+  // 月別データ: history(過去月) + 当月(person_summary)
+  const history = RAW.history || [];
+  const ps = RAW.person_summary || {};
+  const targets = RAW.targets || Object.keys(ps);
+
+  // 月ラベルと各月のpersonデータを構築
+  // history: [{month:'2025年5月', persons:[{name,総合,新規,...}]}]
+  const months = history.map(h => h.month);
+  const curLabel = RAW.data_range ? RAW.data_range.replace(/\d+日\s*〜.*$/, '〜') : '当月';
+  months.push(curLabel);
+
+  // person → month → {総合, 新規}
+  const byPerson = {};
+  targets.forEach(p => { byPerson[p] = {}; });
+
+  history.forEach(h => {
+    (h.persons || []).forEach(pd => {
+      if(!byPerson[pd.name]) byPerson[pd.name] = {};
+      byPerson[pd.name][h.month] = {総合: pd.総合 || 0, 新規: pd.新規 || 0};
+    });
+  });
+  Object.entries(ps).forEach(([name, pd]) => {
+    if(!byPerson[name]) byPerson[name] = {};
+    byPerson[name][curLabel] = {総合: pd['総合_人工'] || 0, 新規: pd['新規_人工'] || 0};
+  });
+
+  const persons = Object.keys(byPerson).filter(p => targets.includes(p));
+
+  function buildMonthlyTable(key, label, colorClass){
+    if(persons.length === 0) return '<div style="color:var(--text2);padding:16px">データがありません</div>';
+    const thCols = months.map((m,i) =>
+      `<th${i===months.length-1?' class="cur-month"':''}>${m}</th>`
+    ).join('');
+    const rows = persons.map(p => {
+      const tds = months.map((m,i) => {
+        const v = byPerson[p]?.[m]?.[key];
+        if(v == null || v === 0) return `<td class="blank">—</td>`;
+        return `<td${i===months.length-1?' class="cur-month"':''}>${v.toLocaleString('ja-JP',{maximumFractionDigits:1})}</td>`;
+      }).join('');
+      return `<tr><td class="name-col">${p}</td>${tds}</tr>`;
+    }).join('');
+    return `<div style="overflow-x:auto">
+      <table class="eigyo-monthly-table">
+        <thead><tr><th class="name-col">担当者</th>${thCols}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>`;
+  }
+
+  // 新規契約実績
+  const shinki = RAW.shinki_clients || {};
+  const contractPersons = Object.keys(shinki).filter(p => targets.includes(p) && shinki[p].length > 0);
+  let contractHtml = '';
+  if(contractPersons.length === 0){
+    contractHtml = '<div style="color:var(--text2);padding:16px">データがありません</div>';
+  } else {
+    const today = new Date();
+    const oneYearAgo = new Date(today.getFullYear()-1, today.getMonth(), 1);
+    contractHtml = '<div class="eigyo-contracts-grid">' +
+      contractPersons.map(p => {
+        const clients = shinki[p];
+        const rows = clients.map(c => {
+          const cd = new Date(c['契約日']);
+          const isNew = cd >= oneYearAgo;
+          return `<div class="client-row">
+            <span>${c.name}${isNew ? ' <span class="client-new">NEW</span>' : ''}</span>
+            <span class="client-date">${c['契約日'].slice(0,7)}</span>
+          </div>`;
+        }).join('');
+        return `<div class="eigyo-contracts-card">
+          <h4>👤 ${p} <span style="color:var(--text2);font-weight:400;font-size:.8rem">${clients.length}件</span></h4>
+          ${rows}
+        </div>`;
+      }).join('') + '</div>';
+  }
+
+  el.innerHTML = `<div class="eigyo-wrap">
+    <div class="eigyo-section">
+      <h3>📊 新規出向数（月別・人工）</h3>
+      ${buildMonthlyTable('新規','新規','shin')}
+    </div>
+    <div class="eigyo-section">
+      <h3>📦 総合出向数（月別・人工）</h3>
+      ${buildMonthlyTable('総合','総合','accent')}
+    </div>
+    <div class="eigyo-section">
+      <h3>🏢 新規契約実績（直近2年以内）</h3>
+      ${contractHtml}
+    </div>
+  </div>`;
+}
+
 function renderHistory(){
   const el = document.getElementById('history-content');
   const history = RAW.history || [];
@@ -1030,6 +1150,7 @@ document.querySelectorAll('.main-tab').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     if(btn.dataset.tab === 'history') renderHistory();
     if(btn.dataset.tab === 'shinki'){ shinkiFilter='全員'; renderShinki(); }
+    if(btn.dataset.tab === 'eigyo') renderEigyo();
   });
 });
 

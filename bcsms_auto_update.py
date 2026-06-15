@@ -230,18 +230,17 @@ def download_excel_from_bcsms(start_date=None, end_date=None):
         """)
         print(f"[DEBUG] 担当者別選択: {selected}")
 
-        # 日付設定：U004=開始日、U006=終了日（スクリーンショット確認済み）
+        # 日付設定：U001=対象日付開始 / U002=対象日付終了
         time.sleep(1)
-        from selenium.webdriver.common.keys import Keys
-        for name, date_val in [('U004', start_date), ('U006', end_date)]:
+        for name, date_val in [('U001', start_date), ('U002', end_date)]:
             try:
                 el = driver.find_element(By.NAME, name)
-                driver.execute_script("arguments[0].value = '';", el)
-                el.click()
-                el.send_keys(Keys.CONTROL + 'a')
-                el.send_keys(date_val)
-                el.send_keys(Keys.TAB)
-                print(f"[DEBUG] {name} = {date_val}")
+                driver.execute_script("arguments[0].value = arguments[1];", el, date_val)
+                driver.execute_script("""
+                    arguments[0].dispatchEvent(new Event('input',  {bubbles:true}));
+                    arguments[0].dispatchEvent(new Event('change', {bubbles:true}));
+                    arguments[0].dispatchEvent(new Event('blur',   {bubbles:true}));
+                """, el)
             except Exception as e:
                 print(f"[WARN] {name} 設定失敗: {e}")
         time.sleep(1)
@@ -461,6 +460,46 @@ def process_excel(excel_path):
 
     shinki_expire = calc_shinki_expire(df)
 
+    # 当月から2年以内の契約先を担当者別に抽出
+    def calc_shinki_clients_all():
+        import calendar
+        # 2年前の月初を cutoff とする
+        cutoff_year = today.year - 2
+        cutoff = datetime.date(cutoff_year, today.month, 1)
+        mask = df['契約日'].notna() & (df['契約日'].dt.date >= cutoff)
+        df_shinki = df[mask]
+        result = {}  # region -> {person -> [{name, 契約日, 戦略}]}
+        for region, persons in REGION_PERSONS.items():
+            df_r = df_shinki[df_shinki['担当者名'].isin(persons)]
+            persons_data = {}
+            for person, pg in df_r.groupby('担当者名'):
+                clients = []
+                seen = set()
+                for (cd, name), cg in pg.groupby(['得意先CD', '得意先名']):
+                    if name in seen:
+                        continue
+                    seen.add(name)
+                    kt = cg['契約日'].iloc[0]
+                    # 戦略列があれば取得
+                    strategy = ''
+                    if '戦略' in cg.columns:
+                        sv = cg['戦略'].dropna()
+                        strategy = str(sv.iloc[0]) if len(sv) > 0 else ''
+                    clients.append({
+                        'name': str(name),
+                        '契約日': kt.strftime('%Y/%m/%d') if pd.notna(kt) else '',
+                        '戦略': strategy
+                    })
+                # 契約日の新しい順にソート
+                clients.sort(key=lambda x: x['契約日'], reverse=True)
+                if clients:
+                    persons_data[str(person)] = clients
+            if persons_data:
+                result[region] = persons_data
+        return result
+
+    shinki_clients_all = calc_shinki_clients_all()
+
     new_data = {}
     for region, persons in REGION_PERSONS.items():
         df_r = df[df['地域']==region]
@@ -476,7 +515,7 @@ def process_excel(excel_path):
         }
         print(f"  {region}: 総合={new_data[region]['region_total']['総合_人工']}")
 
-    return new_data, data_range, shinki_expire
+    return new_data, data_range, shinki_expire, shinki_clients_all
 
 
 def _find_js_var_prefix(content, var_name):
@@ -564,7 +603,7 @@ def _get_valid_seasonal(old_data, new_per_region_data):
     return {}
 
 
-def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
+def update_index_html(new_data, data_range, repo_path, shinki_expire=None, shinki_clients_all=None):
     """index.htmlのRAWとALL_REGIONSを更新"""
     html_path = os.path.join(repo_path, 'index.html')
     with open(html_path, 'r', encoding='utf-8') as f:
@@ -602,7 +641,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
         'history': raw_old.get('history', []),
         'expiry': merge_expiry({}, shinki_expire or {}, '本社'),
         'seasonal_gyoshu': _get_valid_seasonal(raw_old.get('seasonal_gyoshu', {}), seasonal_per_region.get('本社')),
-        'shinki_clients': raw_old.get('shinki_clients', {}),
+        'shinki_clients': (shinki_clients_all or {}).get('本社', raw_old.get('shinki_clients', {})),
     }
     content = _replace_js_var(content, 'RAW', raw_new)
 
@@ -617,7 +656,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None):
         all_new[region]['history'] = rd_old.get('history',[])
         all_new[region]['expiry'] = merge_expiry({}, shinki_expire or {}, region)
         all_new[region]['seasonal_gyoshu'] = _get_valid_seasonal(all_old.get(region,{}).get('seasonal_gyoshu',{}), seasonal_per_region.get(region))
-        all_new[region]['shinki_clients'] = all_old.get(region,{}).get('shinki_clients',{})
+        all_new[region]['shinki_clients'] = (shinki_clients_all or {}).get(region, all_old.get(region,{}).get('shinki_clients',{}))
         all_new[region]['daily_detail'] = merge_daily_detail(all_old.get(region,{}).get('daily_detail',{}), new_data[region]['daily_detail'])
     content = _replace_js_var(content, 'ALL_REGIONS', all_new)
 
@@ -692,10 +731,10 @@ def main():
 
         # 2. Excelを集計
         print("[DATA] データ集計中...")
-        new_data, data_range, shinki_expire = process_excel(excel_path)
+        new_data, data_range, shinki_expire, shinki_clients_all = process_excel(excel_path)
 
         # 3. index.html更新
-        update_index_html(new_data, data_range, repo_path, shinki_expire)
+        update_index_html(new_data, data_range, repo_path, shinki_expire, shinki_clients_all)
 
         # 4. GitHubプッシュ（GitHub Actions環境ではワークフロー側で実行）
         if not os.environ.get('GITHUB_ACTIONS'):
