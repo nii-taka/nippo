@@ -969,17 +969,13 @@ function setShinkiFilter(p){
 // ===== 営業実績タブ =====
 function renderEigyo(){
   const el = document.getElementById('eigyo-content');
-
-  const history = RAW.history || [];
-  const ps = RAW.person_summary || {};
-  const targets = RAW.targets || Object.keys(ps);
+  const REGION_ORDER = ['本社','東京','警備','仙台'];
 
   // 実績稼働日数（確定値）
   const workedDaysActual = {
     '2026年4月': 20,
   };
 
-  // 月の平日数を計算（土日除く近似値）
   function weekdaysInMonth(yearNum, monthNum){
     const days = new Date(yearNum, monthNum, 0).getDate();
     let cnt = 0;
@@ -990,43 +986,54 @@ function renderEigyo(){
     return cnt;
   }
 
-  // 月ラベルをパースして稼働日数を返す
-  function workedDaysForMonth(label, isCurrent){
-    if(isCurrent) return (RAW.worked_dates || RAW.dates || []).length || 20;
+  // 当月ラベル
+  const curLabel = (() => {
+    const dr = RAW.data_range || '';
+    const m = dr.match(/(\d+)年(\d+)月/);
+    return m ? `${m[1]}年${m[2]}月` : '当月';
+  })();
+
+  function workedDaysForMonth(label, isCurrent, workedDates){
+    if(isCurrent) return (workedDates || []).length || 20;
     if(workedDaysActual[label]) return workedDaysActual[label];
     const m = label.match(/(\d+)年(\d+)月/);
     if(!m) return 20;
     return weekdaysInMonth(parseInt(m[1]), parseInt(m[2]));
   }
 
-  // 月ラベル構築
-  const months = history.map(h => h.month);
-  const curLabel = (() => {
-    const dr = RAW.data_range || '';
-    const m = dr.match(/(\d+)年(\d+)月/);
-    return m ? `${m[1]}年${m[2]}月` : '当月';
-  })();
+  // 全地域のmonthsを収集
+  const monthSet = new Set();
+  REGION_ORDER.forEach(r => {
+    const rd = ALL_REGIONS[r] || {};
+    (rd.history || []).forEach(h => monthSet.add(h.month));
+  });
+  const months = [...monthSet].sort();
   months.push(curLabel);
 
-  // person → month → {総合_人工, 新規_人工}
-  const byPerson = {};
-  targets.forEach(p => { byPerson[p] = {}; });
+  // 地域ごとにテーブルを構築
+  function buildRegionBlock(region, key){
+    const rd = ALL_REGIONS[region] || {};
+    const targets = rd.targets || [];
+    const ps = rd.person_summary || {};
+    const history = rd.history || [];
+    const workedDates = rd.worked_dates || [];
 
-  history.forEach(h => {
-    (h.persons || []).forEach(pd => {
-      if(!byPerson[pd.name]) byPerson[pd.name] = {};
-      byPerson[pd.name][h.month] = {総合: pd.総合 || 0, 新規: pd.新規 || 0};
+    // byPerson構築
+    const byPerson = {};
+    targets.forEach(p => { byPerson[p] = {}; });
+    history.forEach(h => {
+      (h.persons || []).forEach(pd => {
+        if(!byPerson[pd.name]) byPerson[pd.name] = {};
+        byPerson[pd.name][h.month] = {総合: pd.総合||0, 新規: pd.新規||0};
+      });
     });
-  });
-  Object.entries(ps).forEach(([name, pd]) => {
-    if(!byPerson[name]) byPerson[name] = {};
-    byPerson[name][curLabel] = {総合: pd['総合_人工'] || 0, 新規: pd['新規_人工'] || 0};
-  });
+    Object.entries(ps).forEach(([name, pd]) => {
+      if(!byPerson[name]) byPerson[name] = {};
+      byPerson[name][curLabel] = {総合: pd['総合_人工']||0, 新規: pd['新規_人工']||0};
+    });
+    const persons = targets.filter(p => byPerson[p]);
+    if(persons.length === 0) return '';
 
-  const persons = Object.keys(byPerson).filter(p => targets.includes(p));
-
-  function buildMonthlyTable(key){
-    if(persons.length === 0) return '<div style="color:var(--text2);padding:16px">データがありません</div>';
     const thCols = months.map((m,i) =>
       `<th${i===months.length-1?' class="cur-month"':''}>${m}</th>`
     ).join('');
@@ -1034,53 +1041,66 @@ function renderEigyo(){
       const tds = months.map((m,i) => {
         const raw = byPerson[p]?.[m]?.[key];
         if(raw == null || raw === 0) return `<td class="blank">—</td>`;
-        const days = workedDaysForMonth(m, i===months.length-1);
-        const v = days > 0 ? (raw / days).toFixed(1) : '—';
+        const days = workedDaysForMonth(m, i===months.length-1, workedDates);
+        const v = (raw / days).toFixed(1);
         return `<td${i===months.length-1?' class="cur-month"':''}>${v}</td>`;
       }).join('');
       return `<tr><td class="name-col">${p}</td>${tds}</tr>`;
     }).join('');
-    return `<div style="overflow-x:auto">
-      <table class="eigyo-monthly-table">
-        <thead><tr><th class="name-col">担当者</th>${thCols}</tr></thead>
-        <tbody>${rows}</tbody>
-      </table></div>`;
+
+    return `<div style="margin-bottom:8px">
+      <div style="font-size:.8rem;font-weight:700;color:var(--text2);padding:4px 0 4px 4px;border-left:3px solid var(--accent)">${region}</div>
+      <div style="overflow-x:auto">
+        <table class="eigyo-monthly-table">
+          <thead><tr><th class="name-col">担当者</th>${thCols}</tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
   }
 
-  // 新規契約実績（直近1年以内）
-  const shinki = RAW.shinki_clients || {};
-  const contractPersons = Object.keys(shinki).filter(p => targets.includes(p) && shinki[p].length > 0);
-  let contractHtml = '';
-  if(contractPersons.length === 0){
-    contractHtml = '<div style="color:var(--text2);padding:16px">データがありません</div>';
-  } else {
-    contractHtml = '<div class="eigyo-contracts-grid">' +
-      contractPersons.map(p => {
-        const clients = shinki[p];
-        const rows = clients.map(c => `
-          <div class="client-row">
-            <span>${c.name}</span>
-            <span class="client-date">${c['契約日'].slice(0,7)}</span>
-          </div>`).join('');
-        return `<div class="eigyo-contracts-card">
-          <h4>👤 ${p} <span style="color:var(--text2);font-weight:400;font-size:.8rem">${clients.length}件</span></h4>
-          ${rows}
-        </div>`;
-      }).join('') + '</div>';
+  // 新規契約実績（全地域）
+  function buildContracts(){
+    let html = '';
+    REGION_ORDER.forEach(region => {
+      const rd = ALL_REGIONS[region] || {};
+      const targets = rd.targets || [];
+      const shinki = rd.shinki_clients || {};
+      const contractPersons = targets.filter(p => shinki[p]?.length > 0);
+      if(contractPersons.length === 0) return;
+      html += `<div style="margin-bottom:20px">
+        <div style="font-size:.85rem;font-weight:700;color:var(--text2);margin-bottom:8px;padding:4px 0 4px 8px;border-left:3px solid var(--accent)">${region}</div>
+        <div class="eigyo-contracts-grid">
+        ${contractPersons.map(p => {
+          const clients = shinki[p];
+          const rows = clients.map(c => `
+            <div class="client-row">
+              <span>${c.name}</span>
+              <span class="client-date">${c['契約日'].slice(0,7)}</span>
+            </div>`).join('');
+          return `<div class="eigyo-contracts-card">
+            <h4>👤 ${p} <span style="color:var(--text2);font-weight:400;font-size:.8rem">${clients.length}件</span></h4>
+            ${rows}
+          </div>`;
+        }).join('')}
+        </div>
+      </div>`;
+    });
+    return html || '<div style="color:var(--text2);padding:16px">データがありません</div>';
   }
 
   el.innerHTML = `<div class="eigyo-wrap">
     <div class="eigyo-section">
       <h3>📊 新規 1日あたり出向数（月別）</h3>
-      ${buildMonthlyTable('新規')}
+      ${REGION_ORDER.map(r => buildRegionBlock(r,'新規')).join('')}
     </div>
     <div class="eigyo-section">
       <h3>📦 総合 1日あたり出向数（月別）</h3>
-      ${buildMonthlyTable('総合')}
+      ${REGION_ORDER.map(r => buildRegionBlock(r,'総合')).join('')}
     </div>
     <div class="eigyo-section">
       <h3>🏢 新規契約実績（直近1年以内）</h3>
-      ${contractHtml}
+      ${buildContracts()}
     </div>
   </div>`;
 }
