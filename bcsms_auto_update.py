@@ -684,7 +684,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None, shink
         'history': raw_old.get('history', []),
         'expiry': merge_expiry({}, shinki_expire or {}, '本社'),
         'seasonal_gyoshu': _get_valid_seasonal(raw_old.get('seasonal_gyoshu', {}), seasonal_per_region.get('本社')),
-        'shinki_clients': _merge_shinki_strategy(raw_old.get('shinki_clients', {}), (shinki_clients_all or {}).get('本社', {})),
+        'shinki_clients': raw_old.get('shinki_clients') or _merge_shinki_strategy({}, (shinki_clients_all or {}).get('本社', {})),
     }
     content = _replace_js_var(content, 'RAW', raw_new)
 
@@ -699,7 +699,7 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None, shink
         all_new[region]['history'] = rd_old.get('history',[])
         all_new[region]['expiry'] = merge_expiry({}, shinki_expire or {}, region)
         all_new[region]['seasonal_gyoshu'] = _get_valid_seasonal(all_old.get(region,{}).get('seasonal_gyoshu',{}), seasonal_per_region.get(region))
-        all_new[region]['shinki_clients'] = _merge_shinki_strategy(all_old.get(region,{}).get('shinki_clients',{}), (shinki_clients_all or {}).get(region, {}))
+        all_new[region]['shinki_clients'] = all_old.get(region,{}).get('shinki_clients') or _merge_shinki_strategy({}, (shinki_clients_all or {}).get(region, {}))
         all_new[region]['daily_detail'] = merge_daily_detail(all_old.get(region,{}).get('daily_detail',{}), new_data[region]['daily_detail'])
     content = _replace_js_var(content, 'ALL_REGIONS', all_new)
 
