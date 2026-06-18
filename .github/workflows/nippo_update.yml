@@ -60,3 +60,12 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: デバッグ用スクリーンショットを保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bcsms-debug-screenshots
+          path: /tmp/nippo_excel/*.png
+          if-no-files-found: ignore
+          retention-days: 3

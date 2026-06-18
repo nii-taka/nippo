@@ -51,13 +51,13 @@ REGIONS = ['本社', '東京', '警備', '仙台']
 
 REGION_PERSONS = {
     '本社': ['井部 辰悟','新居 貴弘','園田 奎治','山田 勝生','久保木 奎伍','古谷 将紀','小野寺 陽丈','槇戸 康博','今本 椋介'],
-    '東京': ['田牧 光','樋口 正寛','目黒 大地','北村 翔太','尾崎 高大','冨賀見 匠太'],
+    '東京': ['樋口 正寛','目黒 大地','北村 翔太','尾崎 高大','冨賀見 匠太'],
     '警備': ['奥田 宇紀(警備)','淺井 康太郎(警備)','柿本 直也'],
     '仙台': ['髙野 良成(仙台)','芳賀 誉士弥','庄司 陸','山田 一成'],
 }
 
 # 反映しない担当者（退職者など）
-EXCLUDE_PERSONS = ['小寺 崚太', '小寺 崚太(警備)', '阪岡 直樹', '退)阪岡 直樹']
+EXCLUDE_PERSONS = ['小寺 崚太', '小寺 崚太(警備)', '阪岡 直樹', '退)阪岡 直樹', '田牧 光']
 
 SHIN_CUTOFF = datetime.date(2024, 6, 1)
 JUN_HOLIDAYS_PATTERN = {
@@ -124,11 +124,18 @@ def download_excel_from_bcsms(start_date=None, end_date=None):
         time.sleep(3)
         print("[OK] ログイン完了")
         print(f"[DEBUG] ログイン後URL: {driver.current_url}")
+        print(f"[DEBUG] ページタイトル: {driver.title}")
 
-        # SweetAlert ダイアログが出ていれば閉じる
+        # SweetAlert ダイアログが出ていれば内容を記録してから閉じる
         time.sleep(2)
         try:
-            # JS でダイアログ内のボタンを探してクリック
+            swal_msg = driver.execute_script("""
+                var el = document.querySelector('.swal-text, .swal-title, .swal2-content, .swal2-title, .sweet-alert p, .sweet-alert h2');
+                return el ? el.textContent.trim() : null;
+            """)
+            if swal_msg:
+                print(f"[DEBUG] SweetAlertメッセージ: {swal_msg}")
+
             dismissed = driver.execute_script("""
                 var btn = document.querySelector('.swal-button--confirm, .swal-button, .swal2-confirm, button.confirm, .sweet-alert button');
                 if (btn) { btn.click(); return true; }
@@ -138,12 +145,27 @@ def download_excel_from_bcsms(start_date=None, end_date=None):
                 print("[INFO] SweetAlertダイアログを閉じました")
                 time.sleep(1)
             else:
-                # Escapeキーで閉じる試み
                 from selenium.webdriver.common.keys import Keys
                 driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ESCAPE)
                 time.sleep(1)
         except Exception:
             pass
+
+        # ログイン成功判定：メニュー要素の有無を確認
+        login_ok = driver.execute_script("""
+            var all = document.querySelectorAll('input[type=button], input[type=submit], button, a, td, div');
+            for (var i = 0; i < all.length; i++) {
+                var t = (all[i].textContent || all[i].value || '').replace(/\\s/g, '');
+                if (t.indexOf('随時出力') !== -1) return true;
+            }
+            return false;
+        """)
+        print(f"[DEBUG] ログイン成功判定（随時出力メニュー存在）: {login_ok}")
+        if not login_ok:
+            ss_path = os.path.join(os.path.abspath(DOWNLOAD_DIR), 'bcsms_login_fail.png')
+            driver.save_screenshot(ss_path)
+            print(f"[DEBUG] ログイン直後スクリーンショット: {ss_path}")
+            print(f"[DEBUG] ページソース（先頭2000文字）: {driver.page_source[:2000]}")
 
         # メニュー：随時出力処理（JS検索でテキストマッチ）
         def find_and_click_text(driver, text, timeout=30):
