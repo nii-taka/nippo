@@ -647,6 +647,7 @@ function renderAll(el){
 function buildProgressTable(){
   let rows = RAW.targets.map(p=>{
     const s = RAW.person_summary[p];
+    if(!s) return '';
     const g = goals[p];
     if(!g) return `<tr><td style="font-weight:700">${p}</td><td style="font-weight:600">${fmt(s['総合_人工'])}</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td colspan="2" style="color:var(--text2)">未設定</td><td style="color:#fb923c;font-weight:600">${fmt(s['新規_人工'])}</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td></tr>`;
     const sTotal = s['総合_人工'], sShin = s['新規_人工'];
