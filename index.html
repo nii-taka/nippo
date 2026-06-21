@@ -659,9 +659,11 @@ function buildProgressTable(){
     const barSh = Math.min(100, Math.round(sShin/gShin*100));
     const barColor = rateT>=1?'#4ade80':rateT>=0.85?'#facc15':'#f87171';
     const avgShin = workedDays>0 ? Math.round(sShin/workedDays*10)/10 : 0;
+    const avgTotal = workedDays>0 ? Math.round(sTotal/workedDays*10)/10 : 0;
     return `<tr>
       <td style="font-weight:700;font-size:.95rem">${p}</td>
       <td style="font-weight:600">${fmt(sTotal)}</td>
+      <td style="color:#a78bfa;font-weight:600;font-size:.85rem">${avgTotal}</td>
       <td style="color:var(--text2)">${fmt(gTotal)}</td>
       <td style="color:#4ade80;font-weight:600">${fmt(paceT)}</td>
       <td style="color:${gapT>=0?'#4ade80':'#fb923c'};font-weight:600">${gapT>=0?'+':''}${fmt(gapT)}</td>
@@ -678,7 +680,7 @@ function buildProgressTable(){
   return `<table>
     <thead><tr>
       <th>担当者</th>
-      <th>実績<br>総合</th><th>月目標<br>総合</th><th>ペース<br>目標※</th><th>GAP</th><th>達成率</th><th>進捗</th>
+      <th>実績<br>総合</th><th style="color:#a78bfa">1日<br>平均</th><th>月目標<br>総合</th><th>ペース<br>目標※</th><th>GAP</th><th>達成率</th><th>進捗</th>
       <th>実績<br>新規</th><th style="color:#a78bfa">1日<br>平均</th><th>月目標<br>新規</th><th>ペース<br>目標※</th><th>GAP</th><th>達成率</th>
     </tr></thead>
     <tbody>${rows}</tbody>
