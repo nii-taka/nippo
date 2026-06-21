@@ -1364,8 +1364,8 @@ function renderDailyDetail(){
   });
   // 月間ユニーク社数・現場数はperson_summaryから取得
   const ps = RAW.person_summary[currentDailyPerson];
-  const totShaCount   = ps['月間社数']   || 0;
-  const totGenbaCount = ps['月間現場数'] || 0;
+  const totShaCount   = ps?.['月間社数']   || 0;
+  const totGenbaCount = ps?.['月間現場数'] || 0;
 
   const rows = dates.map((d,idx) => {
     const v = detail[d];
