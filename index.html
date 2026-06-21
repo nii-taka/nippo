@@ -669,9 +669,9 @@ function buildProgressTable(){
       <td style="color:${gapT>=0?'#4ade80':'#fb923c'};font-weight:600">${gapT>=0?'+':''}${fmt(gapT)}</td>
       <td><span class="badge-rate ${rateClass(rateT)}">${Math.round(rateT*100)}%</span></td>
       <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:${barT}%;background:${barColor}"></div></div></td>
+      <td style="color:var(--text2)">${fmt(gShin)}</td>
       <td style="color:#fb923c;font-weight:600">${fmt(sShin)}</td>
       <td style="color:#a78bfa;font-weight:600;font-size:.85rem">${avgShin}</td>
-      <td style="color:var(--text2)">${fmt(gShin)}</td>
       <td style="color:#4ade80;font-weight:600">${fmt(paceSh)}</td>
       <td style="color:${gapSh>=0?'#4ade80':'#fb923c'};font-weight:600">${gapSh>=0?'+':''}${fmt(gapSh)}</td>
       <td><span class="badge-rate ${rateClass(rateSh)}">${Math.round(rateSh*100)}%</span></td>
@@ -681,7 +681,7 @@ function buildProgressTable(){
     <thead><tr>
       <th>担当者</th>
       <th>月目標<br>総合</th><th>実績<br>総合</th><th style="color:#a78bfa">1日<br>平均</th><th>ペース<br>目標※</th><th>GAP</th><th>達成率</th><th>進捗</th>
-      <th>実績<br>新規</th><th style="color:#a78bfa">1日<br>平均</th><th>月目標<br>新規</th><th>ペース<br>目標※</th><th>GAP</th><th>達成率</th>
+      <th>月目標<br>新規</th><th>実績<br>新規</th><th style="color:#a78bfa">1日<br>平均</th><th>ペース<br>目標※</th><th>GAP</th><th>達成率</th>
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
