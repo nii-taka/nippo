@@ -1477,15 +1477,23 @@ function buildPersonDailyTable(name){
 function toggleTok(row){
   const next = row.nextElementSibling;
   if(next && next.classList.contains('tok-expand')){
-    next.remove();
+    let cur = next;
+    while(cur && cur.classList.contains('tok-expand')){
+      const tmp = cur.nextElementSibling;
+      cur.remove();
+      cur = tmp;
+    }
     return;
   }
   const html = decodeURIComponent(row.dataset.tok||'');
   if(!html) return;
-  const tbody = document.createElement('tbody');
-  tbody.className = 'tok-expand';
-  tbody.innerHTML = html;
-  row.parentNode.insertBefore(tbody, row.nextSibling);
+  const tmp = document.createElement('tbody');
+  tmp.innerHTML = html;
+  const trs = Array.from(tmp.querySelectorAll('tr'));
+  trs.forEach(tr => {
+    tr.classList.add('tok-expand');
+    row.parentNode.insertBefore(tr, row.nextSibling);
+  });
 }
 
 function renderDailyAll(){
