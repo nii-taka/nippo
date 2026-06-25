@@ -1,9 +1,6 @@
 name: LINEワークス通知
 
 on:
-  schedule:
-    - cron: '20 23 * * 0-4'
-    - cron: '30 23 1 * *'
   workflow_dispatch:
     inputs:
       mode:
