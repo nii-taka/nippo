@@ -231,6 +231,85 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
 </style>
 </head>
 <body>
+
+<!-- ===== スプラッシュ画面 ===== -->
+<div id="splash-screen">
+  <div id="splash-inner">
+    <div id="splash-logo">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="14" fill="url(#splash-grad)"/>
+        <defs>
+          <linearGradient id="splash-grad" x1="0" y1="0" x2="64" y2="64">
+            <stop offset="0%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#1d4ed8"/>
+          </linearGradient>
+        </defs>
+        <text x="32" y="45" text-anchor="middle" font-size="36" font-weight="800" font-family="Arial,sans-serif" fill="white">N</text>
+      </svg>
+    </div>
+    <div id="splash-title">NIPPO</div>
+    <div id="splash-sub">作業日報ダッシュボード</div>
+  </div>
+</div>
+
+<style>
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(160deg, #0a0f1e 0%, #0f1e3a 50%, #0a0f1e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease;
+}
+#splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+#splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: splash-rise 0.8s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes splash-rise {
+  from { opacity: 0; transform: scale(0.88) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+#splash-logo {
+  animation: splash-rise 0.8s cubic-bezier(0.22,1,0.36,1) both;
+  filter: drop-shadow(0 0 24px rgba(59,130,246,0.5));
+}
+#splash-title {
+  font-size: clamp(3rem, 12vw, 5rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #fff;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  text-shadow: 0 0 40px rgba(99,179,255,0.4);
+  animation: splash-rise 0.9s 0.1s cubic-bezier(0.22,1,0.36,1) both;
+}
+#splash-sub {
+  font-size: clamp(0.75rem, 3.5vw, 0.95rem);
+  color: rgba(180,210,255,0.65);
+  letter-spacing: 0.2em;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  animation: splash-rise 1s 0.2s cubic-bezier(0.22,1,0.36,1) both;
+}
+</style>
+
+<script>
+(function(){
+  var splash = document.getElementById('splash-screen');
+  setTimeout(function(){
+    splash.classList.add('fade-out');
+    setTimeout(function(){ splash.style.display='none'; }, 650);
+  }, 2600);
+})();
+</script>
+
 <header>
   <div style="display:flex;align-items:center;gap:12px">
     <span style="display:inline-flex;align-items:center">
