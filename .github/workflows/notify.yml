@@ -55,7 +55,7 @@ jobs:
               exit(0)
           today = now_jst.strftime("%Y年%-m月%-d日")
           start = now_jst.strftime("%Y年%-m月1日")
-          text = f"📊 NIPPO\n\n最新データを確認できます！\n（{start}～{today}）\n\n▶ https://nii-taka.github.io/nippo/"
+          text = f"📊 NIPPO\n\n最新データを確認できます！\n（{start}～{today}）\n\n※6月実績は過去実績に入っています\n\n▶ https://nii-taka.github.io/nippo/"
           r = requests.post(
               f"https://www.worksapis.com/v1.0/bots/{BOT_ID}/channels/{CHANNEL_ID}/messages",
               headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
