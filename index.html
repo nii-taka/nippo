@@ -503,7 +503,7 @@ if(storedVersion !== GOALS_VERSION) {
 let goals = JSON.parse(localStorage.getItem('nippo_goals_' + currentRegion) || 'null') || JSON.parse(JSON.stringify(DEFAULT_GOALS));
 
 // Working days in May 2026 (exclude weekends, GW: 3-6 May)
-const JUN_HOLIDAYS = ["2026/07/04", "2026/07/05", "2026/07/11", "2026/07/12", "2026/07/18", "2026/07/19", "2026/07/21", "2026/07/25", "2026/07/26"];
+const JUN_HOLIDAYS = ["2026/07/04", "2026/07/05", "2026/07/11", "2026/07/12", "2026/07/18", "2026/07/19", "2026/07/20", "2026/07/25", "2026/07/26"];
 function isWorkday(d){
   const dt = new Date(d);
   const dow = dt.getDay();
