@@ -59,7 +59,8 @@ REGION_PERSONS = {
 # 反映しない担当者（退職者など）
 EXCLUDE_PERSONS = ['小寺 崚太', '小寺 崚太(警備)', '阪岡 直樹', '退)阪岡 直樹', '田牧 光']
 
-SHIN_CUTOFF = datetime.date(2024, 6, 1)
+_today = datetime.date.today()
+SHIN_CUTOFF = datetime.date(_today.year - 2, _today.month, 1)
 JUN_HOLIDAYS_PATTERN = {
     6: [6, 7, 13, 14, 20, 21, 27, 28],  # 6月の土日
 }
