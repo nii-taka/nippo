@@ -1503,7 +1503,7 @@ function setDailyView(mode){
 function buildPersonDailyTable(name){
   const detail = RAW.daily_detail[name] || {};
   const dates = Object.keys(detail).sort();
-  const ps = RAW.person_summary[name];
+  const ps = RAW.person_summary[name] || {};
   let totSogou=0, totShinki=0;
   dates.forEach(d=>{ totSogou+=detail[d].総合||0; totShinki+=detail[d].新規||0; });
   const shaCount   = ps['月間社数']   || 0;
@@ -1574,7 +1574,7 @@ function renderDailyAll(){
     <div class="daily-all-grid">
       ${RAW.targets.map(name=>`
       <div class="daily-all-person">
-        <h4>${name} <span>${RAW.person_summary[name]['月間社数']}社 / ${RAW.person_summary[name]['月間現場数']}現場</span></h4>
+        <h4>${name} <span>${RAW.person_summary[name]?.['月間社数'] || 0}社 / ${RAW.person_summary[name]?.['月間現場数'] || 0}現場</span></h4>
         ${buildPersonDailyTable(name)}
       </div>`).join('')}
     </div>
