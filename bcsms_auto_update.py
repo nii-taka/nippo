@@ -694,10 +694,15 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None, shink
         rd_old = all_old.get(region, {})
         all_new[region] = new_data[region]
         # person_summary: 新データに含まれないターゲット担当者は旧データから補完
+        # ただし月をまたいでいる場合は前月の実績を繰り越さない（0件を正として扱う）
+        old_month = (rd_old.get('dates') or [None])[-1]
+        new_month = (new_data[region].get('dates') or [None])[-1]
+        same_month = old_month and new_month and old_month[:7] == new_month[:7]
         old_ps = rd_old.get('person_summary', {})
-        for p in new_data[region].get('targets', []):
-            if p not in all_new[region]['person_summary'] and p in old_ps:
-                all_new[region]['person_summary'][p] = old_ps[p]
+        if same_month:
+            for p in new_data[region].get('targets', []):
+                if p not in all_new[region]['person_summary'] and p in old_ps:
+                    all_new[region]['person_summary'][p] = old_ps[p]
         # 日別データは累積マージ（日付キーで新データ優先）
         all_new[region]['daily'] = {**rd_old.get('daily',{}), **new_data[region]['daily']}
         all_new[region]['daily_all'] = {**rd_old.get('daily_all',{}), **new_data[region].get('daily_all',{})}
