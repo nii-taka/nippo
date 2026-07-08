@@ -52,6 +52,7 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
           DISPLAY: ''
+          TZ: Asia/Tokyo
 
       - name: 変更をコミット・プッシュ
         run: |
@@ -62,6 +63,7 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TZ: Asia/Tokyo
 
       - name: デバッグ用スクリーンショットを保存
         if: always()
