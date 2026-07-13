@@ -38,11 +38,26 @@ jobs:
           print("token res:", res.status_code, res.text[:300])
           access_token = res.json()["access_token"]
 
+          # 既存のBot情報を取得し、photoUrlだけ差し替えて更新（administrators等の必須項目を保持）
+          r0 = requests.get(
+              f"https://www.worksapis.com/v1.0/bots/{BOT_ID}",
+              headers={"Authorization": f"Bearer {access_token}"}
+          )
+          current = r0.json()
+          print("before update:", r0.status_code, r0.text)
+
           photo_url = "https://raw.githubusercontent.com/nii-taka/nippo/main/nippo-bot-icon.png"
+          payload = {
+              "name": current.get("botName"),
+              "photoUrl": photo_url,
+              "description": current.get("description"),
+              "administrators": current.get("administrators", []),
+              "subadministrators": current.get("subadministrators", []),
+          }
           r = requests.put(
               f"https://www.worksapis.com/v1.0/bots/{BOT_ID}",
               headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
-              data=json.dumps({"photoUrl": photo_url})
+              data=json.dumps(payload)
           )
           print("update res:", r.status_code, r.text)
 
