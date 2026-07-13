@@ -53,6 +53,11 @@ jobs:
               "description": current.get("description"),
               "administrators": current.get("administrators", []),
               "subadministrators": current.get("subadministrators", []),
+              "enableCallback": current.get("enableCallback", False),
+              "callbackUrl": current.get("callbackUrl", ""),
+              "callbackEvents": current.get("callbackEvents", []),
+              "enableGroupJoin": current.get("enableGroupJoin", True),
+              "allowDomains": current.get("allowDomains", []),
           }
           r = requests.put(
               f"https://www.worksapis.com/v1.0/bots/{BOT_ID}",
