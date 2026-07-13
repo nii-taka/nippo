@@ -1,0 +1,54 @@
+name: LINEワークス Botアイコン設定
+
+on:
+  workflow_dispatch:
+
+jobs:
+  set-icon:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Botアイコンを更新
+        env:
+          LW_CLIENT_ID: ${{ secrets.LW_CLIENT_ID }}
+          LW_CLIENT_SECRET: ${{ secrets.LW_CLIENT_SECRET }}
+          LW_SERVICE_ACCOUNT: ${{ secrets.LW_SERVICE_ACCOUNT }}
+          LW_BOT_ID: ${{ secrets.LW_BOT_ID }}
+          LW_PRIVATE_KEY: ${{ secrets.LW_PRIVATE_KEY }}
+        run: |
+          pip install PyJWT cryptography requests -q
+          python3 << 'PYEOF'
+          import jwt, time, requests, os, json
+
+          CLIENT_ID       = os.environ['LW_CLIENT_ID']
+          CLIENT_SECRET   = os.environ['LW_CLIENT_SECRET']
+          SERVICE_ACCOUNT = os.environ['LW_SERVICE_ACCOUNT']
+          BOT_ID          = os.environ['LW_BOT_ID']
+          PRIVATE_KEY     = os.environ['LW_PRIVATE_KEY'].replace('\\n', '\n')
+
+          now = int(time.time())
+          jwt_token = jwt.encode(
+              {"iss": CLIENT_ID, "sub": SERVICE_ACCOUNT, "iat": now, "exp": now + 3600},
+              PRIVATE_KEY, algorithm="RS256"
+          )
+          res = requests.post("https://auth.worksmobile.com/oauth2/v2.0/token", data={
+              "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+              "client_id": CLIENT_ID, "client_secret": CLIENT_SECRET,
+              "assertion": jwt_token, "scope": "bot",
+          })
+          print("token res:", res.status_code, res.text[:300])
+          access_token = res.json()["access_token"]
+
+          photo_url = "https://raw.githubusercontent.com/nii-taka/nippo/main/nippo-bot-icon.png"
+          r = requests.put(
+              f"https://www.worksapis.com/v1.0/bots/{BOT_ID}",
+              headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+              data=json.dumps({"photoUrl": photo_url})
+          )
+          print("update res:", r.status_code, r.text)
+
+          r2 = requests.get(
+              f"https://www.worksapis.com/v1.0/bots/{BOT_ID}",
+              headers={"Authorization": f"Bearer {access_token}"}
+          )
+          print("current bot info:", r2.status_code, r2.text)
+          PYEOF
