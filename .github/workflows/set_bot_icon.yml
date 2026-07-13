@@ -48,7 +48,7 @@ jobs:
 
           photo_url = "https://raw.githubusercontent.com/nii-taka/nippo/main/nippo-bot-icon.png"
           payload = {
-              "name": current.get("botName"),
+              "botName": current.get("botName"),
               "photoUrl": photo_url,
               "description": current.get("description"),
               "administrators": current.get("administrators", []),
