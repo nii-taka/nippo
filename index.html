@@ -722,7 +722,11 @@ function buildProgressTable(){
     const s = RAW.person_summary[p];
     if(!s) return '';
     const g = goals[p];
-    if(!g || NO_GOALS.has(p)) return `<tr><td style="font-weight:700">${p}</td><td style="color:var(--text2)">—</td><td style="font-weight:600">${fmt(s['総合_人工'])}</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:#fb923c;font-weight:600">${fmt(s['新規_人工'])}</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td></tr>`;
+    if(!g || NO_GOALS.has(p)) {
+      const avgT0 = workedDays>0 ? Math.round((s['総合_人工']||0)/workedDays*10)/10 : 0;
+      const avgS0 = workedDays>0 ? Math.round((s['新規_人工']||0)/workedDays*10)/10 : 0;
+      return `<tr><td style="font-weight:700">${p}</td><td style="color:var(--text2)">—</td><td style="font-weight:600">${fmt(s['総合_人工'])}</td><td>${avgT0}</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:#fb923c;font-weight:600">${fmt(s['新規_人工'])}</td><td>${avgS0}</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td></tr>`;
+    }
     const sTotal = s['総合_人工'], sShin = s['新規_人工'];
     const gTotal = g['総合'], gShin = g['新規'];
     const paceT = paceGoal(gTotal), paceSh = paceGoal(gShin);
