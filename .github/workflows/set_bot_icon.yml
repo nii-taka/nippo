@@ -46,7 +46,8 @@ jobs:
           current = r0.json()
           print("before update:", r0.status_code, r0.text)
 
-          photo_url = "https://ssl.pstatic.net/static/wm/botimage/noimage_bot.png"
+          import time as _time
+          photo_url = f"https://raw.githubusercontent.com/nii-taka/nippo/main/nippo-bot-icon.png?v={int(_time.time())}"
           payload = {
               "botName": current.get("botName"),
               "photoUrl": photo_url,
