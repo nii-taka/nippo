@@ -524,6 +524,21 @@ const dataEnd = RAW.dates[RAW.dates.length-1];
 const workedDays = allWorkdays.filter(d=>d<=dataEnd).length;
 const totalWorkdays = allWorkdays.length;
 
+// 指定した日付リスト（そのregionのRAW.dates）から、祝日等も除いた実稼働日数を計算
+function computeWorkedDays(dates){
+  if(!dates || dates.length===0) return 0;
+  const end = dates[dates.length-1];
+  const dm = end.slice(0,7);
+  const y = parseInt(dm.slice(0,4)), m = parseInt(dm.slice(5,7));
+  const dim = new Date(y, m, 0).getDate();
+  let count = 0;
+  for(let i=1;i<=dim;i++){
+    const ds = `${y}/${String(m).padStart(2,'0')}/${String(i).padStart(2,'0')}`;
+    if(ds<=end && isWorkday(ds)) count++;
+  }
+  return count;
+}
+
 document.getElementById('data-range').textContent = RAW.data_range + '　埋め込みデータ';
 
 // Charts registry for destroy
@@ -1303,7 +1318,7 @@ function renderRanking(){
   const maxTotal = r.総合[0].value;
   const maxShin  = r.新規[0].value;
   const maxHol   = r.非稼働日[0]?.value || 1;
-  const workedDays = (RAW.worked_dates || RAW.dates).length;
+  const workedDays = computeWorkedDays(RAW.dates);
   // 非稼働日数（データ期間内）
   const lastDate = RAW.dates[RAW.dates.length-1];
   const holDays = (r.非稼働日一覧||[]).filter(d=>d<=lastDate).length || 1;
@@ -1364,7 +1379,7 @@ function renderRankingAll(){
   const maxShin  = shinRank[0]?.value || 1;
   const maxHol   = holRank[0]?.value || 1;
 
-  const workedDays = (RAW.worked_dates || RAW.dates).length;
+  const workedDays = computeWorkedDays(RAW.dates);
   const lastDate2 = RAW.dates[RAW.dates.length-1];
   const holDays2 = (RAW.ranking?.非稼働日一覧||[]).filter(d=>d<=lastDate2).length || 1;
 
