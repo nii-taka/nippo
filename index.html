@@ -444,7 +444,7 @@ function switchRegion(region) {
     '本社': DEFAULT_GOALS,
     '東京': Object.fromEntries(rd.targets.filter(p=>!NO_GOALS.has(p)).map(p=>[p,{総合:0,新規:1100,'1日総合':0,'1日新規':50}])),
     '警備': Object.fromEntries(rd.targets.map(p=>[p,{総合:0,新規:880,'1日総合':0,'1日新規':40}])),
-    '仙台': Object.fromEntries(rd.targets.filter(p=>!NO_GOALS.has(p)).map(p=>[p,p==='芳賀 誉士弥'?{総合:0,新規:1100,'1日総合':110,'1日新規':50}:{総合:0,新規:1100,'1日総合':0,'1日新規':50}])),
+    '仙台': Object.fromEntries(rd.targets.filter(p=>!NO_GOALS.has(p)).map(p=>[p,p==='芳賀 誉士弥'?{総合:0,新規:880,'1日総合':110,'1日新規':50}:{総合:0,新規:1100,'1日総合':0,'1日新規':50}])),
   };
   const defaultG = REGION_DEFAULT_GOALS[region] || {};
   goals = JSON.parse(localStorage.getItem(storageKey) || 'null') || JSON.parse(JSON.stringify(defaultG));
@@ -900,7 +900,7 @@ function saveGoals(){
 
 function resetGoals(){
   const _rd2 = ALL_REGIONS[currentRegion];
-  const _rdg = {'東京':Object.fromEntries(_rd2.targets.filter(p=>!NO_GOALS.has(p)).map(p=>[p,{総合:0,新規:1100,'1日総合':0,'1日新規':50}])),'警備':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:880,'1日総合':0,'1日新規':40}])),'仙台':Object.fromEntries(_rd2.targets.filter(p=>!NO_GOALS.has(p)).map(p=>[p,p==='芳賀 誉士弥'?{総合:0,新規:1100,'1日総合':110,'1日新規':50}:{総合:0,新規:1100,'1日総合':0,'1日新規':50}]))};
+  const _rdg = {'東京':Object.fromEntries(_rd2.targets.filter(p=>!NO_GOALS.has(p)).map(p=>[p,{総合:0,新規:1100,'1日総合':0,'1日新規':50}])),'警備':Object.fromEntries(_rd2.targets.map(p=>[p,{総合:0,新規:880,'1日総合':0,'1日新規':40}])),'仙台':Object.fromEntries(_rd2.targets.filter(p=>!NO_GOALS.has(p)).map(p=>[p,p==='芳賀 誉士弥'?{総合:0,新規:880,'1日総合':110,'1日新規':50}:{総合:0,新規:1100,'1日総合':0,'1日新規':50}]))};
   goals = JSON.parse(JSON.stringify(currentRegion==='本社'?DEFAULT_GOALS:(_rdg[currentRegion]||{})));
   localStorage.removeItem('nippo_goals_' + currentRegion);
   renderGoalForm();
