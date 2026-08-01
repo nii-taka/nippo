@@ -539,6 +539,12 @@ function computeWorkedDays(dates){
   return count;
 }
 
+// 1日平均の割り算日数。稼働日がまだ0日でも、実績がある月初の非稼働日（土日・祝日）
+// 分は最低1日として計算し、「0」に潰さず実際のペースを表示する
+function avgDivisor(){
+  return workedDays>0 ? workedDays : (RAW.dates.length||1);
+}
+
 document.getElementById('data-range').textContent = RAW.data_range + '　埋め込みデータ';
 
 // Charts registry for destroy
@@ -738,8 +744,8 @@ function buildProgressTable(){
     if(!s) return '';
     const g = goals[p];
     if(!g || NO_GOALS.has(p)) {
-      const avgT0 = workedDays>0 ? Math.round((s['総合_人工']||0)/workedDays*10)/10 : 0;
-      const avgS0 = workedDays>0 ? Math.round((s['新規_人工']||0)/workedDays*10)/10 : 0;
+      const avgT0 = Math.round((s['総合_人工']||0)/avgDivisor()*10)/10;
+      const avgS0 = Math.round((s['新規_人工']||0)/avgDivisor()*10)/10;
       return `<tr><td style="font-weight:700">${p}</td><td style="color:var(--text2)">—</td><td style="font-weight:600">${fmt(s['総合_人工'])}</td><td style="color:#a78bfa;font-weight:600;font-size:.85rem">${avgT0}</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:#fb923c;font-weight:600">${fmt(s['新規_人工'])}</td><td style="color:#a78bfa;font-weight:600;font-size:.85rem">${avgS0}</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">—</td><td style="color:var(--text2)">未設定</td></tr>`;
     }
     const sTotal = s['総合_人工'], sShin = s['新規_人工'];
@@ -750,8 +756,8 @@ function buildProgressTable(){
     const barT = Math.min(100, Math.round(sTotal/gTotal*100));
     const barSh = Math.min(100, Math.round(sShin/gShin*100));
     const barColor = rateT>=1?'#4ade80':rateT>=0.85?'#facc15':'#f87171';
-    const avgShin = workedDays>0 ? Math.round(sShin/workedDays*10)/10 : 0;
-    const avgTotal = workedDays>0 ? Math.round(sTotal/workedDays*10)/10 : 0;
+    const avgShin = Math.round(sShin/avgDivisor()*10)/10;
+    const avgTotal = Math.round(sTotal/avgDivisor()*10)/10;
     return `<tr>
       <td style="font-weight:700;font-size:.95rem">${p}</td>
       <td style="color:var(--text2)">${fmt(gTotal)}</td>
@@ -1318,7 +1324,7 @@ function renderRanking(){
   const maxTotal = r.総合[0].value;
   const maxShin  = r.新規[0].value;
   const maxHol   = r.非稼働日[0]?.value || 1;
-  const workedDays = computeWorkedDays(RAW.dates);
+  const workedDays = computeWorkedDays(RAW.dates) || RAW.dates.length || 1;
   // 非稼働日数（データ期間内）
   const lastDate = RAW.dates[RAW.dates.length-1];
   const holDays = (r.非稼働日一覧||[]).filter(d=>d<=lastDate).length || 1;
@@ -1379,7 +1385,7 @@ function renderRankingAll(){
   const maxShin  = shinRank[0]?.value || 1;
   const maxHol   = holRank[0]?.value || 1;
 
-  const workedDays = computeWorkedDays(RAW.dates);
+  const workedDays = computeWorkedDays(RAW.dates) || RAW.dates.length || 1;
   const lastDate2 = RAW.dates[RAW.dates.length-1];
   const holDays2 = (RAW.ranking?.非稼働日一覧||[]).filter(d=>d<=lastDate2).length || 1;
 
@@ -1490,8 +1496,8 @@ function renderDailyDetail(){
   <div class="daily-summary">
     <div class="daily-sum-card"><div class="label">総合出向（計）</div><div class="value total-val">${fmt(totSogou)}</div></div>
     <div class="daily-sum-card"><div class="label">新規出向（計）</div><div class="value shin-val">${fmt(totShinki)}</div></div>
-    <div class="daily-sum-card"><div class="label">1日平均（総合）</div><div class="value" style="color:#a78bfa">${workedDays>0?Math.round(totSogou/workedDays*10)/10:0}</div></div>
-    <div class="daily-sum-card"><div class="label">1日平均（新規）</div><div class="value shin-val" style="font-size:1.3rem">${workedDays>0?Math.round(totShinki/workedDays*10)/10:0}</div></div>
+    <div class="daily-sum-card"><div class="label">1日平均（総合）</div><div class="value" style="color:#a78bfa">${Math.round(totSogou/avgDivisor()*10)/10}</div></div>
+    <div class="daily-sum-card"><div class="label">1日平均（新規）</div><div class="value shin-val" style="font-size:1.3rem">${Math.round(totShinki/avgDivisor()*10)/10}</div></div>
     <div class="daily-sum-card"><div class="label">社数（月間）</div><div class="value" style="color:var(--green)">${totShaCount}</div></div>
     <div class="daily-sum-card"><div class="label">現場数（月間）</div><div class="value" style="color:var(--orange)">${totGenbaCount}</div></div>
   </div>
@@ -1527,8 +1533,8 @@ function buildPersonDailyTable(name){
   dates.forEach(d=>{ totSogou+=detail[d].総合||0; totShinki+=detail[d].新規||0; });
   const shaCount   = ps['月間社数']   || 0;
   const genbaCount = ps['月間現場数'] || 0;
-  const avgSogou = workedDays>0 ? Math.round(totSogou/workedDays*10)/10 : 0;
-  const avgShinki = workedDays>0 ? Math.round(totShinki/workedDays*10)/10 : 0;
+  const avgSogou = Math.round(totSogou/avgDivisor()*10)/10;
+  const avgShinki = Math.round(totShinki/avgDivisor()*10)/10;
   const rows = dates.map(d=>{
     const v=detail[d];
     return `<tr>
