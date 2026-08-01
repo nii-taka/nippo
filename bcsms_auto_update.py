@@ -294,19 +294,22 @@ def download_excel_from_bcsms(start_date=None, end_date=None):
 
 
 def calc_seasonal_gyoshu_all():
-    """2024/07-09 と 2025/07-09 の業種別集計をBCSMSからダウンロードして全地域分を返す
-    戻り値: {region: {'2024/07': {'解体': X, ...}, ...}, ...}
+    """今月から向こう3ヶ月分×2年前・1年前の業種別集計をBCSMSからダウンロードして全地域分を返す
+    （例: 今月が8月なら 2024/08-10 と 2025/08-10）
+    戻り値: {region: {'2024/08': {'解体': X, ...}, ...}, ...}
              + special key '__all__' for 本社（RAW用）
     """
     import pandas as pd
-    target_periods = [
-        ('2024/07/01', '2024/07/31', '2024/07'),
-        ('2024/08/01', '2024/08/31', '2024/08'),
-        ('2024/09/01', '2024/09/30', '2024/09'),
-        ('2025/07/01', '2025/07/31', '2025/07'),
-        ('2025/08/01', '2025/08/31', '2025/08'),
-        ('2025/09/01', '2025/09/30', '2025/09'),
-    ]
+    import calendar
+    today = datetime.date.today()
+    target_periods = []
+    for years_ago in (2, 1):
+        for i in range(3):
+            total = (today.year - years_ago) * 12 + (today.month - 1) + i
+            y, m = divmod(total, 12)
+            m += 1
+            last_day = calendar.monthrange(y, m)[1]
+            target_periods.append((f'{y}/{m:02d}/01', f'{y}/{m:02d}/{last_day:02d}', f'{y}/{m:02d}'))
     # 全地域の結果を蓄積
     per_region = {r: {} for r in REGIONS}
 
@@ -452,10 +455,16 @@ def process_excel(excel_path):
 
     # 2024/07-09の契約 → 2026/07-09に新規ステータス失効
     def calc_shinki_expire(df_all):
-        expire_map = {7: '2024/07', 8: '2024/08', 9: '2024/09'}
+        today = datetime.date.today()
+        expire_map = {}
+        for i in range(3):
+            total = (today.year - 2) * 12 + (today.month - 1) + i
+            y, m = divmod(total, 12)
+            m += 1
+            expire_map[(y, m)] = f'{y}/{m:02d}'
         result = {}
-        for month, expire_ym in expire_map.items():
-            mask = (df_all['契約日'].dt.year == 2024) & (df_all['契約日'].dt.month == month) & df_all['契約日'].notna()
+        for (year, month), expire_ym in expire_map.items():
+            mask = (df_all['契約日'].dt.year == year) & (df_all['契約日'].dt.month == month) & df_all['契約日'].notna()
             df_m = df_all[mask]
             if len(df_m) == 0:
                 continue

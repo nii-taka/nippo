@@ -953,8 +953,14 @@ function renderExpiryAlert(){
     el.innerHTML = '';
     return;
   }
-  const monthLabel = {'2026/07':'7月','2026/08':'8月','2026/09':'9月','2024/07':'2024年7月','2024/08':'2024年8月','2024/09':'2024年9月'};
-  const monthColor = {'2026/07':'#f87171','2026/08':'#fb923c','2026/09':'#facc15','2024/07':'#f87171','2024/08':'#fb923c','2024/09':'#facc15'};
+  const monthColorPalette = ['#f87171','#fb923c','#facc15','#4ade80','#60a5fa'];
+  const sortedYm = Object.keys(regionExpiry).sort();
+  const monthLabel = {}, monthColor = {};
+  sortedYm.forEach((ym, i) => {
+    const [y, m] = ym.split('/');
+    monthLabel[ym] = `${y}年${parseInt(m)}月`;
+    monthColor[ym] = monthColorPalette[i % monthColorPalette.length];
+  });
 
   let html = `<div class="section-title" style="margin-top:8px">⚠️ 新規期限切れ予告（翌3ヶ月）<span style="font-size:.8rem;font-weight:400;color:var(--text2);margin-left:12px">💪 頑張って他ユーザー探そう！</span></div>`;
   html += `<div style="display:flex;flex-wrap:wrap;gap:12px">`;
@@ -997,10 +1003,12 @@ function renderSeasonalChart(){
   };
   const labels = Object.keys(data).sort();
   const labelDisp = labels.map(l=>{const[y,m]=l.split('/');return `${y.slice(2)}年${parseInt(m)}月`;});
+  const monthNums = [...new Set(labels.map(l=>parseInt(l.split('/')[1])))].sort((a,b)=>a-b);
+  const rangeLabel = monthNums.length===0 ? '' : monthNums.length===1 ? `${monthNums[0]}月` : `${monthNums[0]}〜${monthNums[monthNums.length-1]}月`;
 
   const div = document.createElement('div');
   div.innerHTML = `
-    <div class="section-title" style="margin-top:16px">📈 この時期の業種別傾向（過去2年 7〜9月）</div>
+    <div class="section-title" style="margin-top:16px">📈 この時期の業種別傾向（過去2年 ${rangeLabel}）</div>
     <div class="chart-card" style="margin-bottom:24px"><canvas id="chart-seasonal" height="200"></canvas></div>`;
   wrap.appendChild(div);
 
