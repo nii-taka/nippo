@@ -503,7 +503,7 @@ if(storedVersion !== GOALS_VERSION) {
 let goals = JSON.parse(localStorage.getItem('nippo_goals_' + currentRegion) || 'null') || JSON.parse(JSON.stringify(DEFAULT_GOALS));
 
 // Working days in May 2026 (exclude weekends, GW: 3-6 May)
-const JUN_HOLIDAYS = ["2026/07/04", "2026/07/05", "2026/07/11", "2026/07/12", "2026/07/18", "2026/07/19", "2026/07/20", "2026/07/25", "2026/07/26"];
+const JUN_HOLIDAYS = ["2026/07/04", "2026/07/05", "2026/07/11", "2026/07/12", "2026/07/18", "2026/07/19", "2026/07/20", "2026/07/25", "2026/07/26", "2026/08/10", "2026/08/11", "2026/08/12", "2026/08/13", "2026/08/14"];
 function isWorkday(d){
   const dt = new Date(d);
   const dow = dt.getDay();
@@ -1097,8 +1097,8 @@ function renderEigyo(){
     return m ? `${m[1]}年${m[2]}月` : '当月';
   })();
 
-  function workedDaysForMonth(label, isCurrent, workedDates){
-    if(isCurrent) return (workedDates || []).length || 20;
+  function workedDaysForMonth(label, isCurrent, datesForMonth){
+    if(isCurrent) return computeWorkedDays(datesForMonth) || 20;
     if(workedDaysActual[label]) return workedDaysActual[label];
     const m = label.match(/(\d+)年(\d+)月/);
     if(!m) return 20;
@@ -1120,7 +1120,7 @@ function renderEigyo(){
     const targets = rd.targets || [];
     const ps = rd.person_summary || {};
     const history = rd.history || [];
-    const workedDates = rd.worked_dates || [];
+    const workedDates = rd.dates || [];
 
     // byPerson構築
     const byPerson = {};
@@ -1636,7 +1636,7 @@ function exportEigyoExcel(){
     return cnt;
   }
   function workedDays(label, isCur, wdates){
-    if(isCur) return (wdates||[]).length||20;
+    if(isCur) return computeWorkedDays(wdates)||20;
     if(workedDaysActual[label]) return workedDaysActual[label];
     const m=label.match(/(\d+)年(\d+)月/);
     return m?weekdaysInMonth(parseInt(m[1]),parseInt(m[2])):20;
@@ -1657,7 +1657,7 @@ function exportEigyoExcel(){
       const targets=rd.targets||[];
       const ps=rd.person_summary||{};
       const history=rd.history||[];
-      const wdates=rd.worked_dates||[];
+      const wdates=rd.dates||[];
       const byPerson={};
       targets.forEach(p=>{byPerson[p]={};});
       history.forEach(h=>(h.persons||[]).forEach(pd=>{
