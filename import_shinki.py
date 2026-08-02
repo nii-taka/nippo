@@ -7,7 +7,7 @@ sys.path.insert(0, r'C:\Users\新居貴弘\Desktop\nippo_git')
 
 import pandas as pd
 import datetime
-from bcsms_auto_update import _extract_js_var, _replace_js_var, push_to_github
+from bcsms_auto_update import _extract_js_var, _replace_js_var, push_to_github, EXCLUDE_PERSONS
 from config import GITHUB_TOKEN, GITHUB_REPO
 
 FILES = {
@@ -46,6 +46,8 @@ def parse_shinki_excel(path, region):
             current_person = person_cell
 
         if not current_person:
+            continue
+        if current_person in EXCLUDE_PERSONS:
             continue
 
         # 契約日パース
