@@ -68,6 +68,10 @@ a{color:var(--accent)}
 .src-badge{font-size:.68rem;padding:2px 7px;border-radius:8px;white-space:nowrap;display:inline-block;margin-top:4px}
 .src-badge.nippo{background:#1d4ed8;color:#93c5fd}
 .src-badge.manual{background:var(--surface2);color:var(--text2)}
+.readonly-list{columns:3 220px;column-gap:20px}
+.readonly-list div{padding:6px 0;border-bottom:1px solid var(--border);font-size:.85rem;break-inside:avoid}
+@media (max-width:700px){.readonly-list{columns:1}}
+.star-month{color:var(--yellow)}
 </style>
 </head>
 <body>
@@ -103,6 +107,7 @@ a{color:var(--accent)}
       <div class="chart-card">
         <h3>月別実績 vs 目標（直近推移）</h3>
         <canvas id="historyChart" height="220"></canvas>
+        <div class="notice">☆ = その月の新規目標を達成（達成率100%以上）</div>
       </div>
     </div>
 
@@ -137,6 +142,12 @@ a{color:var(--accent)}
     </div>
     <div id="seed-empty" class="seed-empty" style="display:none">まだ項目がありません。「＋ 追加」または「NIPPOから取り込む」から登録してください。</div>
     <div class="notice">エクスポートしたJSONをDesktopかDownloadsに置いて「種リスト更新して」と言えば、NIPPOのGitHubリポジトリ（strategy_seeds.json）に反映されます。他の端末で開いたときはそちらのデータが読み込まれます。</div>
+  </div>
+
+  <div class="seed-section">
+    <h3>📋 戦略予材リスト（KPIカウントシート由来・閲覧専用）</h3>
+    <div class="seed-sub" id="kpi-seed-sub">読み込み中...</div>
+    <div class="readonly-list" id="kpi-seed-list"></div>
   </div>
 </div>
 
@@ -279,7 +290,10 @@ async function main(){
   new Chart(document.getElementById('historyChart'), {
     type:'bar',
     data:{
-      labels: history.map(h=>h.month.replace('2026年','').replace('月','')+'月'),
+      labels: history.map(h=>{
+        const label = h.month.replace('2026年','').replace('月','')+'月';
+        return (h.rate!==null && h.rate>=100) ? label+' ☆' : label;
+      }),
       datasets:[
         {label:'新規実績', data: history.map(h=>h.actual), backgroundColor:'#60a5fa'},
         {label:'新規目標', data: history.map(h=>h.goal), backgroundColor:'#334155'}
@@ -447,5 +461,21 @@ function exportSeedList(){
 }
 
 initSeedList();
+
+// ── 戦略予材リスト（KPIカウントシート由来・閲覧専用） ──
+async function initKpiSeedList(){
+  const sub = document.getElementById('kpi-seed-sub');
+  const list = document.getElementById('kpi-seed-list');
+  try{
+    const res = await fetch('kpi_seed_companies.json', {cache:'no-store'});
+    if(!res.ok) throw new Error('not found');
+    const data = await res.json();
+    sub.textContent = `${data.source}（${data.extracted}時点）から「戦略予材である」でフラグが付いた会社を抽出。全${data.companies.length}件。`;
+    list.innerHTML = data.companies.map(c=>`<div>${escapeHtml(c)}</div>`).join('');
+  }catch(e){
+    sub.textContent = 'kpi_seed_companies.json が見つかりませんでした。';
+  }
+}
+initKpiSeedList();
 </script>
 </body></html>
