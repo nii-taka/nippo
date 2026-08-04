@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新規達成ダッシュボード｜新居 貴弘</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root{
+  --bg:#0f172a;--surface:#1e293b;--surface2:#263348;--border:#334155;
+  --text:#e2e8f0;--text2:#94a3b8;--accent:#38bdf8;--green:#4ade80;
+  --red:#f87171;--orange:#fb923c;--yellow:#facc15;--purple:#a78bfa;--shin:#60a5fa;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Hiragino Kaku Gothic Pro','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:linear-gradient(135deg,#1e40af,#0f172a);padding:20px 24px;border-bottom:1px solid var(--border)}
+header h1{font-size:1.3rem;font-weight:700;color:#fff}
+.subtitle{color:var(--text2);font-size:.85rem;margin-top:4px}
+.content{padding:24px;max-width:1200px;margin:0 auto}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.kpi-card .label{font-size:.75rem;color:var(--text2);margin-bottom:8px}
+.kpi-card .value{font-size:1.8rem;font-weight:700;color:var(--shin)}
+.kpi-card .sub{font-size:.78rem;color:var(--text2);margin-top:4px}
+.gap-pos{color:var(--green)}
+.gap-neg{color:var(--red)}
+.progress-outer{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px}
+.progress-outer h3{font-size:1rem;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.badge-rate{padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:700}
+.badge-over{background:#065f46;color:#4ade80}
+.badge-near{background:#713f12;color:#fde68a}
+.badge-low{background:#7f1d1d;color:#fca5a5}
+.progress-bar-wrap{width:100%;height:14px;background:var(--surface2);border-radius:7px;overflow:hidden}
+.progress-bar{height:100%;border-radius:7px;transition:width .4s;background:linear-gradient(90deg,var(--accent),var(--shin))}
+.message{margin-top:12px;font-size:.9rem;color:var(--text2)}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:20px;margin-bottom:24px}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.chart-card h3{font-size:1rem;margin-bottom:16px;color:var(--text)}
+canvas{width:100%!important}
+.notice{font-size:.78rem;color:var(--text2);margin-top:10px}
+#status{padding:40px;text-align:center;color:var(--text2)}
+a{color:var(--accent)}
+.seed-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px}
+.seed-section h3{font-size:1rem;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.seed-sub{color:var(--text2);font-size:.8rem;margin-bottom:16px}
+.seed-actions{display:flex;gap:8px}
+.btn{padding:8px 16px;border:none;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:all .2s}
+.btn-accent{background:var(--accent);color:#0f172a}
+.btn-accent:hover{opacity:.85}
+.btn-outline{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn-outline:hover{color:var(--text);border-color:var(--text2)}
+.btn-danger{background:transparent;color:var(--red);border:1px solid #7f1d1d;padding:6px 10px;font-size:.78rem}
+.btn-danger:hover{background:#7f1d1d;color:#fff}
+.seed-table-wrap{overflow-x:auto}
+.seed-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.seed-table th{background:var(--surface2);padding:8px 10px;text-align:left;color:var(--text2);font-weight:600;white-space:nowrap;border-bottom:2px solid var(--border)}
+.seed-table td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+.seed-table input,.seed-table textarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:.82rem;font-family:inherit}
+.seed-table input[type="date"]{min-width:130px}
+.seed-table textarea{resize:vertical;min-height:36px}
+.seed-table tr.overdue td{background:rgba(248,113,113,.08)}
+.seed-empty{color:var(--text2);font-size:.85rem;padding:16px 0;text-align:center}
+.sync-badge{font-size:.72rem;padding:3px 10px;border-radius:12px}
+.sync-badge.synced{background:#065f46;color:#4ade80}
+.sync-badge.dirty{background:#713f12;color:#fde68a}
+.paste-box{background:var(--surface2);border:1px dashed var(--border);border-radius:10px;padding:14px;margin-bottom:16px}
+.paste-box label{display:block;font-size:.78rem;color:var(--text2);margin-bottom:8px}
+.paste-box textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:6px;font-size:.82rem;font-family:inherit;margin-bottom:8px;resize:vertical}
+.src-badge{font-size:.68rem;padding:2px 7px;border-radius:8px;white-space:nowrap;display:inline-block;margin-top:4px}
+.src-badge.nippo{background:#1d4ed8;color:#93c5fd}
+.src-badge.manual{background:var(--surface2);color:var(--text2)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎯 新規達成ダッシュボード</h1>
+  <div class="subtitle">新居 貴弘 専用 ｜ <span id="data-range">読み込み中...</span></div>
+</header>
+<div class="content">
+  <div id="status">NIPPOデータを読み込み中...</div>
+  <div id="app" style="display:none">
+
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="label">月目標（新規）</div><div class="value" id="k-goal">-</div></div>
+      <div class="kpi-card"><div class="label">実績（新規）</div><div class="value" id="k-actual">-</div></div>
+      <div class="kpi-card"><div class="label">ペース目標※</div><div class="value" id="k-pace">-</div></div>
+      <div class="kpi-card"><div class="label">GAP</div><div class="value" id="k-gap">-</div></div>
+      <div class="kpi-card"><div class="label">1日平均</div><div class="value" id="k-avg">-</div></div>
+      <div class="kpi-card"><div class="label">残り必要ペース/日</div><div class="value" id="k-need">-</div></div>
+    </div>
+
+    <div class="progress-outer">
+      <h3>今月の達成率 <span class="badge-rate" id="rate-badge">-</span></h3>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+      <div class="message" id="message"></div>
+      <div class="notice">※ペース目標 = 月目標 × (今日までの稼働日 / 月の総稼働日)　土日・祝日を除いた実稼働ベース（稼働 <span id="worked-days">-</span>/<span id="total-days">-</span>日）</div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>今月の新規推移（日別）</h3>
+        <canvas id="dailyChart" height="220"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>月別実績 vs 目標（直近推移）</h3>
+        <canvas id="historyChart" height="220"></canvas>
+      </div>
+    </div>
+
+    <div class="notice">データ元: <a id="source-link" href="index.html">NIPPOダッシュボード（本社）</a>　※本ページはindex.htmlの埋め込みデータをそのまま参照しています。目標値の変更はNIPPOダッシュボードの「目標設定」から行ってください（自動反映されます）。</div>
+  </div>
+
+  <div class="seed-section">
+    <h3>🌱 種リスト（見込み先・次のアクション）
+      <span id="sync-badge" class="sync-badge synced">同期済み</span>
+    </h3>
+    <div class="seed-sub">会社名・次のアクション・期限・戦略メモを管理します。編集内容はブラウザに自動保存されます。期限が過ぎた項目は赤くハイライトされます。</div>
+    <div class="seed-actions" style="margin-bottom:14px">
+      <button class="btn btn-accent" onclick="addSeedRow()">＋ 追加</button>
+      <button class="btn btn-outline" onclick="importFromNippo()">📥 NIPPOから新規取引先を取り込む</button>
+      <button class="btn btn-outline" onclick="exportSeedList()">⬇ エクスポート（JSON保存）</button>
+    </div>
+
+    <div class="paste-box">
+      <label>Excelから貼り付けて一括追加（業者名を1行1件、またはタブ区切りの先頭列）</label>
+      <textarea id="paste-area" rows="3" placeholder="例）
+㈱サンプル工業
+テスト建設㈱"></textarea>
+      <button class="btn btn-outline" onclick="importFromPaste()">📋 貼り付け内容を取り込む</button>
+      <span id="paste-result" class="notice" style="margin:0"></span>
+    </div>
+
+    <div class="seed-table-wrap">
+      <table class="seed-table">
+        <thead><tr><th style="width:18%">会社名</th><th style="width:10%">契約日</th><th style="width:20%">次のアクション</th><th style="width:12%">期限</th><th style="width:28%">戦略メモ</th><th style="width:60px"></th></tr></thead>
+        <tbody id="seed-tbody"></tbody>
+      </table>
+    </div>
+    <div id="seed-empty" class="seed-empty" style="display:none">まだ項目がありません。「＋ 追加」または「NIPPOから取り込む」から登録してください。</div>
+    <div class="notice">エクスポートしたJSONをDesktopかDownloadsに置いて「種リスト更新して」と言えば、NIPPOのGitHubリポジトリ（strategy_seeds.json）に反映されます。他の端末で開いたときはそちらのデータが読み込まれます。</div>
+  </div>
+</div>
+
+<script>
+const PERSON = '新居 貴弘';
+const REGION = '本社';
+
+function paceGoal(g, workedDays, totalWorkdays){ return Math.round(g * workedDays / totalWorkdays); }
+
+function rateClass(r){
+  if(r>=1) return 'badge-over';
+  if(r>=0.85) return 'badge-near';
+  return 'badge-low';
+}
+
+function fmt(n){ return (n===null||n===undefined) ? '-' : Math.round(n).toLocaleString(); }
+
+async function main(){
+  let html;
+  try{
+    const res = await fetch('index.html', {cache:'no-store'});
+    html = await res.text();
+  }catch(e){
+    document.getElementById('status').textContent = 'index.htmlの読み込みに失敗しました。GitHub Pages上（または同一サーバー）で開いてください。';
+    return;
+  }
+
+  const rawMatch = html.match(/const RAW = (\{[\s\S]*?\});\r?\n/);
+  const holidayMatch = html.match(/const JUN_HOLIDAYS = (\[[\s\S]*?\]);/);
+  const defaultGoalsMatch = html.match(/const DEFAULT_GOALS = (\{[\s\S]*?\});\r?\n/);
+  if(!rawMatch){
+    document.getElementById('status').textContent = 'データの解析に失敗しました（index.htmlの形式が変わった可能性があります）。';
+    return;
+  }
+  const RAW = JSON.parse(rawMatch[1]);
+  window.RAW = RAW;
+  const HOLIDAYS = holidayMatch ? JSON.parse(holidayMatch[1]) : [];
+  const DEFAULT_GOALS = defaultGoalsMatch ? JSON.parse(defaultGoalsMatch[1]) : {};
+
+  // 目標: NIPPOダッシュボードのlocalStorage（同一オリジン）を最優先で参照
+  let goals = null;
+  try{ goals = JSON.parse(localStorage.getItem('nippo_goals_' + REGION) || 'null'); }catch(e){}
+  const g = (goals && goals[PERSON]) || DEFAULT_GOALS[PERSON] || {};
+  const gShin = g['新規'] || 0;
+
+  // 稼働日計算（index.html と同一ロジック）
+  function isWorkday(d){
+    const dt = new Date(d);
+    const dow = dt.getDay();
+    if(dow===0||dow===6) return false;
+    if(HOLIDAYS.includes(d)) return false;
+    return true;
+  }
+  const dataEnd = RAW.dates[RAW.dates.length-1];
+  const dm = dataEnd.slice(0,7);
+  const y = parseInt(dm.slice(0,4)), m = parseInt(dm.slice(5,7));
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const allWorkdays = [];
+  for(let i=1;i<=daysInMonth;i++){
+    const ds = `${y}/${String(m).padStart(2,'0')}/${String(i).padStart(2,'0')}`;
+    if(isWorkday(ds)) allWorkdays.push(ds);
+  }
+  const workedDays = allWorkdays.filter(d=>d<=dataEnd).length;
+  const totalWorkdays = allWorkdays.length;
+  const remainingWorkdays = Math.max(totalWorkdays - workedDays, 0);
+
+  const summary = (RAW.person_summary && RAW.person_summary[PERSON]) || {};
+  const actual = summary['新規_人工'] || 0;
+  const pace = gShin ? paceGoal(gShin, workedDays, totalWorkdays) : 0;
+  const gap = actual - pace;
+  const rate = gShin ? actual/gShin : null;
+  const dailyAvg = workedDays>0 ? actual/workedDays : 0;
+  const remainingNeed = gShin - actual;
+  const neededPace = remainingWorkdays>0 ? remainingNeed/remainingWorkdays : (remainingNeed>0?Infinity:0);
+
+  document.getElementById('data-range').textContent = RAW.data_range;
+  document.getElementById('k-goal').textContent = gShin ? fmt(gShin) : '未設定';
+  document.getElementById('k-actual').textContent = fmt(actual);
+  document.getElementById('k-pace').textContent = gShin ? fmt(pace) : '-';
+  const gapEl = document.getElementById('k-gap');
+  gapEl.textContent = gShin ? (gap>=0?'+':'') + fmt(gap) : '-';
+  gapEl.className = 'value ' + (gap>=0?'gap-pos':'gap-neg');
+  document.getElementById('k-avg').textContent = fmt(dailyAvg);
+  document.getElementById('k-need').textContent = gShin ? (neededPace===Infinity?'達成困難':fmt(neededPace)) : '-';
+  document.getElementById('worked-days').textContent = workedDays;
+  document.getElementById('total-days').textContent = totalWorkdays;
+
+  const badge = document.getElementById('rate-badge');
+  const bar = document.getElementById('progress-bar');
+  const msg = document.getElementById('message');
+  if(gShin){
+    badge.textContent = Math.round(rate*100) + '%';
+    badge.className = 'badge-rate ' + rateClass(rate);
+    bar.style.width = Math.min(rate*100,100) + '%';
+    if(rate>=1){
+      msg.textContent = `月目標を達成しました！このペースを維持しましょう。`;
+    }else if(gap>=0){
+      msg.textContent = `ペース目標を上回っています。残り${remainingWorkdays}稼働日で目標まであと${fmt(remainingNeed)}。`;
+    }else{
+      msg.textContent = `ペース目標に対して${fmt(Math.abs(gap))}遅れています。残り${remainingWorkdays}稼働日、1日あたり${neededPace===Infinity?'—':fmt(neededPace)}のペースが必要です。`;
+    }
+  }else{
+    badge.textContent = '目標未設定';
+    badge.className = 'badge-rate badge-low';
+    bar.style.width = '0%';
+    msg.textContent = 'NIPPOダッシュボードの「目標設定」タブで新規目標を設定すると、達成率が表示されます。';
+  }
+
+  // 日別チャート
+  const personDaily = (RAW.person_daily && RAW.person_daily[PERSON]) || {};
+  const days = RAW.dates.slice();
+  const dayLabels = days.map(d=>d.slice(5).replace('/','-'));
+  const dayValues = days.map(d=>(personDaily[d] && personDaily[d]['新規']) || 0);
+  const dailyTargetLine = g['1日新規'] ? days.map(()=>g['1日新規']) : null;
+
+  new Chart(document.getElementById('dailyChart'), {
+    type:'bar',
+    data:{
+      labels: dayLabels,
+      datasets:[
+        {label:'新規（実績）', data: dayValues, backgroundColor:'#60a5fa', order:2},
+        ...(dailyTargetLine ? [{label:'1日目標', data: dailyTargetLine, type:'line', borderColor:'#facc15', borderDash:[6,4], pointRadius:0, order:1}] : [])
+      ]
+    },
+    options:{
+      plugins:{legend:{labels:{color:'#e2e8f0'}}},
+      scales:{
+        x:{ticks:{color:'#94a3b8'}, grid:{color:'#334155'}},
+        y:{ticks:{color:'#94a3b8'}, grid:{color:'#334155'}}
+      }
+    }
+  });
+
+  // 履歴チャート（過去月の実績 vs 目標）
+  const history = (RAW.history || []).map(h=>{
+    const p = (h.persons || []).find(x=>x.name===PERSON);
+    return p ? {month:h.month, actual:p['新規'], goal:p['目標新規'], rate:p['達成率新規']} : null;
+  }).filter(Boolean);
+
+  new Chart(document.getElementById('historyChart'), {
+    type:'bar',
+    data:{
+      labels: history.map(h=>h.month.replace('2026年','').replace('月','')+'月'),
+      datasets:[
+        {label:'新規実績', data: history.map(h=>h.actual), backgroundColor:'#60a5fa'},
+        {label:'新規目標', data: history.map(h=>h.goal), backgroundColor:'#334155'}
+      ]
+    },
+    options:{
+      plugins:{legend:{labels:{color:'#e2e8f0'}}},
+      scales:{
+        x:{ticks:{color:'#94a3b8'}, grid:{color:'#334155'}},
+        y:{ticks:{color:'#94a3b8'}, grid:{color:'#334155'}}
+      }
+    }
+  });
+
+  document.getElementById('status').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+main();
+
+// ── 種リスト（見込み先管理） ──
+const SEED_KEY = 'nippo_seed_list';
+let seedList = [];
+let seedServerSnapshot = null; // 最後にサーバーから読み込んだ内容（同期状態の判定用）
+
+function uid(){ return 's' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+function todayStr(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+async function initSeedList(){
+  let serverList = [];
+  try{
+    const res = await fetch('strategy_seeds.json', {cache:'no-store'});
+    if(res.ok) serverList = await res.json();
+  }catch(e){ /* ファイルが無ければ空リストのまま */ }
+  seedServerSnapshot = JSON.stringify(serverList);
+
+  let local = null;
+  try{ local = JSON.parse(localStorage.getItem(SEED_KEY) || 'null'); }catch(e){}
+
+  seedList = local || serverList || [];
+  renderSeedList();
+}
+
+function saveSeedListLocal(){
+  localStorage.setItem(SEED_KEY, JSON.stringify(seedList));
+  updateSyncBadge();
+}
+
+function updateSyncBadge(){
+  const badge = document.getElementById('sync-badge');
+  const dirty = JSON.stringify(seedList) !== seedServerSnapshot;
+  badge.textContent = dirty ? '未同期の変更あり' : '同期済み';
+  badge.className = 'sync-badge ' + (dirty ? 'dirty' : 'synced');
+}
+
+function addSeedRow(){
+  seedList.unshift({id: uid(), company:'', contractDate:'', action:'', due:'', memo:'', source:'manual'});
+  saveSeedListLocal();
+  renderSeedList();
+}
+
+function importFromNippo(){
+  const clients = (window.RAW && window.RAW.shinki_clients && window.RAW.shinki_clients[PERSON]) || [];
+  if(!clients.length){
+    alert('NIPPO側に新居さんの新規取引先データが見つかりませんでした。');
+    return;
+  }
+  const existing = new Set(seedList.map(r=>r.company));
+  let added = 0;
+  clients.forEach(c=>{
+    if(existing.has(c.name)) return;
+    seedList.push({
+      id: uid(), company: c.name, contractDate: c['契約日'] || '',
+      action: '', due: '', memo: c['戦略'] || '', source: 'nippo'
+    });
+    existing.add(c.name);
+    added++;
+  });
+  saveSeedListLocal();
+  renderSeedList();
+  alert(added > 0 ? `${added}件を取り込みました。` : '新しく取り込む項目はありませんでした（既に登録済みです）。');
+}
+
+function importFromPaste(){
+  const area = document.getElementById('paste-area');
+  const lines = area.value.split(/\r?\n/).map(l=>l.split('\t')[0].trim()).filter(Boolean);
+  const existing = new Set(seedList.map(r=>r.company));
+  let added = 0, skipped = 0;
+  lines.forEach(name=>{
+    if(existing.has(name)){ skipped++; return; }
+    seedList.push({id: uid(), company:name, contractDate:'', action:'', due:'', memo:'', source:'manual'});
+    existing.add(name);
+    added++;
+  });
+  saveSeedListLocal();
+  renderSeedList();
+  area.value = '';
+  document.getElementById('paste-result').textContent = `${added}件追加${skipped?`（重複${skipped}件はスキップ）`:''}`;
+}
+
+function deleteSeedRow(id){
+  if(!confirm('この項目を削除しますか？')) return;
+  seedList = seedList.filter(r=>r.id!==id);
+  saveSeedListLocal();
+  renderSeedList();
+}
+
+function updateSeedField(id, field, value){
+  const row = seedList.find(r=>r.id===id);
+  if(row){ row[field] = value; saveSeedListLocal(); }
+}
+
+function renderSeedList(){
+  const tbody = document.getElementById('seed-tbody');
+  const empty = document.getElementById('seed-empty');
+  if(!seedList.length){
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    updateSyncBadge();
+    return;
+  }
+  empty.style.display = 'none';
+
+  const sorted = seedList.slice().sort((a,b)=>{
+    if(!a.due) return 1;
+    if(!b.due) return -1;
+    return a.due < b.due ? -1 : 1;
+  });
+
+  const today = todayStr();
+  tbody.innerHTML = sorted.map(r=>{
+    const overdue = r.due && r.due < today;
+    const srcBadge = r.source==='nippo'
+      ? '<span class="src-badge nippo">NIPPO取込</span>'
+      : '<span class="src-badge manual">手動</span>';
+    return `<tr class="${overdue?'overdue':''}">
+      <td><input type="text" value="${escapeAttr(r.company)}" placeholder="会社名" onchange="updateSeedField('${r.id}','company',this.value)">${srcBadge}</td>
+      <td style="color:var(--text2);white-space:nowrap">${escapeHtml(r.contractDate) || '-'}</td>
+      <td><input type="text" value="${escapeAttr(r.action)}" placeholder="例: 電話フォロー" onchange="updateSeedField('${r.id}','action',this.value)"></td>
+      <td><input type="date" value="${escapeAttr(r.due)}" onchange="updateSeedField('${r.id}','due',this.value)"></td>
+      <td><textarea placeholder="戦略メモ" onchange="updateSeedField('${r.id}','memo',this.value)">${escapeHtml(r.memo)}</textarea></td>
+      <td><button class="btn btn-danger" onclick="deleteSeedRow('${r.id}')">削除</button></td>
+    </tr>`;
+  }).join('');
+  updateSyncBadge();
+}
+
+function escapeAttr(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function exportSeedList(){
+  const blob = new Blob([JSON.stringify(seedList, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'strategy_seeds.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+initSeedList();
+</script>
+</body></html>
