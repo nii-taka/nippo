@@ -11,10 +11,10 @@ from bcsms_auto_update import _extract_js_var, _replace_js_var, push_to_github, 
 from config import GITHUB_TOKEN, GITHUB_REPO
 
 FILES = {
-    '本社': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (56).xlsx',
-    '仙台': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (53).xlsx',
-    '東京': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (54).xlsx',
-    '警備': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (55).xlsx',
+    '本社': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (57).xlsx',
+    '仙台': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (58).xlsx',
+    '東京': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (59).xlsx',
+    '警備': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (60).xlsx',
 }
 
 CUTOFF = datetime.date(2024, 6, 1)  # 2026年6月から2年前
