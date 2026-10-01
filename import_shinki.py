@@ -7,17 +7,17 @@ sys.path.insert(0, r'C:\Users\新居貴弘\Desktop\nippo_git')
 
 import pandas as pd
 import datetime
-from bcsms_auto_update import _extract_js_var, _replace_js_var, push_to_github, EXCLUDE_PERSONS
+from bcsms_auto_update import _extract_js_var, _replace_js_var, push_to_github, EXCLUDE_PERSONS, SHIN_CUTOFF
 from config import GITHUB_TOKEN, GITHUB_REPO
 
 FILES = {
-    '本社': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (57).xlsx',
-    '仙台': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (58).xlsx',
-    '東京': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (59).xlsx',
-    '警備': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (60).xlsx',
+    '本社': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (61).xlsx',
+    '仙台': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (62).xlsx',
+    '警備': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (63).xlsx',
+    '東京': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (64).xlsx',
 }
 
-CUTOFF = datetime.date(2024, 6, 1)  # 2026年6月から2年前
+CUTOFF = SHIN_CUTOFF  # 実行月の2年前の同月1日（bcsms_auto_update.pyと同じ基準）
 
 def parse_shinki_excel(path, region):
     df = pd.read_excel(path, sheet_name='地域別', header=None)
