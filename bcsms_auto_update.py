@@ -614,6 +614,26 @@ def _is_valid_seasonal(data):
     return False
 
 
+def _expected_seasonal_keys():
+    """今月から向こう3ヶ月分×2年前・1年前の年月キー（calc_seasonal_gyoshu_allと同じロジック）"""
+    today = datetime.date.today()
+    keys = []
+    for years_ago in (2, 1):
+        for i in range(3):
+            total = (today.year - years_ago) * 12 + (today.month - 1) + i
+            y, m = divmod(total, 12)
+            m += 1
+            keys.append(f'{y}/{m:02d}')
+    return set(keys)
+
+
+def _seasonal_needs_refresh(data):
+    """形式が不正、または月が変わって期待する年月キーと一致しない場合に再取得が必要"""
+    if not _is_valid_seasonal(data):
+        return True
+    return not _expected_seasonal_keys().issubset(set(data.keys()))
+
+
 def merge_daily_detail(old_detail, new_detail):
     """daily_detail を日付キーでマージ（新データ優先）"""
     merged = {}
@@ -626,11 +646,11 @@ def merge_daily_detail(old_detail, new_detail):
 
 
 def _get_valid_seasonal(old_data, new_per_region_data):
-    """有効な seasonal_gyoshu を返す（正しい形式ならそのまま、なければ空）"""
+    """新しく取得したデータがあればそれを優先。なければ有効な旧データ、それもなければ空"""
+    if new_per_region_data:
+        return new_per_region_data
     if _is_valid_seasonal(old_data):
         return old_data
-    if new_per_region_data is not None:
-        return new_per_region_data
     return {}
 
 
@@ -666,18 +686,16 @@ def update_index_html(new_data, data_range, repo_path, shinki_expire=None, shink
     raw_old = _extract_js_var(content, 'RAW')
     all_old = _extract_js_var(content, 'ALL_REGIONS')
 
-    # seasonal_gyoshu が不正な形式（担当者名キー）なら再ダウンロードして計算
-    need_seasonal = not _is_valid_seasonal(raw_old.get('seasonal_gyoshu', {}))
-    if need_seasonal:
+    # seasonal_gyoshu が不正な形式、または月が変わって対象期間がずれていたら再ダウンロードして計算
+    need_seasonal = _seasonal_needs_refresh(raw_old.get('seasonal_gyoshu', {}))
+    if not need_seasonal:
         for region in REGIONS:
-            if not _is_valid_seasonal(all_old.get(region, {}).get('seasonal_gyoshu', {})):
+            if _seasonal_needs_refresh(all_old.get(region, {}).get('seasonal_gyoshu', {})):
                 need_seasonal = True
                 break
-        else:
-            need_seasonal = False
     seasonal_per_region = {}
     if need_seasonal:
-        print("[INFO] seasonal_gyoshu を再取得します（初回のみ）...")
+        print("[INFO] seasonal_gyoshu を再取得します（対象期間が変わったため）...")
         seasonal_per_region = calc_seasonal_gyoshu_all()
 
     honsha = new_data['本社']
