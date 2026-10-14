@@ -1498,11 +1498,7 @@ function renderDailyDetail(){
         <td style="padding-left:28px;color:var(--text)">${t.name}</td>
         <td style="color:${color};font-weight:700;text-align:center">${fmt(t.人工)}</td>
         <td colspan="3"></td>
-      </tr>` + (t.genba||[]).map(g=>`<tr style="background:var(--surface2);font-size:.76rem">
-        <td style="padding-left:48px;color:var(--text2)">${g.name}${g.元請?` <span style="display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--accent);font-size:.7rem;font-weight:700;white-space:nowrap">元請 ${g.元請}</span>`:''}</td>
-        <td style="color:var(--text2);text-align:center">${fmt(g.人工)}</td>
-        <td colspan="3"></td>
-      </tr>`).join('')).join('');
+      </tr>`).join('');
     const tokRows = makeTokRows(shin_tok,'var(--shin)','新規') + makeTokRows(kison_tok,'var(--accent)','既存');
     return `<tr onclick="toggleTok(this)" style="cursor:pointer" data-tok="${encodeURIComponent(tokRows)}">
       <td>${d.slice(5)} <span style="font-size:.7rem;color:var(--text2)">▶</span></td>
