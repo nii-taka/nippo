@@ -359,6 +359,28 @@ def process_excel(excel_path):
         return '新規' if row['契約日'].date() >= SHIN_CUTOFF else '既存'
     df['kbn'] = df.apply(kbn, axis=1)
 
+    # 元請会社: 空欄の行は、同じ現場名で元請が入っている他の行から補完する。
+    # 同じ現場名に別会社の元請が混在する場合（例: 「各現場」）は補完しない。
+    import unicodedata, re as _re
+    from collections import Counter as _Counter
+    def _site_key(s):
+        return _re.sub(r'\s+', '', unicodedata.normalize('NFKC', str(s)))
+    def _company_key(s):
+        return _re.sub(r'株式会社|\(株\)|\s', '', unicodedata.normalize('NFKC', str(s)))
+    if '元請会社' not in df.columns:
+        df['元請会社'] = ''
+    df['元請会社'] = df['元請会社'].fillna('').astype(str).str.strip().replace('nan', '')
+    _moto_by_site = {}
+    for _site, _moto in zip(df['現場名'], df['元請会社']):
+        if _moto and not pd.isna(_site):
+            _moto_by_site.setdefault(_site_key(_site), _Counter())[_moto] += 1
+    _moto_fill = {}
+    for _k, _cnt in _moto_by_site.items():
+        if len({_company_key(m) for m in _cnt}) == 1:
+            _moto_fill[_k] = _cnt.most_common(1)[0][0]
+    df['moto'] = [m if m else ('' if pd.isna(s) else _moto_fill.get(_site_key(s), ''))
+                  for s, m in zip(df['現場名'], df['元請会社'])]
+
     def calc_ps(df_r):
         result = {}
         for name, pd_ in df_r.groupby('担当者名'):
@@ -444,7 +466,12 @@ def process_excel(excel_path):
                 for (cd,name), cg in day_df.groupby(['得意先CD','得意先名']):
                     v = round(float(cg['人工合計'].sum()),1)
                     k = '新規' if (cg['kbn']=='新規').any() else ('既存' if (cg['kbn']=='既存').any() else '空欄')
-                    tok_list.append({'name':str(name),'人工':v,'区分':k})
+                    genba = []
+                    for gname, gg in cg.groupby('現場名'):
+                        gmoto = next((m for m in gg['moto'] if m), '')
+                        genba.append({'name':str(gname).strip(),'人工':round(float(gg['人工合計'].sum()),1),'元請':gmoto})
+                    genba.sort(key=lambda x:-x['人工'])
+                    tok_list.append({'name':str(name),'人工':v,'区分':k,'genba':genba})
                 tok_list.sort(key=lambda x:-x['人工'])
                 result[str(person)][dstr] = {'総合':round(float(day_df['人工合計'].sum()),1),'新規':round(float(day_df[day_df['kbn']=='新規']['人工合計'].sum()),1),'社数':int(day_df['得意先CD'].nunique()),'現場数':int(day_df['現場名'].nunique()),'得意先':tok_list}
         return result
