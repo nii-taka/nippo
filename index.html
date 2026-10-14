@@ -1605,9 +1605,11 @@ function toggleTok(row){
   const tmp = document.createElement('tbody');
   tmp.innerHTML = html;
   const trs = Array.from(tmp.querySelectorAll('tr'));
+  let ref = row;
   trs.forEach(tr => {
     tr.classList.add('tok-expand');
-    row.parentNode.insertBefore(tr, row.nextSibling);
+    row.parentNode.insertBefore(tr, ref.nextSibling);
+    ref = tr;
   });
 }
 
