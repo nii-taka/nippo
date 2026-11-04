@@ -11,10 +11,10 @@ from bcsms_auto_update import _extract_js_var, _replace_js_var, push_to_github, 
 from config import GITHUB_TOKEN, GITHUB_REPO
 
 FILES = {
-    '本社': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (61).xlsx',
-    '仙台': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (62).xlsx',
-    '警備': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (63).xlsx',
-    '東京': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (64).xlsx',
+    '本社': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (66).xlsx',
+    '仙台': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (67).xlsx',
+    '東京': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (68).xlsx',
+    '警備': r'C:\Users\新居貴弘\Desktop\新規取引先各拠点\新規取引先確認 (69).xlsx',
 }
 
 CUTOFF = SHIN_CUTOFF  # 実行月の2年前の同月1日（bcsms_auto_update.pyと同じ基準）
