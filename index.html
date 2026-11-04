@@ -114,7 +114,19 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
   .content{padding:0!important}
 }
 @media(max-width:600px){.chart-grid{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
-
+.progress-cards{display:none}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
+.pc-name{font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--text)}
+.pc-metric{padding:10px 0;border-top:1px solid var(--border)}
+.pc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.pc-label{font-size:.82rem;font-weight:700}
+.pc-none{font-size:.75rem;color:var(--text2)}
+.pc-nums{font-size:.82rem;color:var(--text2);margin-bottom:6px}
+.pc-nums b{font-size:1.5rem;font-weight:700}
+.pc-metric .progress-bar-wrap{display:block;width:100%}
+.pc-sub{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;font-size:.76rem;color:var(--text2)}
+.pc-sub b{color:var(--text);font-weight:600}
+@media print{.progress-cards{display:none!important}.progress-table{display:block!important}}
 .daily-detail-wrap{padding:24px}
 .daily-person-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
 .daily-ptab{padding:7px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:.85rem;color:var(--text2);transition:all .2s}
@@ -276,6 +288,83 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
 }
 @media print { #splash-screen { display: none !important; } }
 
+/* ===== スマホ表示 ===== */
+@media(max-width:640px){
+  header{flex-wrap:wrap;padding:12px 14px;gap:10px}
+  header>div:first-child{gap:10px}
+  header svg{width:36px;height:36px}
+  header h1{font-size:1.15rem}
+  header .subtitle{font-size:.74rem;line-height:1.4}
+  header>div:last-child{width:100%;margin-left:0!important}
+  #region-tabs{width:100%;display:grid!important;grid-template-columns:repeat(4,1fr);gap:6px!important}
+  .region-btn{padding:9px 0;font-size:.9rem;text-align:center}
+  .main-tabs{position:sticky;top:0;z-index:30;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:8px 8px 0;gap:2px;scrollbar-width:none}
+  .main-tabs::-webkit-scrollbar{display:none}
+  .main-tab{flex:0 0 auto;padding:10px 14px;font-size:.88rem;white-space:nowrap}
+  .tab-sub{display:none}
+  .content{padding:12px}
+  .person-tabs,.daily-person-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -12px 14px;padding:0 12px 6px;scrollbar-width:none}
+  .person-tabs::-webkit-scrollbar,.daily-person-tabs::-webkit-scrollbar{display:none}
+  .person-tab,.daily-ptab{flex:0 0 auto;white-space:nowrap;padding:8px 14px}
+  .kpi-grid{gap:10px;margin-bottom:16px}
+  .kpi-card{padding:12px}
+  .kpi-card .value{font-size:1.6rem}
+  .chart-grid{gap:14px}
+  .chart-card{padding:14px}
+  .chart-card h3{font-size:.95rem;margin-bottom:12px}
+  .section-title{font-size:1rem;flex-wrap:wrap;margin:18px 0 12px;gap:8px}
+  .print-btn{float:none;margin-left:auto;padding:5px 10px;font-size:.75rem}
+  .notice{font-size:.72rem}
+  .progress-table{display:none}
+  .progress-cards{display:grid;gap:10px;margin-bottom:20px}
+  table{font-size:.78rem}
+  thead th{padding:8px 8px;font-size:.74rem}
+  tbody td{padding:8px 8px}
+  .table-wrap{margin-bottom:18px}
+  .table-wrap table th:first-child,.table-wrap table td:first-child{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:1px 0 0 var(--border)}
+  .table-wrap thead th:first-child{background:var(--surface2)}
+  .daily-detail-wrap{padding:12px}
+  .daily-toolbar{margin-bottom:12px}
+  .dv-btn{padding:8px 14px}
+  .daily-summary{grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+  .daily-sum-card{padding:10px 6px}
+  .daily-sum-card .value{font-size:1.2rem}
+  .daily-table{font-size:.8rem}
+  .daily-table th,.daily-table td{padding:8px 8px}
+  .daily-table th:first-child,.daily-table td:first-child{position:sticky;left:0;z-index:2;background:var(--bg);box-shadow:1px 0 0 var(--border)}
+  .daily-table th:first-child{background:var(--surface2)}
+  .daily-all-grid{grid-template-columns:1fr;gap:12px}
+  .daily-all-person{padding:12px}
+  .shinki-wrap,.eigyo-wrap,.history-wrap{padding:12px}
+  .shinki-person-block{padding:12px}
+  .shinki-table th,.shinki-table td{padding:8px 8px}
+  .eigyo-section{margin-bottom:24px}
+  .eigyo-section>div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:minmax(0,1fr)!important}
+  .eigyo-section>div>div{min-width:0}
+  .eigyo-monthly-table{font-size:.76rem}
+  .eigyo-monthly-table th,.eigyo-monthly-table td{padding:7px 8px}
+  .eigyo-contracts-grid{grid-template-columns:1fr;gap:12px}
+  .history-month{margin-bottom:28px}
+  .history-month-header h3{font-size:1rem}
+  .history-summary{gap:8px;margin-bottom:14px}
+  .history-sum-card{padding:10px 6px}
+  .history-sum-card .value{font-size:1.1rem}
+  .history-table{font-size:.78rem}
+  .history-table th,.history-table td{padding:8px 8px}
+  .history-table th:first-child,.history-table td:first-child{position:sticky;left:0;z-index:2;background:var(--bg);box-shadow:1px 0 0 var(--border)}
+  .history-table th:first-child{background:var(--surface2)}
+  .history-table .total-row td:first-child{background:var(--surface2)}
+  .history-month div[style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+  #tab-ranking>div:first-child{padding:12px 0 8px!important}
+  .ranking-wrap{overflow-x:auto}
+  .ranking-section{margin-bottom:24px}
+  .ranking-section h3{font-size:1rem}
+  .ranking-table th{padding:8px 8px;font-size:.78rem}
+  .ranking-table td{padding:9px 8px;font-size:.84rem}
+  .rank-bar-wrap{width:64px;margin-left:0}
+  .goal-form{padding:14px}
+  .goal-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -337,7 +426,7 @@ tbody td{padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowr
   <button class="main-tab active" data-tab="overview">📊 集計グラフ</button>
   <button class="main-tab" data-tab="daily">📋 日別出向数</button>
   <button class="main-tab" data-tab="shinki">🏢 新規取引先</button>
-  <button class="main-tab" data-tab="eigyo">📈 営業実績（全体会議出力用）</button>
+  <button class="main-tab" data-tab="eigyo">📈 営業実績<span class="tab-sub">（全体会議出力用）</span></button>
   <button class="main-tab" data-tab="history">📅 過去実績</button>
   <button class="main-tab" data-tab="ranking">🏆 ランキング</button>
 
@@ -682,7 +771,8 @@ function renderAll(el){
     <button class="print-btn" onclick="window.print()">🖨️ PDF・印刷</button>
   </div>
   <div class="notice">※ペース目標 = 月目標 × (今日までの稼働日 / 月の総稼働日)　土日・祝日・GWを除いた実稼働ベースの目安（稼働 ${workedDays}/${totalWorkdays}日）</div>
-  <div class="table-wrap">${buildProgressTable()}</div>
+  <div class="table-wrap progress-table">${buildProgressTable()}</div>
+  ${buildProgressCards()}
   <div class="section-title">📅 日別 人工合計 — 棒グラフ（新規・既存・契約日空欄）</div>
   <div class="chart-card" style="margin-bottom:24px">
     <div class="legend">
@@ -789,6 +879,41 @@ function buildProgressTable(){
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
+}
+
+// スマホ用: 担当者ごとのカード表示（PCでは非表示）
+function buildProgressCards(){
+  const cards = RAW.targets.map(p=>{
+    const s = RAW.person_summary[p] || {};
+    const g = goals[p];
+    const noGoal = !g || NO_GOALS.has(p);
+    const sTotal = s['総合_人工']||0, sShin = s['新規_人工']||0;
+    const avgTotal = Math.round(sTotal/avgDivisor()*10)/10;
+    const avgShin = Math.round(sShin/avgDivisor()*10)/10;
+    function metric(label, color, actual, goal, avg){
+      if(noGoal || !goal){
+        return `<div class="pc-metric">
+          <div class="pc-top"><span class="pc-label" style="color:${color}">${label}</span><span class="pc-none">目標なし</span></div>
+          <div class="pc-nums"><b style="color:${color}">${fmt(actual)}</b></div>
+          <div class="pc-sub"><span>1日平均 <b>${avg}</b></span></div>
+        </div>`;
+      }
+      const pace = paceGoal(goal), gap = actual - pace, rate = actual/goal;
+      const bar = Math.min(100, Math.round(rate*100));
+      const barColor = rate>=1?'#4ade80':rate>=0.85?'#facc15':'#f87171';
+      return `<div class="pc-metric">
+        <div class="pc-top"><span class="pc-label" style="color:${color}">${label}</span><span class="badge-rate ${rateClass(rate)}">${Math.round(rate*100)}%</span></div>
+        <div class="pc-nums"><b style="color:${color}">${fmt(actual)}</b><span> / ${fmt(goal)}（月目標）</span></div>
+        <div class="progress-bar-wrap"><div class="progress-bar" style="width:${bar}%;background:${barColor}"></div></div>
+        <div class="pc-sub"><span>1日平均 <b>${avg}</b></span><span>ペース目標 <b>${fmt(pace)}</b></span><span>GAP <b style="color:${gap>=0?'#4ade80':'#fb923c'}">${gap>=0?'+':''}${fmt(gap)}</b></span></div>
+      </div>`;
+    }
+    return `<div class="pcard"><div class="pc-name">${p}</div>
+      ${metric('総合','var(--accent)',sTotal,g&&g['総合'],avgTotal)}
+      ${metric('新規','#fb923c',sShin,g&&g['新規'],avgShin)}
+    </div>`;
+  }).join('');
+  return `<div class="progress-cards">${cards}</div>`;
 }
 
 function buildClientTable(person){
@@ -1133,7 +1258,7 @@ function renderEigyo(){
     const rd = ALL_REGIONS[r] || {};
     (rd.history || []).forEach(h => monthSet.add(h.month));
   });
-  const months = [...monthSet].sort();
+  const ymKey = x => { const m = x.match(/(\d+)年(\d+)月/); return m ? (+m[1])*12 + (+m[2]) : 0; }; const months = [...monthSet].sort((a,b)=>ymKey(a)-ymKey(b));
   months.push(curLabel);
 
   // 地域ごとにテーブルを構築
@@ -1667,7 +1792,7 @@ function exportEigyoExcel(){
   const curLabel=(()=>{const dr=RAW.data_range||'';const m=dr.match(/(\d+)年(\d+)月/);return m?`${m[1]}年${m[2]}月`:'当月';})();
   const monthSet=new Set();
   REGION_ORDER.forEach(r=>(ALL_REGIONS[r]?.history||[]).forEach(h=>monthSet.add(h.month)));
-  const months=[...monthSet].sort();months.push(curLabel);
+  const ymKey = x => { const m = x.match(/(\d+)年(\d+)月/); return m ? (+m[1])*12 + (+m[2]) : 0; }; const months=[...monthSet].sort((a,b)=>ymKey(a)-ymKey(b));months.push(curLabel);
 
   const wb = XLSX.utils.book_new();
 
