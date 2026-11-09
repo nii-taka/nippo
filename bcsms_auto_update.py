@@ -59,6 +59,9 @@ REGION_PERSONS = {
 # 反映しない担当者（退職者など）
 EXCLUDE_PERSONS = ['阪岡 直樹', '退)阪岡 直樹', '田牧 光', '小野寺 陽丈', '退)小野寺 陽丈']
 
+# 契約日が空欄の実績を「新規」として数える担当者
+BLANK_AS_SHIN_PERSONS = ['山藤 寛司']
+
 _today = datetime.date.today()
 SHIN_CUTOFF = datetime.date(_today.year - 2, _today.month, 1)
 JUN_HOLIDAYS_PATTERN = {
@@ -355,7 +358,7 @@ def process_excel(excel_path):
     holiday_dates_str = [d.strftime('%Y/%m/%d') for d in holidays]
 
     def kbn(row):
-        if pd.isna(row['契約日']): return '空欄'
+        if pd.isna(row['契約日']): return '新規' if row['担当者名'] in BLANK_AS_SHIN_PERSONS else '空欄'
         return '新規' if row['契約日'].date() >= SHIN_CUTOFF else '既存'
     df['kbn'] = df.apply(kbn, axis=1)
 
